@@ -20,21 +20,24 @@ namespace Server
         {
             filePath ??= "../shared/PuzzleInput/input1-1.txt";
             var numbers = ParseInts(ReadFile(filePath));
+            return GetNumbersThatSumUpTo(numbers);
+        }
 
+        public static int GetNumbersThatSumUpTo(IEnumerable<int> numbers)
+        {
             for (var i = 0; i < numbers.Count(); i++)
             {
                 for (var j = 0; j < numbers.Count(); j++)
                 {
                     if (i != j && numbers.ElementAt(i) + numbers.ElementAt(j) == 2020)
                     {
-                        return i*j;
+                        return numbers.ElementAt(i) * numbers.ElementAt(j);
                     }
                 }
             }
 
             return -1;
         }
-
 
         [HttpGet("2")]
         public int Day1Part2()
