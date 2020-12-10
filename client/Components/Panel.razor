@@ -1,0 +1,25 @@
+
+<div class="card">
+    <h5 class="card-header">
+        @Title
+    </h5>
+    <div class=@(IsOpen ? "" : "d-none")>
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = "";
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+    [Parameter]
+    public bool IsOpen { get; set; } = true;
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnOpen { get; set; } = new EventCallback<MouseEventArgs>();
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClose { get; set; } = new EventCallback<MouseEventArgs>();
+}
