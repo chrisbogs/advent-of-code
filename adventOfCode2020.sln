@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "adventOfCodeShared", "share
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "server\Server.csproj", "{A7823C0E-603F-4270-AD40-6CBBDAD82862}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tests", "tests\tests.csproj", "{EBBB5189-0C81-4F10-911E-286C8853E4B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{A7823C0E-603F-4270-AD40-6CBBDAD82862}.Release|x64.Build.0 = Release|Any CPU
 		{A7823C0E-603F-4270-AD40-6CBBDAD82862}.Release|x86.ActiveCfg = Release|Any CPU
 		{A7823C0E-603F-4270-AD40-6CBBDAD82862}.Release|x86.Build.0 = Release|Any CPU
+		{EBBB5189-0C81-4F10-911E-286C8853E4B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBBB5189-0C81-4F10-911E-286C8853E4B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBBB5189-0C81-4F10-911E-286C8853E4B0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EBBB5189-0C81-4F10-911E-286C8853E4B0}.Debug|x64.Build.0 = Debug|Any CPU
+		{EBBB5189-0C81-4F10-911E-286C8853E4B0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EBBB5189-0C81-4F10-911E-286C8853E4B0}.Debug|x86.Build.0 = Debug|Any CPU
+		{EBBB5189-0C81-4F10-911E-286C8853E4B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBBB5189-0C81-4F10-911E-286C8853E4B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBBB5189-0C81-4F10-911E-286C8853E4B0}.Release|x64.ActiveCfg = Release|Any CPU
+		{EBBB5189-0C81-4F10-911E-286C8853E4B0}.Release|x64.Build.0 = Release|Any CPU
+		{EBBB5189-0C81-4F10-911E-286C8853E4B0}.Release|x86.ActiveCfg = Release|Any CPU
+		{EBBB5189-0C81-4F10-911E-286C8853E4B0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
