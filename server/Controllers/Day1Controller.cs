@@ -20,14 +20,16 @@ namespace Server
         {
             filePath ??= "../shared/PuzzleInput/input1-1.txt";
             var numbers = ParseInts(ReadFile(filePath));
-            return GetNumbersThatSumUpTo(numbers);
+            return Get2NumbersThatSumUpTo(numbers);
         }
 
-        public static int GetNumbersThatSumUpTo(IEnumerable<int> numbers)
+        // TODO: make this a generate algorithm to gather the permutations of the `numbers` collection
+        public static int Get2NumbersThatSumUpTo(IEnumerable<int> numbers)
         {
-            for (var i = 0; i < numbers.Count(); i++)
+            var length = numbers.Count();
+            for (var i = 0; i < length; i++)
             {
-                for (var j = 0; j < numbers.Count(); j++)
+                for (var j = 0; j < length; j++)
                 {
                     if (i != j && numbers.ElementAt(i) + numbers.ElementAt(j) == 2020)
                     {
@@ -39,10 +41,32 @@ namespace Server
             return -1;
         }
 
-        [HttpGet("2")]
-        public int Day1Part2()
+        // TODO: make this a generate algorithm to gather the permutations of the `numbers` collection
+        public static int Get3NumbersThatSumUpTo(IEnumerable<int> numbers)
         {
-            return 2;
+            var length = numbers.Count();
+            for (var i = 0; i < length; i++)
+            {
+                for (var j = 0; j < length; j++)
+                {
+                    for (var k = 0; k < length; k++)
+                    {
+                        if (i != j && j != k && numbers.ElementAt(i) + numbers.ElementAt(j) + numbers.ElementAt(k) == 2020)
+                        {
+                            return numbers.ElementAt(i) * numbers.ElementAt(j) * numbers.ElementAt(k);
+                        }
+                    }
+                }
+            }
+
+            return -1;
+        }
+
+        [HttpGet("2")]
+        public int Day1Part2(string? filePath = null)
+        {
+            var numbers = ParseInts(ReadFile(filePath));
+            return Get3NumbersThatSumUpTo(numbers);
         }
 
         private static string[] ReadFile(string filePath)
@@ -52,7 +76,7 @@ namespace Server
         private static IEnumerable<int> ParseInts(string[] s)
         {
             var splitContents = new List<string>(s);
-            return splitContents.Where(w=>int.TryParse(w, out _)).Select(x => int.Parse(x));
+            return splitContents.Where(w => int.TryParse(w, out _)).Select(x => int.Parse(x));
         }
 
     }
