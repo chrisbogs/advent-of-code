@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using AdventOfCodeShared;
 using Microsoft.AspNetCore.Mvc;
+using AdventOfCodeShared.Extensions;
+
 namespace Server
 {
 
@@ -16,10 +15,10 @@ namespace Server
         }
 
         [HttpGet("1")]
-        public int Day1Part1(string? filePath = null)
+        public int Part1(string? filePath = null)
         {
             filePath ??= "../shared/PuzzleInput/input1-1.txt";
-            var numbers = ParseInts(ReadFile(filePath));
+            var numbers = filePath.ReadFile().ParseInts();
             return Get2NumbersThatSumUpTo(numbers);
         }
 
@@ -63,21 +62,11 @@ namespace Server
         }
 
         [HttpGet("2")]
-        public int Day1Part2(string? filePath = null)
+        public int Part2(string? filePath = null)
         {
-            var numbers = ParseInts(ReadFile(filePath));
+            filePath ??= "../shared/PuzzleInput/input1-1.txt";
+            var numbers = filePath?.ReadFile()?.ParseInts() ?? Enumerable.Empty<int>();
             return Get3NumbersThatSumUpTo(numbers);
         }
-
-        private static string[] ReadFile(string filePath)
-        {
-            return System.IO.File.ReadAllLines(filePath);
-        }
-        private static IEnumerable<int> ParseInts(string[] s)
-        {
-            var splitContents = new List<string>(s);
-            return splitContents.Where(w => int.TryParse(w, out _)).Select(x => int.Parse(x));
-        }
-
     }
 }
