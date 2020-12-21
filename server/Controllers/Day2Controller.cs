@@ -30,6 +30,7 @@ namespace Server
             filePath ??= "../shared/PuzzleInput/input2.txt";
             var passwordsWithRules = filePath.ReadFile().ParsePasswords();
             return passwordsWithRules.Count(x=>x.IsValidv2());
+
         }
 
 
