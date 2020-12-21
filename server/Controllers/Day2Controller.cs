@@ -19,17 +19,19 @@ namespace Server
         [HttpGet("2")]
         public int Part1(string? filePath = null)
         {
-            filePath ??= "../shared/PuzzleInput/input1-1.txt";
-            var numbers = filePath.ReadFile().ParseInts();
-            return 0;
+            filePath ??= "../shared/PuzzleInput/input2.txt";
+            var passwordsWithRules = filePath.ReadFile().ParsePasswords();
+            return passwordsWithRules.Count(x=>x.IsValidv1());
         }
 
         [HttpGet("2")]
         public int Part2(string? filePath = null)
         {
-            filePath ??= "../shared/PuzzleInput/input1-1.txt";
-            var numbers = filePath.ReadFile().ParseInts();
-            return 0;
+            filePath ??= "../shared/PuzzleInput/input2.txt";
+            var passwordsWithRules = filePath.ReadFile().ParsePasswords();
+            return passwordsWithRules.Count(x=>x.IsValidv2());
         }
+
+
     }
 }
