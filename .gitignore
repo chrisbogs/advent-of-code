@@ -446,3 +446,4 @@ out/
 
 appsettings.json
 appsettings.development.json
+shared/PuzzleInput/
