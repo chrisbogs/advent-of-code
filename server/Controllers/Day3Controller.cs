@@ -1,34 +1,35 @@
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 using AdventOfCodeShared.Extensions;
 using AdventOfCodeShared.Services;
 using Microsoft.AspNetCore.Mvc;
 namespace Server
 {
+
     [Route("[controller]")]
     [ApiController]
-    public class Day2Controller : Controller
+    public class Day3Controller : Controller
     {
         private IInputRetriever inputRetriever;
         private string[] input = new string[] { };
-        public Day2Controller(IInputRetriever inputRetriever)
+        public Day3Controller(IInputRetriever inputRetriever)
         {
             this.inputRetriever = inputRetriever;
-            this.input = this.inputRetriever.GetInput(2020, 2).Result;
+            this.input = this.inputRetriever.GetInput(2020, 3).Result;
         }
 
         [HttpGet("1")]
         public int Part1()
         {
-            var passwordsWithRules = this.input.ParsePasswords();
-            return passwordsWithRules.Count(x=>x.IsValidv1());
+            return 0;
         }
 
         [HttpGet("2")]
         public int Part2()
         {
-            var passwordsWithRules = this.input.ParsePasswords();
-            return passwordsWithRules.Count(x=>x.IsValidv2());
-
+            return 0;
         }
+
     }
 }

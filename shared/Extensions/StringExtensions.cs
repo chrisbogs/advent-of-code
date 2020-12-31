@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AdventOfCodeShared.Models;
 
 namespace AdventOfCodeShared.Extensions
 {
     public static class StringExtensions
     {
-        public static string[] ReadFile(this string filePath)
+        public static async Task<string[]> ReadFile(this string filePath)
         {
-            return System.IO.File.ReadAllLines(filePath);
+            return await System.IO.File.ReadAllLinesAsync(filePath);
         }
 
         public static IEnumerable<int> ParseInts(this string[] s)

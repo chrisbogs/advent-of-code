@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using AdventOfCodeShared.Extensions;
+using AdventOfCodeShared.Services;
 
 namespace Server
 {
@@ -10,16 +11,25 @@ namespace Server
     [ApiController]
     public class Day1Controller : Controller
     {
-        public Day1Controller()
+        private IInputRetriever inputRetriever;
+        private string[] input = new string[] { };
+        public Day1Controller(IInputRetriever inputRetriever)
         {
+            this.inputRetriever = inputRetriever;
+            this.input = this.inputRetriever.GetInput(2020, 1).Result;
         }
 
         [HttpGet("1")]
-        public int Part1(string? filePath = null)
+        public int Part1()
         {
-            filePath ??= "../shared/PuzzleInput/input1-1.txt";
-            var numbers = filePath.ReadFile().ParseInts();
+            var numbers = this.input.ParseInts();
             return Get2NumbersThatSumUpTo(numbers);
+        }
+        [HttpGet("2")]
+        public int Part2()
+        {
+            var numbers = this.input.ParseInts();
+            return Get3NumbersThatSumUpTo(numbers);
         }
 
         // TODO: make this a generate algorithm to gather the permutations of the `numbers` collection
@@ -59,14 +69,6 @@ namespace Server
             }
 
             return -1;
-        }
-
-        [HttpGet("2")]
-        public int Part2(string? filePath = null)
-        {
-            filePath ??= "../shared/PuzzleInput/input1-1.txt";
-            var numbers = filePath?.ReadFile()?.ParseInts() ?? Enumerable.Empty<int>();
-            return Get3NumbersThatSumUpTo(numbers);
         }
     }
 }
