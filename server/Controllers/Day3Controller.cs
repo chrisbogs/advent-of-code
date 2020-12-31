@@ -1,4 +1,7 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using AdventOfCodeShared.Extensions;
@@ -21,16 +24,26 @@ namespace Server
         }
 
         [HttpGet("1")]
-        public int Part1()
+        public long Part1()
         {
             var map = new Map(this.input);
             return map.TraverseAndCountTrees(new Toboggan() { Right = 3, Down = 1 });
         }
 
         [HttpGet("2")]
-        public int Part2()
+        public long Part2()
         {
-            return 0;
+            // calculate how many tree would be hit for all slopes and return the product of those.
+            var map = new Map(this.input);
+            return new List<Toboggan>(){
+                new Toboggan(){Right=1, Down=1},
+                new Toboggan(){Right=3, Down=1},
+                new Toboggan(){Right=5, Down=1},
+                new Toboggan(){Right=7, Down=1},
+                new Toboggan(){Right=1, Down=2}
+            }
+            .Select(s => map.TraverseAndCountTrees(s))
+            .Aggregate((a, b) => a * b);
         }
 
     }

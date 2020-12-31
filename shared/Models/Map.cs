@@ -25,9 +25,9 @@ namespace AdventOfCodeShared.Models
             }
         }
 
-        public int TraverseAndCountTrees(Toboggan sled)
+        public long TraverseAndCountTrees(Toboggan sled)
         {
-            var treeCount = 0;
+            long treeCount = 0;
             var x = 0;
             var y = 0;
 
