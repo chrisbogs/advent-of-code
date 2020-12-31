@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AdventOfCodeShared.Extensions;
+using AdventOfCodeShared.Models;
 using AdventOfCodeShared.Services;
 using Microsoft.AspNetCore.Mvc;
 namespace Server
@@ -22,7 +23,8 @@ namespace Server
         [HttpGet("1")]
         public int Part1()
         {
-            return 0;
+            var map = new Map(this.input);
+            return map.TraverseAndCountTrees(new Toboggan() { Right = 3, Down = 1 });
         }
 
         [HttpGet("2")]
