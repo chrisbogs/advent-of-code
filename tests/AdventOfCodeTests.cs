@@ -59,6 +59,16 @@ namespace tests
 
             var sut = new Day3Controller(new InputRetriever(new System.Net.Http.HttpClient(), "../../../../shared/PuzzleInput/2020/3.txt"));
             Assert.Equal(173, sut.Part1());
+            Assert.Equal(new List<long>(){2,7,3,4,2},
+            new List<Toboggan>(){
+                new Toboggan(){Right=1, Down=1},
+                new Toboggan(){Right=3, Down=1},
+                new Toboggan(){Right=5, Down=1},
+                new Toboggan(){Right=7, Down=1},
+                new Toboggan(){Right=1, Down=2}
+            }
+            .Select(s => testMap.TraverseAndCountTrees(s)).ToList());
+            Assert.Equal(4385176320, sut.Part2());
         }
 
     }

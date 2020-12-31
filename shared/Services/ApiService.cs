@@ -41,15 +41,15 @@ namespace AdventOfCodeShared.Services
             var response = await _http.GetAsync("/Day2/2");
             return await response.Content.ReadFromJsonAsync<int>();
         }
-        public async Task<int> Day3Part1()
+        public async Task<long> Day3Part1()
         {
             var response = await _http.GetAsync("/Day3/1");
-            return await response.Content.ReadFromJsonAsync<int>();
+            return await response.Content.ReadFromJsonAsync<long>();
         }
-        public async Task<int> Day3Part2()
+        public async Task<long> Day3Part2()
         {
             var response = await _http.GetAsync("/Day3/2");
-            return await response.Content.ReadFromJsonAsync<int>();
+            return await response.Content.ReadFromJsonAsync<long>();
         }
 
     }
