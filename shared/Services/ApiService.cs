@@ -22,7 +22,7 @@ namespace AdventOfCodeShared.Services
         }
 
         public async Task<T> GetResult<T>(int day, int part){
-            var response = await _http.GetAsync($"/Day{day}/{part}");
+            var response = await _http.GetAsync($"/Year/2020/{day}/{part}");
             return await response.Content.ReadFromJsonAsync<T>();
         }
 

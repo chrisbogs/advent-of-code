@@ -1,37 +1,19 @@
+using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Globalization;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
+using AdventOfCodeShared;
 using AdventOfCodeShared.Extensions;
-using AdventOfCodeShared.Services;
 
-namespace Server
+namespace AdventOfCodeShared.Services
 {
-
-    [Route("[controller]")]
-    [ApiController]
-    public class Day1Controller : Controller
+    public class Helpers
     {
-        private IInputRetriever inputRetriever;
-        private string[] input = new string[] { };
         private const int magicNumber = 2020;
-        public Day1Controller(IInputRetriever inputRetriever)
-        {
-            this.inputRetriever = inputRetriever;
-            this.input = this.inputRetriever.GetInput(2020, 1).Result;
-        }
-
-        [HttpGet("1")]
-        public int Part1()
-        {
-            var numbers = this.input.ParseInts();
-            return Get2NumbersThatSumUpTo(numbers);
-        }
-        [HttpGet("2")]
-        public int Part2()
-        {
-            var numbers = this.input.ParseInts();
-            return Get3NumbersThatSumUpTo(numbers);
-        }
 
         // TODO: make this a generate algorithm to gather the permutations of the `numbers` collection
         public static int Get2NumbersThatSumUpTo(IEnumerable<int> numbers)
