@@ -2,7 +2,40 @@
 @inject ApiService Api
 
 <h1 class="text-center">Advent of code 2020</h1>
-<Day1></Day1>
-<Day2></Day2>
-<Day3></Day3>
+<DayResult Day=1 GetPart1Result=Day1Part1 GetPart2Result=Day1Part2></DayResult>
+<DayResult Day=2 GetPart1Result=Day2Part1 GetPart2Result=Day2Part2></DayResult>
+<DayResult Day=3 GetPart1Result=Day3Part1 GetPart2Result=Day3Part2></DayResult>
 <br />
+
+@code {
+    private async Task<string> GetResult<T>(int day, int part)
+    {
+        var result = await Api.GetResult<T>(day, part);
+        return result?.ToString() ?? string.Empty;
+    }
+    private async Task<string> Day1Part1()
+    {
+        return await GetResult<int>(1, 1);
+    }
+    private async Task<string> Day1Part2()
+    {
+        return await GetResult<int>(1, 2);
+    }
+    private async Task<string> Day2Part1()
+    {
+        return await GetResult<int>(2, 1);
+    }
+    private async Task<string> Day2Part2()
+    {
+        return await GetResult<int>(2, 2);
+    }
+    private async Task<string> Day3Part1()
+    {
+        return await GetResult<long>(3, 1);
+    }
+    private async Task<string> Day3Part2()
+    {
+        return await GetResult<long>(3, 2);
+    }
+
+}

@@ -21,35 +21,9 @@ namespace AdventOfCodeShared.Services
             _http = http;
         }
 
-        public async Task<int> Day1Part1()
-        {
-            var response = await _http.GetAsync("/Day1/1");
-            return await response.Content.ReadFromJsonAsync<int>();
-        }
-        public async Task<int> Day1Part2()
-        {
-            var response = await _http.GetAsync("/Day1/2");
-            return await response.Content.ReadFromJsonAsync<int>();
-        }
-        public async Task<int> Day2Part1()
-        {
-            var response = await _http.GetAsync("/Day2/1");
-            return await response.Content.ReadFromJsonAsync<int>();
-        }
-        public async Task<int> Day2Part2()
-        {
-            var response = await _http.GetAsync("/Day2/2");
-            return await response.Content.ReadFromJsonAsync<int>();
-        }
-        public async Task<int> Day3Part1()
-        {
-            var response = await _http.GetAsync("/Day3/1");
-            return await response.Content.ReadFromJsonAsync<int>();
-        }
-        public async Task<int> Day3Part2()
-        {
-            var response = await _http.GetAsync("/Day3/2");
-            return await response.Content.ReadFromJsonAsync<int>();
+        public async Task<T> GetResult<T>(int day, int part){
+            var response = await _http.GetAsync($"/Day{day}/{part}");
+            return await response.Content.ReadFromJsonAsync<T>();
         }
 
     }
