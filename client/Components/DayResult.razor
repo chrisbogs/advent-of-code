@@ -1,0 +1,23 @@
+@inject ApiService Api
+<div>
+    Day @Day
+</div>
+
+<p>    Part 1: @result1
+    <br />
+       Part 2: @result2
+</p>
+
+@code {
+    [Parameter] public int Day { get; set; } = 0;
+    [Parameter] public Func<Task<string>> GetPart1Result { get; set; } = () => Task.Run(()=>string.Empty);
+    [Parameter] public Func<Task<string>> GetPart2Result { get; set; } = () => Task.Run(()=>string.Empty);
+    public string result1 { get; set; } = "Loading";
+    public string result2 { get; set; } = "Loading";
+
+    protected override async Task OnInitializedAsync()
+    {
+        result1 = await GetPart1Result();
+        result2 = await GetPart2Result();
+    }
+}
