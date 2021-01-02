@@ -71,5 +71,30 @@ namespace tests
             Assert.Equal(4385176320, sut.Day3Part2(2020));
         }
 
+        [Fact]
+        public void Day4()
+        {
+            var testData = new string[] {
+                    "ecl:gry pid:860033327 eyr:2020 hcl:#fffffd\n"
+                    ,"byr:1937 iyr:2017 cid:147 hgt:183cm\n"
+                    ,""
+                    ,"iyr:2013 ecl:amb cid:350 eyr:2023 pid:028048884\n"
+                    ,"hcl:#cfa07d byr:1929\n"
+                    ,""
+                    ,"hcl:#ae17e1 iyr:2013\n"
+                    ,"eyr:2024\n"
+                    ,"ecl:brn pid:760753108 byr:1931\n"
+                    ,"hgt:179cm\n"
+                    ,""
+                    ,"hcl:#cfa07d eyr:2025 pid:166559648\n"
+                    ,"iyr:2011 ecl:brn hgt:59in\n"};
+            var passports = Passport.ParsePassports(testData);
+            Assert.Equal(4, passports.Count());
+            Assert.Equal(2, passports.Count(x=>x.IsValid));
+            var sut = new YearController(new InputRetriever(new System.Net.Http.HttpClient(), "../../../../shared/PuzzleInput/2020/4.txt"));
+            Assert.Equal(210, sut.Day4Part1(2020));
+            // Assert.Equal(0, sut.Day4Part2(2020));
+        }
+
     }
 }
