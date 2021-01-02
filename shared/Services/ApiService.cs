@@ -21,10 +21,17 @@ namespace AdventOfCodeShared.Services
             _http = http;
         }
 
-        public async Task<T> GetResult<T>(int day, int part){
-            var response = await _http.GetAsync($"/Day{day}/{part}");
-            return await response.Content.ReadFromJsonAsync<T>();
+        public async Task<T> GetResult<T>(int day, int part)
+        {
+            var response = await _http.GetAsync($"/Year/2020/{day}/{part}");
+            try
+            {
+                return await response.Content.ReadFromJsonAsync<T>() ?? default!;
+            }
+            catch (Exception)
+            {
+                return default!;
+            }
         }
-
     }
 }
