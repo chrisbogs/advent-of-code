@@ -11,46 +11,28 @@ namespace AdventOfCodeShared.Models
         public long Row { get; set; }
         public long Column { get; set; }
 
-        private const long RowCount = 127;
-        private const long ColumnCount = 7;
+        private const long RowCount = 128;
+        private const long ColumnCount = 8;
 
         public BoardingPass(string specifier)
         {
-            Row = ConvertRowSpecifier(specifier.Take(7));
-            Column = ConvertColumnSpecifier(specifier.TakeLast(3));
+            Row = ConvertSpecifier(specifier.Take(7), RowCount, 'F', 'B');
+            Column = ConvertSpecifier(specifier.TakeLast(3), ColumnCount, 'L', 'R');
             SeatId = Row * 8 + Column;
         }
 
-        private long ConvertRowSpecifier(IEnumerable<char> s)
+        private long ConvertSpecifier(IEnumerable<char> s, long max, char lower, char higher)
         {
-            long top = RowCount;
+            long top = max-1;
             long bottom = 0;
             foreach (var c in s)
             {
-                if (c == 'F')
+                if (c == lower)
                 {
                     top -= (int)Math.Ceiling((top - bottom) / 2.0);
 
                 }
-                else if (c == 'B')
-                {
-                    bottom += (int)Math.Ceiling((top - bottom) / 2.0);
-                }
-            }
-
-            return bottom;
-        }
-        private long ConvertColumnSpecifier(IEnumerable<char> s)
-        {
-            long top = ColumnCount;
-            long bottom = 0;
-            foreach (var c in s)
-            {
-                if (c == 'L')
-                {
-                    top -= (int)Math.Ceiling((top - bottom) / 2.0);
-                }
-                else if (c == 'R')
+                else if (c == higher)
                 {
                     bottom += (int)Math.Ceiling((top - bottom) / 2.0);
                 }
