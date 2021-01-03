@@ -95,6 +95,14 @@ namespace Server
             var input = this.inputRetriever.GetInput(year, 5).Result;
             return input.Select(x=>new BoardingPass(x)).Max(m=>m.SeatId);
         }
+        [HttpGet("{year:int}/5/2")]
+        public int Day5Part2(int year)
+        {
+            var input = this.inputRetriever.GetInput(year, 5).Result;
+            var seatIds = input.Select(x=>new BoardingPass(x).SeatId).OrderBy(x=>x);
+            var missingSeatIds = Enumerable.Range((int)seatIds.First(), (int)seatIds.Last()).Where(w=>!seatIds.Contains(w));
+            return missingSeatIds.Where(w=>seatIds.Contains(w+1) && seatIds.Contains(w-1)).FirstOrDefault();
+        }
 
     }
 }

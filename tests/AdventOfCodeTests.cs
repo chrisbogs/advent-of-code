@@ -143,6 +143,7 @@ namespace tests
 
             var sut = new YearController(new InputRetriever(new System.Net.Http.HttpClient(), "../../../../shared/PuzzleInput/2020/5.txt"));
             Assert.Equal(930, sut.Day5Part1(2020));
+            Assert.Equal(515, sut.Day5Part2(2020));
         }
     }
 }
