@@ -10,6 +10,14 @@ namespace AdventOfCodeShared.Models
         private List<string> answers = new List<string>();
 
         public int UniqueAnswers => answers.SelectMany(x => x).Distinct().Count();
+        public int CommonAnswers
+        {
+            get
+            {
+                var uniqueAnswers = answers.SelectMany(x => x).Distinct();
+                return uniqueAnswers.Where(x=>answers.All(a=>a.Contains(x))).Count();
+            }
+        }
         public CustomsForm()
         {
         }
