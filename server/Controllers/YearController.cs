@@ -89,5 +89,12 @@ namespace Server
             return Passport.ParsePassports(input).Count(x=>x.IsValid);
         }
 
+        [HttpGet("{year:int}/5/1")]
+        public long Day5Part1(int year)
+        {
+            var input = this.inputRetriever.GetInput(year, 5).Result;
+            return input.Select(x=>new BoardingPass(x)).Max(m=>m.SeatId);
+        }
+
     }
 }
