@@ -82,12 +82,12 @@ namespace Server
             return Passport.ParsePassports(input).Count(x=>x.IsValid);
         }
 
-        // [HttpGet("{year:int}/4/2")]
-        // public long Day4Part2(int year)
-        // {
-        //     var input = this.inputRetriever.GetInput(year, 4).Result;
-
-        // }
+        [HttpGet("{year:int}/4/2")]
+        public int Day4Part2(int year)
+        {
+            var input = this.inputRetriever.GetInput(year, 4).Result;
+            return Passport.ParsePassports(input).Count(x=>x.IsValid);
+        }
 
     }
 }
