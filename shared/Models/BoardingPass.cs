@@ -7,12 +7,12 @@ namespace AdventOfCodeShared.Models
 {
     public class BoardingPass
     {
-        public long SeatId { get; set; }
-        public long Row { get; set; }
-        public long Column { get; set; }
+        public int SeatId { get; set; }
+        public int Row { get; set; }
+        public int Column { get; set; }
 
-        private const long RowCount = 128;
-        private const long ColumnCount = 8;
+        private const int RowCount = 128;
+        private const int ColumnCount = 8;
 
         public BoardingPass(string specifier)
         {
@@ -21,10 +21,10 @@ namespace AdventOfCodeShared.Models
             SeatId = Row * 8 + Column;
         }
 
-        private long ConvertSpecifier(IEnumerable<char> s, long max, char lower, char higher)
+        private int ConvertSpecifier(IEnumerable<char> s, int max, char lower, char higher)
         {
-            long top = max-1;
-            long bottom = 0;
+            int top = max-1;
+            int bottom = 0;
             foreach (var c in s)
             {
                 if (c == lower)
