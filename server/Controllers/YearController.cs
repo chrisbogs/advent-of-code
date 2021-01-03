@@ -110,6 +110,12 @@ namespace Server
             var input = this.inputRetriever.GetInput(year, 6).Result;
             return CustomsForm.Parse(input).Sum(x=>x.UniqueAnswers);
         }
+        [HttpGet("{year:int}/6/2")]
+        public int Day6Part2(int year)
+        {
+            var input = this.inputRetriever.GetInput(year, 6).Result;
+            return CustomsForm.Parse(input).Sum(x=>x.CommonAnswers);
+        }
 
     }
 }

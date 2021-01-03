@@ -180,6 +180,12 @@ namespace tests
 
             var sut = new YearController(new InputRetriever(new System.Net.Http.HttpClient(), "../../../../shared/PuzzleInput/2020/6.txt"));
             Assert.Equal(6763, sut.Day6Part1(2020));
+            Assert.Equal(3, forms2[0].CommonAnswers);
+            Assert.Equal(0, forms2[1].CommonAnswers);
+            Assert.Equal(1, forms2[2].CommonAnswers);
+            Assert.Equal(1, forms2[3].CommonAnswers);
+            Assert.Equal(1, forms2[4].CommonAnswers);
+            Assert.Equal(3512, sut.Day6Part2(2020));
         }
     }
 }
