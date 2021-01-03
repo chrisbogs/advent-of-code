@@ -55,11 +55,11 @@ namespace tests
             Assert.Equal(
                 "..##.......\n#...#...#..\n.#....#..#.\n..#.#...#.#\n.#...##..#.\n..#.##.....\n.#.#.#....#\n.#........#\n#.##...#...\n#...##....#\n.#..#...#.#\n",
                 testMap.Print());
-            Assert.Equal(7, testMap.TraverseAndCountTrees(new Toboggan(){Right=3, Down=1}));
+            Assert.Equal(7, testMap.TraverseAndCountTrees(new Toboggan() { Right = 3, Down = 1 }));
 
             var sut = new YearController(new InputRetriever(new System.Net.Http.HttpClient(), "../../../../shared/PuzzleInput/2020/3.txt"));
             Assert.Equal(173, sut.Day3Part1(2020));
-            Assert.Equal(new List<long>(){2,7,3,4,2},
+            Assert.Equal(new List<long>() { 2, 7, 3, 4, 2 },
             new List<Toboggan>(){
                 new Toboggan(){Right=1, Down=1},
                 new Toboggan(){Right=3, Down=1},
@@ -97,7 +97,8 @@ namespace tests
             Assert.Equal(131, sut.Day4Part2(2020));
         }
         [Fact]
-        public void TestDay4Validation(){
+        public void TestDay4Validation()
+        {
             Assert.Equal(2002, Passport.ValidateBirthYear("2002"));
             Assert.Null(Passport.ValidateBirthYear("2003"));
 
@@ -117,5 +118,31 @@ namespace tests
             Assert.Equal(null, Passport.ValidatePassportId("0123456789"));
         }
 
+        [Fact]
+        public void Day5()
+        {
+            var pass = new BoardingPass("FBFBBFFRLR");
+            Assert.Equal(5, pass.Column);
+            Assert.Equal(44, pass.Row);
+            Assert.Equal(357, pass.SeatId);
+
+            pass = new BoardingPass("BFFFBBFRRR");
+            Assert.Equal(70, pass.Row);
+            Assert.Equal(7, pass.Column);
+            Assert.Equal(567, pass.SeatId);
+
+            pass = new BoardingPass("FFFBBBFRRR");
+            Assert.Equal(14, pass.Row);
+            Assert.Equal(7, pass.Column);
+            Assert.Equal(119, pass.SeatId);
+
+            pass = new BoardingPass("BBFFBBFRLL");
+            Assert.Equal(102, pass.Row);
+            Assert.Equal(4, pass.Column);
+            Assert.Equal(820, pass.SeatId);
+
+            var sut = new YearController(new InputRetriever(new System.Net.Http.HttpClient(), "../../../../shared/PuzzleInput/2020/5.txt"));
+            Assert.Equal(930, sut.Day5Part1(2020));
+        }
     }
 }
