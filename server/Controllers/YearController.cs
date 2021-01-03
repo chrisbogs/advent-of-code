@@ -104,5 +104,12 @@ namespace Server
             return missingSeatIds.Where(w=>seatIds.Contains(w+1) && seatIds.Contains(w-1)).FirstOrDefault();
         }
 
+        [HttpGet("{year:int}/6/1")]
+        public int Day6Part1(int year)
+        {
+            var input = this.inputRetriever.GetInput(year, 6).Result;
+            return CustomsForm.Parse(input).Sum(x=>x.UniqueAnswers);
+        }
+
     }
 }
