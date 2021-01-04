@@ -9,7 +9,7 @@ using Xunit;
 
 namespace tests
 {
-    public class AdventOfCodeTests
+    public class Test2020
     {
         [Fact]
         public void Day1()

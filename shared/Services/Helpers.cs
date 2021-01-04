@@ -71,5 +71,31 @@ namespace AdventOfCodeShared.Services
 
             return -1;
         }
+
+        public static void FindPermutations(int[] list, List<int[]> permutations, int pointer = 0)
+        {
+            if (pointer == list.Length)
+            {
+                permutations.Add(list);
+                return;
+            }
+            for (var i = pointer; i < list.Length; i++)
+            {
+                var permutation = (int[])list.Clone();
+                permutation[pointer] = list[i];
+                permutation[i] = list[pointer];
+                FindPermutations(permutation, permutations, pointer + 1);
+            }
+        }
+        public static long[] ResizeArray(long[] array, long index)
+        {
+            // Create a new array and copy the values over
+            long[] newArray = (long[])Array.CreateInstance(typeof(long), index + 1);
+            for (var i = 0; i < Math.Min(array.Length, newArray.Length); i++)
+            {
+                newArray[i] = array[i];
+            }
+            return newArray;
+        }
     }
 }
