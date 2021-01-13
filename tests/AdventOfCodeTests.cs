@@ -14,7 +14,6 @@ namespace tests
         [Fact]
         public void Day1()
         {
-            Assert.False(true);
             var sut = new YearController(new InputRetriever(new System.Net.Http.HttpClient(), "../../../../shared/PuzzleInput/2020/1.txt"));
             Assert.Equal(290784, sut.Day1Part1(2020));
             Assert.Equal(241861950, Helpers.Get3NumbersThatSumUpTo(new List<int>() { 1721, 979, 366, 299, 675, 1456 }));
