@@ -1,5 +1,4 @@
-name: .NET Core
-
+name: CI
 on:
   push:
     branches: [ master ]
@@ -8,7 +7,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -18,8 +16,8 @@ jobs:
       with:
         dotnet-version: 5.0.101
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore --no-cache
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test --no-restore --verbosity normal /p:CollectCoverage=true
