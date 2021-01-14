@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AdventOfCodeShared.Services;
 
 namespace AdventOfCodeShared.Models
 {
@@ -85,13 +86,13 @@ namespace AdventOfCodeShared.Models
             {
                 if (i == intCodeProgram.Length)
                 {
-                    intCodeProgram = Util.ResizeArray(intCodeProgram, intCodeProgram.Length + 100);
+                    intCodeProgram = Helpers.ResizeArray(intCodeProgram, intCodeProgram.Length + 100);
                 }
                 intCodeProgram[i] = long.Parse(x);
                 i++;
             }
             // Shrink array to the used portion
-            return Util.ResizeArray(intCodeProgram, i-1);
+            return Helpers.ResizeArray(intCodeProgram, i-1);
         }
 
         public void SetInputs(long noun, long verb)
@@ -278,7 +279,7 @@ namespace AdventOfCodeShared.Models
             }
             if (index >= Memory.Length)
             {
-                Memory = Util.ResizeArray(Memory, index);
+                Memory = Helpers.ResizeArray(Memory, index);
             }
             Memory[index] = value;
         }

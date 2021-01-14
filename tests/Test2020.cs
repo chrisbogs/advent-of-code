@@ -15,10 +15,10 @@ namespace tests
         public void Day1()
         {
             var sut = new YearController(new InputRetriever());
-            Assert.Equal(290784, sut.Router(2020, 1, 1));
+            Assert.Equal("290784", sut.Router(2020, 1, 1));
             Assert.Equal(241861950, Helpers.Get3NumbersThatSumUpTo(new List<int>() { 1721, 979, 366, 299, 675, 1456 }));
             Assert.Equal(514579, Helpers.Get2NumbersThatSumUpTo(new List<int>() { 1721, 979, 366, 299, 675, 1456 }));
-            Assert.Equal(177337980, sut.Router(2020, 1, 2));
+            Assert.Equal("177337980", sut.Router(2020, 1, 2));
         }
 
         [Fact]
@@ -33,8 +33,8 @@ namespace tests
 
             Assert.True(new PasswordWithRule('c', 2, 6, "fcpwjqhcgtffzlbj").IsValidv1());
             Assert.True(new PasswordWithRule('c', 2, 6, "fcpwjqhcgtffzlbj").IsValidv2());
-            Assert.Equal(582, sut.Router(2020,2,1));
-            Assert.Equal(729, sut.Router(2020,2,2));
+            Assert.Equal("582", sut.Router(2020,2,1));
+            Assert.Equal("729", sut.Router(2020,2,2));
         }
         [Fact]
         public void Day3()
@@ -58,7 +58,7 @@ namespace tests
             Assert.Equal(7, testMap.TraverseAndCountTrees(new Toboggan() { Right = 3, Down = 1 }));
 
             var sut = new YearController(new InputRetriever());
-            Assert.Equal(173, sut.Router(2020,3,1));
+            Assert.Equal("173", sut.Router(2020,3,1));
             Assert.Equal(new List<long>() { 2, 7, 3, 4, 2 },
             new List<Toboggan>(){
                 new Toboggan(){Right=1, Down=1},
@@ -68,7 +68,7 @@ namespace tests
                 new Toboggan(){Right=1, Down=2}
             }
             .Select(s => testMap.TraverseAndCountTrees(s)).ToList());
-            Assert.Equal(4385176320, sut.Router(2020,3,2));
+            Assert.Equal("4385176320", sut.Router(2020,3,2));
         }
 
         [Fact]
@@ -94,7 +94,7 @@ namespace tests
             // // Assert.Equal(2, passports.Count(x=>x.IsValid));
             var sut = new YearController(new InputRetriever());
             // Assert.Equal(210, sut.Router(2020,4,1));
-            Assert.Equal(131, sut.Router(2020,4,2));
+            Assert.Equal("131", sut.Router(2020,4,2));
         }
         [Fact]
         public void TestDay4Validation()
@@ -108,14 +108,14 @@ namespace tests
             Assert.Equal(Tuple.Create<int?, string?>(null, null), Passport.ValidateHeight("190"));
 
             Assert.Equal("#123abc", Passport.ValidateHairColor("#123abc"));
-            Assert.Equal(null, Passport.ValidateHairColor("#123abz"));
-            Assert.Equal(null, Passport.ValidateHairColor("123abc"));
+            Assert.Null(Passport.ValidateHairColor("#123abz"));
+            Assert.Null(Passport.ValidateHairColor("123abc"));
 
             Assert.Equal("brn", Passport.ValidateEyeColor("brn"));
-            Assert.Equal(null, Passport.ValidateEyeColor("wat"));
+            Assert.Null(Passport.ValidateEyeColor("wat"));
 
             Assert.Equal(1, Passport.ValidatePassportId("000000001"));
-            Assert.Equal(null, Passport.ValidatePassportId("0123456789"));
+            Assert.Null(Passport.ValidatePassportId("0123456789"));
         }
 
         [Fact]
@@ -142,8 +142,8 @@ namespace tests
             Assert.Equal(820, pass.SeatId);
 
             var sut = new YearController(new InputRetriever());
-            Assert.Equal(930, sut.Router(2020,5,1));
-            Assert.Equal(515, sut.Router(2020,5,2));
+            Assert.Equal("930", sut.Router(2020,5,1));
+            Assert.Equal("515", sut.Router(2020,5,2));
         }
         [Fact]
         public void Day6()
@@ -179,13 +179,13 @@ namespace tests
             Assert.Equal(1, forms2[4].UniqueAnswers);
 
             var sut = new YearController(new InputRetriever());
-            Assert.Equal(6763, sut.Router(2020,6,1));
+            Assert.Equal("6763", sut.Router(2020,6,1));
             Assert.Equal(3, forms2[0].CommonAnswers);
             Assert.Equal(0, forms2[1].CommonAnswers);
             Assert.Equal(1, forms2[2].CommonAnswers);
             Assert.Equal(1, forms2[3].CommonAnswers);
             Assert.Equal(1, forms2[4].CommonAnswers);
-            Assert.Equal(3512, sut.Router(2020,6,2));
+            Assert.Equal("3512", sut.Router(2020,6,2));
         }
     }
 }

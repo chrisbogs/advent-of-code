@@ -74,7 +74,7 @@ namespace AdventOfCodeShared.Services
             //How many different passwords within the range given in your puzzle input meet these criteria?
             for (var i = criteriaMin; i <= criteriaMax; i++)
             {
-                if (MeetsCriteria(i.ToString(), criteriaMax, criteriaMin))
+                if (MeetsCriteria(i.ToString(), criteriaMin, criteriaMax))
                 {
                     result++;
                 }
@@ -95,7 +95,7 @@ namespace AdventOfCodeShared.Services
             var result = 0;
             for (var i = criteriaMin; i <= criteriaMax; i++)
             {
-                if (MeetsCriteriaUpdated(i.ToString(), criteriaMax, criteriaMin))
+                if (MeetsCriteriaUpdated(i.ToString(), criteriaMin, criteriaMax))
                 {
                     result++;
                 }
@@ -138,9 +138,12 @@ namespace AdventOfCodeShared.Services
         {
             return 0;
         }
-        public static int Day7Part1(string[] input)
+        public static long Day7Part1(string[] input)
         {
-            return 0;
+            var amplifierControllerSoftware = input[0];
+            var amplifiers = new Computer[5];
+            //What is the highest signal that can be sent to the thrusters?
+            return FindMaxSignal(amplifiers, amplifierControllerSoftware, new int[] { 0, 1, 2, 3, 4 });
         }
         public static int Day7Part2(string[] input)
         {
@@ -148,20 +151,56 @@ namespace AdventOfCodeShared.Services
         }
         public static int Day8Part1(string[] input)
         {
-            return 0;
+            var layers = SeparateIntoLayers(input[0], 25 * 6);
+
+            //To make sure the image wasn't corrupted during transmission,
+            //the Elves would like you to find the layer that contains the fewest 0 digits.
+            var minDigits = layers?.Select(x => new
+            {
+                data = x,
+                zeroCount = x.Count(x => x == '0')
+            })
+            ?.OrderBy(x => x.zeroCount)?.FirstOrDefault();
+
+            //On that layer, what is the number of 1 digits multiplied by the number of 2 digits?
+            var oneDigits = minDigits?.data?.Count(x => x == '1') ?? 0;
+            var twoDigits = minDigits?.data?.Count(x => x == '2') ?? 0;
+            return oneDigits * twoDigits;
         }
-        public static int Day8Part2(string[] input)
+        public static void Day8Part2(string[] input)
         {
-            return 0;
+            //What message is produced after decoding your image?
+            var result = ConvertToImage(SeparateIntoLayers(input[0], 25 * 6), 25 * 6);
+            PrintImage(result, 25);
         }
 
-        public static int Day9Part1(string[] input)
+        public static long Day9Part1(string[] input)
         {
-            return 0;
+            //The BOOST program will ask for a single input; run it in test mode by providing it the value 1.
+            //It will perform a series of checks on each opcode, output any opcodes(and the associated parameter modes) that seem to be functioning incorrectly,
+            //and finally output a BOOST keycode.
+            //Once your Intcode computer is fully functional, the BOOST program should report no malfunctioning opcodes when run in test mode;
+            //it should only output a single value, the BOOST keycode.
+            var computer = new Computer(input[0]);
+            computer.RunIntCodeProgram(new Stack<long>(new List<long>() { 1 }));
+
+            //What BOOST keycode does it produce?
+            return computer.DiagnosticOutput.Last();
         }
-        public static int Day9Part2(string[] input)
+        public static long Day9Part2(string[] input)
         {
-            return 0;
+            // ---Part Two-- -
+            //You now have a complete Intcode computer.
+            //Finally, you can lock on to the Ceres distress signal!
+            //You just need to boost your sensors using the BOOST program.
+            //The program runs in sensor boost mode by providing the input instruction the value 2.
+            var computer = new Computer(input[0]);
+            computer.RunIntCodeProgram(new Stack<long>(new List<long>() { 2 }));
+            //Once run, it will boost the sensors automatically, but it might take a few seconds to complete the operation on slower hardware.
+            //In sensor boost mode, the program will output a single value: the coordinates of the distress signal.
+            //Run the BOOST program in sensor boost mode.
+            //What are the coordinates of the distress signal?
+            return computer.DiagnosticOutput.Last();
         }
 
         public static int Day10Part1(string[] input)
@@ -433,7 +472,7 @@ namespace AdventOfCodeShared.Services
             var closestPoint = crossings.Min(x => x.Value);
             return closestPoint;
         }
-        public static bool MeetsCriteria(string password, int criteriaMax, int criteriaMin)
+        public static bool MeetsCriteria(string password, int criteriaMin, int criteriaMax)
         {
             var number = int.Parse(password);
 
@@ -462,7 +501,7 @@ namespace AdventOfCodeShared.Services
             return result;
         }
 
-        public static bool MeetsCriteriaUpdated(string password, int criteriaMax, int criteriaMin)
+        public static bool MeetsCriteriaUpdated(string password, int criteriaMin, int criteriaMax)
         {
             var number = int.Parse(password);
 
@@ -559,6 +598,95 @@ namespace AdventOfCodeShared.Services
         private static int DepthFirstTraverse(Dictionary<string, ObjectNode> allObjects)
         {
             return 0;
+        }
+
+        public static long FindMaxSignal(Computer[] amplifiers, string amplifierControllerSoftware, int[] phaseSettingSequence)
+        {
+            //Try every combination of phase settings on the amplifiers.
+            var maxSignal = long.MinValue;
+
+            var permutations = new List<int[]>();
+            Helpers.FindPermutations(phaseSettingSequence, permutations);
+            foreach (var permute in permutations)
+            {
+                long lastOutputSignal = 0;
+                maxSignal = RunProgramThroughAmplifiers(amplifiers, permute, maxSignal, ref lastOutputSignal, amplifierControllerSoftware);
+            }
+            return maxSignal;
+        }
+
+        public static long RunProgramThroughAmplifiers(Computer[] amplifiers, int[] amplifierInput, long maxSignal, ref long lastOutputSignal, string amplifierControllerSoftware)
+        {
+            for (var i = 0; i < amplifiers.Length; i++)
+            {
+                amplifiers[i] = new Computer(amplifierControllerSoftware);
+                amplifiers[i].RunIntCodeProgram(new Stack<long>(new List<long>() { lastOutputSignal, amplifierInput[i] }));
+                lastOutputSignal = amplifiers[i].DiagnosticOutput[0];
+                maxSignal = Math.Max(maxSignal, lastOutputSignal);
+            }
+            return maxSignal;
+        }
+
+        private static void PrintImage(List<char> result, int width)
+        {
+            for (var i = 0; i < result.Count; i++)
+            {
+                Console.Write(result[i] == '0' ? ' ' : '*');
+                if (i != 0 && i % width == 0)
+                {
+                    Console.Write(Environment.NewLine);
+                }
+            }
+        }
+
+        //Break up the string into chunks of widthxheight chunks
+        public static List<string> SeparateIntoLayers(string message, int layerSize)
+        {
+            var layers = new List<string>();
+            for (var i = 0; i < message.Length; i += layerSize)
+            {
+                layers.Add(message.Substring(i, layerSize));
+            }
+            return layers;
+        }
+
+        private enum PixelColour
+        {
+            Black = 0,
+            White = 1,
+            Transparent = 2
+        }
+
+        public static List<char> ConvertToImage(List<string> layers, int layerSize)
+        {
+            //The image is rendered by stacking the layers and aligning the pixels with the same positions in each layer.
+            //The digits indicate the color of the corresponding pixel: 0 is black, 1 is white, and 2 is transparent.
+            //The layers are rendered with the first layer in front and the last layer in back.
+            //So, if a given position has a transparent pixel in the first and second layers,
+            //a black pixel in the third layer,
+            //and a white pixel in the fourth layer,
+            //the final image would have a black pixel at that position.
+            var finalMessage = layers[0].ToList();
+
+            var otherLayers = layers.Skip(1);
+
+            for (var i = 0; i < layerSize; i++)
+            {
+                foreach (var layer in otherLayers)
+                {
+                    if ((PixelColour)int.Parse(finalMessage[i].ToString()) != PixelColour.Transparent)
+                    {
+                        break;
+                    }
+                    // If we can see through to the next layer, continue
+                    if ((PixelColour)int.Parse(layer[i].ToString()) != PixelColour.Transparent)
+                    {
+                        finalMessage[i] = layer[i];
+                    }
+                }
+            }
+
+            return finalMessage.Where(x => x != 2).ToList();
         }
 
     }
