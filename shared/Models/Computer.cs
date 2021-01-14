@@ -61,7 +61,7 @@ namespace AdventOfCodeShared.Models
             RelativeMode = '2'
         };
 
-        public long[] Memory { get; set; }
+        public long[] Memory { get; set; } = new long[] { };
         public long Output => Memory[0];
         public List<long> DiagnosticOutput { get; set; } = new List<long>();
 
@@ -92,7 +92,7 @@ namespace AdventOfCodeShared.Models
                 i++;
             }
             // Shrink array to the used portion
-            return Helpers.ResizeArray(intCodeProgram, i-1);
+            return Helpers.ResizeArray(intCodeProgram, i - 1);
         }
 
         public void SetInputs(long noun, long verb)
@@ -104,7 +104,7 @@ namespace AdventOfCodeShared.Models
             }
         }
 
-        public void RunIntCodeProgram(Stack<long> programInput = null)
+        public void RunIntCodeProgram(Stack<long>? programInput = null)
         {
             DiagnosticOutput.Clear();
             long instructionPointer = 0;
