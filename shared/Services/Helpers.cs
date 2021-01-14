@@ -97,5 +97,27 @@ namespace AdventOfCodeShared.Services
             }
             return newArray;
         }
+
+        public static int WhichFloorDoWeEndUpOn(string s)
+        {
+            return s.Count(x=>x.Equals('(')) - s.Count(x=>x.Equals(')'));
+        }
+        public static int WhichPositionMovesUsToBasement(string s)
+        {
+            int position = 1;
+            int currentFloor = 0;
+            foreach(var c in s){
+                if (c.Equals('(')){
+                    currentFloor += 1;
+                }
+                else if (c.Equals(')')){
+                    currentFloor -= 1;
+                }
+
+                if (currentFloor == -1) return position;
+                position++;
+            }
+            return -1;
+        }
     }
 }
