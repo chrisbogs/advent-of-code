@@ -583,29 +583,29 @@ namespace tests
         {
             var sut = new YearController(new InputRetriever());
 
-            Assert.Equal("3346639", sut.Router(2019,1,1));
-            Assert.Equal("5017110", sut.Router(2019,1,2));
+            Assert.Equal("3305041", sut.Router(2019,1,1));
+            Assert.Equal("4954710", sut.Router(2019,1,2));
 
-            Assert.Equal("3760627", sut.Router(2019,2,1));
-            Assert.Equal("7195", sut.Router(2019,2,2));
+            Assert.Equal("5482655", sut.Router(2019,2,1));
+            Assert.Equal("4967", sut.Router(2019,2,2));
 
-            Assert.Equal("1064", sut.Router(2019,3,1));
-            Assert.Equal("25676", sut.Router(2019,3,2));
+            Assert.Equal("865", sut.Router(2019,3,1));
+            Assert.Equal("35038", sut.Router(2019,3,2));
 
-            Assert.Equal("1665", sut.Router(2019,4,1));
-            Assert.Equal("1131", sut.Router(2019,4,2));
+            Assert.Equal("889", sut.Router(2019,4,1));
+            Assert.Equal("589", sut.Router(2019,4,2));
 
-            Assert.Equal("0,0,0,0,0,0,0,0,0,9961446", string.Join(',', sut.Router(2019,5,1)));
-            Assert.Equal("742621", sut.Router(2019,5,2));
+            Assert.Equal("0,0,0,0,0,0,0,0,0,4887191", string.Join(',', sut.Router(2019,5,1)));
+            Assert.Equal("3419022", sut.Router(2019,5,2));
 
-            //Assert.Equal(, sut.Router(2019,6,1))
+            // Assert.Equal("0", sut.Router(2019,6,1));
 
-            Assert.Equal("21760", sut.Router(2019,7,1));
-            //Assert.Equal(, sut.Router(2019,7,2));
+            Assert.Equal("440880", sut.Router(2019,7,1));
+            // Assert.Equal(, sut.Router(2019,7,2));
 
-            Assert.Equal("2684", sut.Router(2019,8,1));
-            Assert.Equal("3533056970", sut.Router(2019,9,1));
-            Assert.Equal("72852", sut.Router(2019,9,2));
+            Assert.Equal("2193", sut.Router(2019,8,1));
+            Assert.Equal("3512778005", sut.Router(2019,9,1));
+            Assert.Equal("35920", sut.Router(2019,9,2));
 
         }
     }
