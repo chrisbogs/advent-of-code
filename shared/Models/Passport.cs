@@ -159,7 +159,7 @@ namespace AdventOfCodeShared.Models
                 if ((uom == UnitOfMeasure.Centimetre && val >= 150 && val <= 193)
                     || (uom == UnitOfMeasure.Inch && val >= 59 && val <= 76))
                 {
-                    return Tuple.Create(val, uom);
+                    return Tuple.Create<int?, string?>(val, uom);
                 }
             }
             return Tuple.Create<int?, string?>(null, null);

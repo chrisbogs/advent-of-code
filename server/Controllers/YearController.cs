@@ -1,11 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Threading.Tasks;
-using AdventOfCodeShared.Extensions;
-using AdventOfCodeShared.Models;
 using AdventOfCodeShared.Services;
 using Microsoft.AspNetCore.Mvc;
 namespace Server
@@ -21,101 +13,306 @@ namespace Server
             this.inputRetriever = inputRetriever;
         }
 
-        [HttpGet("{year:int}/1/1")]
-        public int Day1Part1(int year)
+        [HttpGet("{year:int}/{day:int}/{part:int}")]
+        public string Router(int year, int day, int part)
         {
-            var input = this.inputRetriever.GetInput(year, 1).Result;
-            var numbers = input.ParseInts();
-            return Helpers.Get2NumbersThatSumUpTo(numbers);
-        }
-        [HttpGet("{year:int}/1/2")]
-        public int Day1Part2(int year)
-        {
-            var input = this.inputRetriever.GetInput(year, 1).Result;
-            var numbers = input.ParseInts();
-            return Helpers.Get3NumbersThatSumUpTo(numbers);
-        }
-
-        [HttpGet("{year:int}/2/1")]
-        public int Day2Part1(int year)
-        {
-            var input = this.inputRetriever.GetInput(year, 2).Result;
-            var passwordsWithRules = input.ParsePasswords();
-            return passwordsWithRules.Count(x => x.IsValidv1());
-        }
-        [HttpGet("{year:int}/2/2")]
-        public int Day2Part2(int year)
-        {
-            var input = this.inputRetriever.GetInput(year, 2).Result;
-            var passwordsWithRules = input.ParsePasswords();
-            return passwordsWithRules.Count(x => x.IsValidv2());
-        }
-        [HttpGet("{year:int}/3/1")]
-        public long Day3Part1(int year)
-        {
-            var input = this.inputRetriever.GetInput(year, 3).Result;
-            var map = new Map(input);
-            return map.TraverseAndCountTrees(new Toboggan() { Right = 3, Down = 1 });
-        }
-
-        [HttpGet("{year:int}/3/2")]
-        public long Day3Part2(int year)
-        {
-            var input = this.inputRetriever.GetInput(year, 3).Result;
-            // calculate how many tree would be hit for all slopes and return the product of those.
-            var map = new Map(input);
-            return new List<Toboggan>(){
-                new Toboggan(){Right=1, Down=1},
-                new Toboggan(){Right=3, Down=1},
-                new Toboggan(){Right=5, Down=1},
-                new Toboggan(){Right=7, Down=1},
-                new Toboggan(){Right=1, Down=2}
+            var input = this.inputRetriever.GetInput(year, day).Result;
+            switch (year)
+            {
+                case 2020:
+                    switch (day)
+                    {
+                        case 1:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyTwenty.Day1Part1(input).ToString();
+                                case 2:
+                                    return TwentyTwenty.Day1Part2(input).ToString();
+                            }
+                            break;
+                        case 2:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyTwenty.Day2Part1(input).ToString();
+                                case 2:
+                                    return TwentyTwenty.Day2Part2(input).ToString();
+                            }
+                            break;
+                        case 3:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyTwenty.Day3Part1(input).ToString();
+                                case 2:
+                                    return TwentyTwenty.Day3Part2(input).ToString();
+                            }
+                            break;
+                        case 4:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyTwenty.Day4Part1(input).ToString();
+                                case 2:
+                                    return TwentyTwenty.Day4Part2(input).ToString();
+                            }
+                            break;
+                        case 5:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyTwenty.Day5Part1(input).ToString();
+                                case 2:
+                                    return TwentyTwenty.Day5Part2(input).ToString();
+                            }
+                            break;
+                        case 6:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyTwenty.Day6Part1(input).ToString();
+                                case 2:
+                                    return TwentyTwenty.Day6Part2(input).ToString();
+                            }
+                            break;
+                    }
+                    break;
+                case 2019:
+                    switch (day)
+                    {
+                        case 1:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day1Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day1Part2(input).ToString();
+                            }
+                            break;
+                        case 2:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day2Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day2Part2(input).ToString();
+                            }
+                            break;
+                        case 3:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day3Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day3Part2(input).ToString();
+                            }
+                            break;
+                        case 4:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day4Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day4Part2(input).ToString();
+                            }
+                            break;
+                        case 5:
+                            switch (part)
+                            {
+                                case 1:
+                                    return string.Join(',', TwentyNineteen.Day5Part1(input));
+                                case 2:
+                                    return TwentyNineteen.Day5Part2(input)[0].ToString();
+                            }
+                            break;
+                        case 6:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day6Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day6Part2(input).ToString();
+                            }
+                            break;
+                            case 7:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day7Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day7Part2(input).ToString();
+                            }
+                            break;
+                            case 8:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day8Part1(input).ToString();
+                                case 2:
+                                    TwentyNineteen.Day8Part2(input); return "";
+                            }
+                            break;
+                            case 9:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day9Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day9Part2(input).ToString();
+                            }
+                            break;
+                            case 10:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day10Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day10Part2(input).ToString();
+                            }
+                            break;
+                            case 11:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day11Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day11Part2(input).ToString();
+                            }
+                            break;
+                            case 12:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day12Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day12Part2(input).ToString();
+                            }
+                            break;
+                            case 13:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day13Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day13Part2(input).ToString();
+                            }
+                            break;
+                            case 14:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day14Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day14Part2(input).ToString();
+                            }
+                            break;
+                            case 15:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day15Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day15Part2(input).ToString();
+                            }
+                            break;
+                            case 16:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day16Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day16Part2(input).ToString();
+                            }
+                            break;
+                            case 17:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day17Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day17Part2(input).ToString();
+                            }
+                            break;
+                            case 18:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day18Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day18Part2(input).ToString();
+                            }
+                            break;
+                            case 19:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day19Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day19Part2(input).ToString();
+                            }
+                            break;
+                            case 20:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day20Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day20Part2(input).ToString();
+                            }
+                            break;
+                            case 21:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day21Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day21Part2(input).ToString();
+                            }
+                            break;
+                            case 22:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day22Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day22Part2(input).ToString();
+                            }
+                            break;
+                            case 23:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day23Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day23Part2(input).ToString();
+                            }
+                            break;
+                            case 24:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day24Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day24Part2(input).ToString();
+                            }
+                            break;
+                            case 25:
+                            switch (part)
+                            {
+                                case 1:
+                                    return TwentyNineteen.Day25Part1(input).ToString();
+                                case 2:
+                                    return TwentyNineteen.Day25Part2(input).ToString();
+                            }
+                            break;
+                    }
+                    break;
             }
-            .Select(s => map.TraverseAndCountTrees(s))
-            .Aggregate((a, b) => a * b);
+            return "invalid parameters";
         }
 
-        [HttpGet("{year:int}/4/1")]
-        public int Day4Part1(int year)
-        {
-            var input = this.inputRetriever.GetInput(year, 4).Result;
-            return Passport.ParsePassports(input).Count(x=>x.IsValid);
-        }
 
-        [HttpGet("{year:int}/4/2")]
-        public int Day4Part2(int year)
-        {
-            var input = this.inputRetriever.GetInput(year, 4).Result;
-            return Passport.ParsePassports(input).Count(x=>x.IsValid);
-        }
-
-        [HttpGet("{year:int}/5/1")]
-        public long Day5Part1(int year)
-        {
-            var input = this.inputRetriever.GetInput(year, 5).Result;
-            return input.Select(x=>new BoardingPass(x)).Max(m=>m.SeatId);
-        }
-        [HttpGet("{year:int}/5/2")]
-        public int Day5Part2(int year)
-        {
-            var input = this.inputRetriever.GetInput(year, 5).Result;
-            var seatIds = input.Select(x=>new BoardingPass(x).SeatId).OrderBy(x=>x);
-            var missingSeatIds = Enumerable.Range((int)seatIds.First(), (int)seatIds.Last()).Where(w=>!seatIds.Contains(w));
-            return missingSeatIds.Where(w=>seatIds.Contains(w+1) && seatIds.Contains(w-1)).FirstOrDefault();
-        }
-
-        [HttpGet("{year:int}/6/1")]
-        public int Day6Part1(int year)
-        {
-            var input = this.inputRetriever.GetInput(year, 6).Result;
-            return CustomsForm.Parse(input).Sum(x=>x.UniqueAnswers);
-        }
-        [HttpGet("{year:int}/6/2")]
-        public int Day6Part2(int year)
-        {
-            var input = this.inputRetriever.GetInput(year, 6).Result;
-            return CustomsForm.Parse(input).Sum(x=>x.CommonAnswers);
-        }
 
     }
 }
