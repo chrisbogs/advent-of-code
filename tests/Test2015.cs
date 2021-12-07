@@ -67,6 +67,12 @@ namespace tests
         [Fact]
         public void TestDay4()
         {
+            Assert.Equal(2, TwentyFifteen.Day4Part1(new string[] { ">" }));
+            var sut = new YearController(new InputRetriever());
+
+            Assert.Equal("2081", sut.Router(2015, 4, 1));
+            Assert.Equal(3, TwentyFifteen.Day4Part2(new string[] { "^v" }));
+            Assert.Equal("2341", sut.Router(2015, 4, 2));
 
         }
 
