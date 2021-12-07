@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -26,7 +27,8 @@ namespace AdventOfCodeShared.Services
 
         public async Task<string[]> GetInput(int year, int day)
         {
-            var filePath = $"../shared/PuzzleInput/{year}/{day}.txt";
+            var filePath = Path.GetFullPath($"..\\shared\\PuzzleInput\\{year}\\{day}.txt");  
+
             try
             {
                 return await filePath.ReadFile();
