@@ -19,6 +19,13 @@ namespace Server
             var input = this.inputRetriever.GetInput(year, day).Result;
             switch (year)
             {
+                case 2021:
+                    switch (day)
+                    {
+                        case 5:
+                            return TwentyTwentyOne.Day5Part1(input).ToString();
+                    }
+                    break;
                 case 2020:
                     switch (day)
                     {
