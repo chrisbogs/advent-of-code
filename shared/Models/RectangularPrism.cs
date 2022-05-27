@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,7 +20,7 @@ namespace AdventOfCodeShared.Models
                 .Take(2);
 
         public int SurfaceArea => 2 * length * width + 2 * width * height + 2 * height * length;
-        
+
         public int AreaOfSmallestSide => TwoSmallestSides.Aggregate(1, (x, y) => x * y);
 
         public int Volume => length * width * height;

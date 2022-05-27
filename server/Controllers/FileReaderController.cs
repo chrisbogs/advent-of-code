@@ -13,7 +13,7 @@ namespace Server.Controllers
         {
             this.inputRetriever = inputRetriever;
         }
-        
+
         [HttpGet("{year:int}/{day:int}")]
         public Task<string[]> PuzzleInput(int year, int day)
         {

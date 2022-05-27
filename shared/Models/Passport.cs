@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace AdventOfCodeShared.Models
@@ -12,9 +11,9 @@ namespace AdventOfCodeShared.Models
         public int? IssueYear { get; set; }
         public int? ExpirationYear { get; set; }
         public int? Height { get; set; }
-        public string? HeightUnitOfMeasure { get; set; }
-        public string? HairColor { get; set; }
-        public string? EyeColor { get; set; }
+        public string HeightUnitOfMeasure { get; set; }
+        public string HairColor { get; set; }
+        public string EyeColor { get; set; }
         public long? PassportId { get; set; }
         public long? CountryId { get; set; }
 
@@ -148,23 +147,23 @@ namespace AdventOfCodeShared.Models
             }
             return null;
         }
-        public static Tuple<int?, string?> ValidateHeight(string s)
+        public static Tuple<int?, string> ValidateHeight(string s)
         {
             // format xxxcm or xxxin
             if (Regex.IsMatch(s, @"^\d+(cm|in)$"))
             {
-                string? uom = s.Substring(s.Length - 2);
+                string uom = s.Substring(s.Length - 2);
                 var hgt = s.Substring(0, s.Length - 2);
                 int? val = int.Parse(hgt);
                 if ((uom == UnitOfMeasure.Centimetre && val >= 150 && val <= 193)
                     || (uom == UnitOfMeasure.Inch && val >= 59 && val <= 76))
                 {
-                    return Tuple.Create<int?, string?>(val, uom);
+                    return Tuple.Create<int?, string>(val, uom);
                 }
             }
-            return Tuple.Create<int?, string?>(null, null);
+            return Tuple.Create<int?, string>(null, null);
         }
-        public static string? ValidateHairColor(string s)
+        public static string ValidateHairColor(string s)
         {
             if (Regex.IsMatch(s, @"#[0123456789abcdef]{6}"))
             {
@@ -172,9 +171,9 @@ namespace AdventOfCodeShared.Models
             }
             return null;
         }
-        public static string? ValidateEyeColor(string s)
+        public static string ValidateEyeColor(string s)
         {
-            return EyeColors.Contains(s) ? s: null;
+            return EyeColors.Contains(s) ? s : null;
         }
         public static long? ValidatePassportId(string s)
         {

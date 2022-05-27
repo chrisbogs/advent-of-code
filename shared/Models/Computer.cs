@@ -1,6 +1,6 @@
+using AdventOfCodeShared.Services;
 using System;
 using System.Collections.Generic;
-using AdventOfCodeShared.Services;
 
 namespace AdventOfCodeShared.Models
 {
@@ -104,7 +104,7 @@ namespace AdventOfCodeShared.Models
             }
         }
 
-        public void RunIntCodeProgram(Stack<long>? programInput = null)
+        public void RunIntCodeProgram(Stack<long> programInput = null)
         {
             DiagnosticOutput.Clear();
             long instructionPointer = 0;

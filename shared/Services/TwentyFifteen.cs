@@ -1,11 +1,7 @@
-using System;
+using adventOfCodeShared.Models;
+using AdventOfCodeShared.Models;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using adventOfCodeShared.Models;
-using AdventOfCodeShared.Extensions;
-using AdventOfCodeShared.Models;
-using AdventOfCodeShared.Services;
 
 namespace AdventOfCodeShared.Services
 {
@@ -23,7 +19,8 @@ namespace AdventOfCodeShared.Services
         public static int Day2Part1(string[] input)
         {
             var total = 0;
-            foreach(var line in input){
+            foreach (var line in input)
+            {
                 var s = line.Split('x');
                 var rp = new RectangularPrism(int.Parse(s[0].ToString()), int.Parse(s[1].ToString()), int.Parse(s[2].ToString()));
                 total += rp.SurfaceArea + rp.AreaOfSmallestSide;
@@ -45,9 +42,9 @@ namespace AdventOfCodeShared.Services
         {
             //keep track of visited coordinates
             var currentLocation = new Point(0, 0);
-            var visited = new HashSet<Point>() { currentLocation};
+            var visited = new HashSet<Point>() { currentLocation };
             //assume one line
-            foreach(var move in input[0])
+            foreach (var move in input[0])
             {
                 switch (move)
                 {
@@ -80,7 +77,7 @@ namespace AdventOfCodeShared.Services
 
             var robotDirections = new List<char>();
             var santaDirections = new List<char>();
-            for(int i = 0; i < input[0].Length; i++)
+            for (int i = 0; i < input[0].Length; i++)
             {
                 if (i % 2 == 0)
                 {

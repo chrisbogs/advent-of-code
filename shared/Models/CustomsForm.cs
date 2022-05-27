@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace AdventOfCodeShared.Models
 {
@@ -15,7 +13,7 @@ namespace AdventOfCodeShared.Models
             get
             {
                 var uniqueAnswers = answers.SelectMany(x => x).Distinct();
-                return uniqueAnswers.Where(x=>answers.All(a=>a.Contains(x))).Count();
+                return uniqueAnswers.Where(x => answers.All(a => a.Contains(x))).Count();
             }
         }
         public CustomsForm()

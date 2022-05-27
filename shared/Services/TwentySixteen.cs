@@ -1,9 +1,8 @@
+using AdventOfCodeShared.Models;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using AdventOfCodeShared.Extensions;
-using AdventOfCodeShared.Models;
 
 namespace AdventOfCodeShared.Services
 {
