@@ -1,13 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Globalization;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using AdventOfCodeShared;
-using AdventOfCodeShared.Extensions;
 
 namespace AdventOfCodeShared.Services
 {
@@ -100,17 +93,20 @@ namespace AdventOfCodeShared.Services
 
         public static int WhichFloorDoWeEndUpOn(string s)
         {
-            return s.Count(x=>x.Equals('(')) - s.Count(x=>x.Equals(')'));
+            return s.Count(x => x.Equals('(')) - s.Count(x => x.Equals(')'));
         }
         public static int WhichPositionMovesUsToBasement(string s)
         {
             int position = 1;
             int currentFloor = 0;
-            foreach(var c in s){
-                if (c.Equals('(')){
+            foreach (var c in s)
+            {
+                if (c.Equals('('))
+                {
                     currentFloor += 1;
                 }
-                else if (c.Equals(')')){
+                else if (c.Equals(')'))
+                {
                     currentFloor -= 1;
                 }
 

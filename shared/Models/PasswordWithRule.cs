@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-
 namespace AdventOfCodeShared.Models
 {
     public class PasswordWithRule
@@ -37,8 +34,8 @@ namespace AdventOfCodeShared.Models
         // How many passwords are valid according to the new interpretation of the policies?
         public bool IsValidv2()
         {
-            var firstIndex = First-1;
-            var secondIndex = Second-1;
+            var firstIndex = First - 1;
+            var secondIndex = Second - 1;
             return Password.Length >= Second && Password[firstIndex] == Character && Password[secondIndex] != Character
             || Password[firstIndex] != Character && Password[secondIndex] == Character;
         }

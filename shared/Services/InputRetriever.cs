@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
 using AdventOfCodeShared.Extensions;
+using System;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace AdventOfCodeShared.Services
 {
@@ -20,14 +15,14 @@ namespace AdventOfCodeShared.Services
     {
         private readonly HttpClient _http;
 
-        public InputRetriever(HttpClient? http = null)
+        public InputRetriever(HttpClient http = null)
         {
             _http = http ?? new HttpClient();
         }
 
         public async Task<string[]> GetInput(int year, int day)
         {
-            var filePath = Path.GetFullPath($"..\\shared\\PuzzleInput\\{year}\\{day}.txt");  
+            var filePath = Path.GetFullPath($"..\\shared\\PuzzleInput\\{year}\\{day}.txt");
 
             try
             {

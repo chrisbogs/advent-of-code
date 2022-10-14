@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace AdventOfCodeShared.Models
 {
@@ -23,7 +22,7 @@ namespace AdventOfCodeShared.Models
 
         private int ConvertSpecifier(IEnumerable<char> s, int max, char lower, char higher)
         {
-            int top = max-1;
+            int top = max - 1;
             int bottom = 0;
             foreach (var c in s)
             {

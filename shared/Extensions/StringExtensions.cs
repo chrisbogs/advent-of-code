@@ -1,8 +1,7 @@
-using System;
+using AdventOfCodeShared.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AdventOfCodeShared.Models;
 
 namespace AdventOfCodeShared.Extensions
 {
@@ -25,7 +24,7 @@ namespace AdventOfCodeShared.Extensions
             // The password policy indicates the lowest and highest number of times a given letter must appear for the password to be valid.
             // For example, 1-3 a means that the password must contain a at least 1 time and at most 3 times.
             var result = new List<PasswordWithRule>();
-            foreach(var line in s)
+            foreach (var line in s)
             {
                 var parts = line.Split(':');
                 var policy = parts[0];
