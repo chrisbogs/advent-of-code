@@ -170,7 +170,7 @@ namespace AdventOfCodeShared.Services
         {
             //What message is produced after decoding your image?
             var result = ConvertToImage(SeparateIntoLayers(input[0], 25 * 6), 25 * 6);
-            PrintImage(result, 25);
+            // PrintImage(result, 25);
         }
 
         public static long Day9Part1(string[] input)
