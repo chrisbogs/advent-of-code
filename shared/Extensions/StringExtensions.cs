@@ -1,4 +1,5 @@
 using AdventOfCodeShared.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,5 +41,12 @@ namespace AdventOfCodeShared.Extensions
             return result.AsEnumerable();
         }
 
+        public static string FlipBitString(this string bitString)
+        {
+            return new string(
+                bitString
+                .Select(c => c == '0' ? '1' : '0')
+                .ToArray());
+        }
     }
 }
