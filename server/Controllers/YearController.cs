@@ -62,16 +62,16 @@ namespace Server
                             1 => TwentyTwentyOne.Day8Part1(input).ToString(),
                             2 => TwentyTwentyOne.Day8Part2(input).ToString()
                         },
-                        //9 => part switch
-                        //{
-                        //    1 => TwentyTwentyOne.Day1Part1(input).ToString(),
-                        //    2 => TwentyTwentyOne.Day1Part2(input).ToString()
-                        //},
-                        //10 => part switch
-                        //{
-                        //    1 => TwentyTwentyOne.Day1Part1(input).ToString(),
-                        //    2 => TwentyTwentyOne.Day1Part2(input).ToString()
-                        //},
+                        9 => part switch
+                        {
+                            1 => TwentyTwentyOne.Day9Part1(input).ToString(),
+                            2 => TwentyTwentyOne.Day9Part2(input).ToString()
+                        },
+                        10 => part switch
+                        {
+                            1 => TwentyTwentyOne.Day10Part1(input).ToString(),
+                            2 => TwentyTwentyOne.Day10Part2(input).ToString()
+                        },
                         //11 => part switch
                         //{
                         //    1 => TwentyTwentyOne.Day1Part1(input).ToString(),

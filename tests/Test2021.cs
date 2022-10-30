@@ -202,23 +202,49 @@ namespace tests
         {
             var sut = new YearController(new InputRetriever());
             Assert.Equal("330", sut.Router(2021, 8, 1));
-            //Assert.Equal("1010472", sut.Router(2021, 8, 2));
+            Assert.Equal("1010472", sut.Router(2021, 8, 2));
         }
 
-        // [Fact]
-        // public void Day9()
-        // {
-        //     var sut = new YearController(new InputRetriever());
-        //     Assert.Equal("548", sut.Router(2021, 9, 1));
-        //     Assert.Equal("786048", sut.Router(2021, 9, 2));
-        // }
+        [Fact]
+        public void Day9()
+        {
+            var input = new string[]{
+                "2199943210",
+                "3987894921",
+                "9856789892",
+                "8767896789",
+                "9899965678"
+            };
+            Assert.Equal(15, TwentyTwentyOne.Day9Part1(input));
+            Assert.Equal(1134, TwentyTwentyOne.Day9Part2(input));
 
-        // [Fact]
-        // public void Day10()
-        // {
-        //     var sut = new YearController(new InputRetriever());
-        //     Assert.Equal("268845", sut.Router(2021, 10, 1));
-        //     Assert.Equal("4038824534", sut.Router(2021, 10, 2));
-        // }
+            var sut = new YearController(new InputRetriever());
+            Assert.Equal("548", sut.Router(2021, 9, 1));
+            Assert.Equal("786048", sut.Router(2021, 9, 2));
+        }
+        [Fact]
+        public void Day9FindBasins()
+        {
+            var basins = new Grid(new string[] {
+              "2199943210",
+              "3987894921",
+              "9856789892",
+              "8767896789",
+              "9899965678" })
+            .FindBasins();
+
+            Assert.Equal(new int[] { 5, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8 }, basins[0]);
+            Assert.Equal(new int[] { 0, 1, 1, 2, 2, 2, 3, 4, 4 }, basins[1]);
+            Assert.Equal(new int[] { 5, 6, 6, 6, 7, 7, 8, 8, 8 }, basins[2]);
+            Assert.Equal(new int[] { 1, 2, 3 }, basins[3]);
+        }
+
+        [Fact]
+        public void Day10()
+        {
+            var sut = new YearController(new InputRetriever());
+            Assert.Equal("268845", sut.Router(2021, 10, 1));
+            Assert.Equal("4038824534", sut.Router(2021, 10, 2));
+        }
     }
 }
