@@ -1,10 +1,7 @@
-using AdventOfCodeShared.Extensions;
 using AdventOfCodeShared.Models;
 using AdventOfCodeShared.Services;
 using Server;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace tests
@@ -245,6 +242,62 @@ namespace tests
             var sut = new YearController(new InputRetriever());
             Assert.Equal("268845", sut.Router(2021, 10, 1));
             Assert.Equal("4038824534", sut.Router(2021, 10, 2));
+        }
+        [Fact]
+        public void TestDay10()
+        {
+            var input = new string[]{"[({(<(())[]>[[{[]{<()<>>",
+              "[(()[<>])]({[<{<<[]>>(",
+              "{([(<{}[<>[]}>{[]{[(<()>",
+              "(((({<>}<{<{<>}{[]{[]{}",
+              "[[<[([]))<([[{}[[()]]]",
+              "[{[{({}]{}}([{[{{{}}([]",
+              "{<[[]]>}<{[{[{[]{()[[[]",
+              "[<(<(<(<{}))><([]([]()",
+              "<{([([[(<>()){}]>(<<{{",
+              "<{([{{}}[<[[[<>{}]]]>[]]" };
+            Assert.Equal(26397, TwentyTwentyOne.Day10Part1(input));
+            Assert.Equal(26397, TwentyTwentyOne.Day10Part1(input));
+        }
+
+        [Theory]
+        [InlineData("()")]
+        [InlineData("[]")]
+        [InlineData("{}")]
+        [InlineData("<>")]
+        [InlineData("([])")]
+        [InlineData("{()()()}")]
+        [InlineData("<([{}])>")]
+        [InlineData("[<>({}){}[([])<>]]")]
+        [InlineData("(((((((((())))))))))")]
+        public void TestValidParsings(string input)
+        {
+            var parser = new SyntaxParser(new string[] { "(", "[", "{", "<" }, new string[] { ")", "]", "}", ">" }, new int[] { 3, 57, 1197, 25137 });
+
+            Assert.Equal("", parser.Validate(input));
+        }
+        [Theory]
+        [InlineData("(]", "Expected ), but found ] instead.")]
+        [InlineData("{()()()>", "Expected }, but found > instead.")] 
+        [InlineData("(((()))}", "Expected ), but found } instead.")] 
+        [InlineData("<([]){()}[{}])", "Expected >, but found ) instead.")] 
+        [InlineData("{([(<{}[<>[]}>{[]{[(<()>", "Expected ], but found } instead.")] 
+        [InlineData("[[<[([]))<([[{}[[()]]]", "Expected ], but found ) instead.")] 
+        [InlineData("[{[{({}]{}}([{[{{{}}([]", "Expected ), but found ] instead.")] 
+        [InlineData("[<(<(<(<{}))><([]([]()", "Expected >, but found ) instead.")] 
+        [InlineData("<{([([[(<>()){}]>(<<{{", "Expected ], but found > instead.")] 
+        [InlineData("[({(<(())[]>[[{[]{<()<>>", "}}]])})]")]
+        [InlineData("[(()[<>])]({[<{<<[]>>(", ")}>]})")]
+        [InlineData("(((({<>}<{<{<>}{[]{[]{}", "}}>}>))))")]
+        [InlineData("{<[[]]>}<{[{[{[]{()[[[]", "]]}}]}]}>")]
+        [InlineData("<{([{{}}[<[[[<>{}]]]>[]]", "])}>")]
+        public void TestInvalidParsings(string input, string expected)
+        {
+            var parser = new SyntaxParser(new string[] { "(", "[", "{", "<" },
+                new string[] { ")", "]", "}", ">" }, 
+                new int[] { 1, 2, 3, 4 });
+            var result = parser.Validate(input);
+            Assert.Equal(expected, result);
         }
     }
 }

@@ -309,16 +309,22 @@ namespace AdventOfCodeShared.Services
 
         public static long Day10Part1(string[] input)
         {
-            var heightPoints = new Grid(input);
-            var minPoints = heightPoints.FindMinPoints();
-            return minPoints.Aggregate(0, (acc, next) => acc += next + 1);
+            var parser = new SyntaxParser(
+                new string[] { "(", "[", "{", "<" },
+                new string[] { ")", "]", "}", ">" },
+                new int[] { 3, 57, 1197, 25137 });
+
+            parser.ValidateLines(input);
+            return parser.GetInvalidTokensScore();
         }
         public static long Day10Part2(string[] input)
         {
-            var heightPoints = new Grid(input);
-            var basins = heightPoints.FindBasins();
-            var topThree = basins.Take(3).ToList();
-            return topThree.Aggregate(1, (acc, next) => acc *= next.Count);
+            var parser = new SyntaxParser(
+                new string[] { "(", "[", "{", "<" },
+                new string[] { ")", "]", "}", ">" },
+                new int[] { 1, 2, 3, 4 });
+            parser.ValidateLines(input);
+            return parser.GetAutoCompletedTokensScore();
         }
     }
 }
