@@ -166,11 +166,12 @@ namespace AdventOfCodeShared.Services
             var twoDigits = minDigits?.data?.Count(x => x == '2') ?? 0;
             return oneDigits * twoDigits;
         }
-        public static void Day8Part2(string[] input)
+        public static string Day8Part2(string[] input)
         {
             //What message is produced after decoding your image?
             var result = ConvertToImage(SeparateIntoLayers(input[0], 25 * 6), 25 * 6);
             PrintImage(result, 25);
+            return string.Empty;
         }
 
         public static long Day9Part1(string[] input)

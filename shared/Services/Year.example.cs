@@ -1,12 +1,6 @@
-using AdventOfCodeShared.Models;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-
-namespace AdventOfCodeShared.Services
+﻿namespace adventOfCodeShared.Services
 {
-    public class TwentySixteen
+    public class YearTemplate
     {
         public static long Day1Part1(string[] input)
         {
@@ -233,6 +227,5 @@ namespace AdventOfCodeShared.Services
         {
             return 0;
         }
-
     }
 }
