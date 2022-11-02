@@ -8,7 +8,7 @@ namespace Server
     [ApiController]
     public class YearController : Controller
     {
-        private IInputRetriever inputRetriever;
+        private readonly IInputRetriever inputRetriever;
         public YearController(IInputRetriever inputRetriever)
         {
             this.inputRetriever = inputRetriever;

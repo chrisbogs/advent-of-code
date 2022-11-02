@@ -14,9 +14,9 @@ namespace AdventOfCodeShared.Services
             _http = http;
         }
 
-        public async Task<T> GetResult<T>(int day, int part)
+        public async Task<T> GetResult<T>(int year, int day, int part)
         {
-            var response = await _http.GetAsync($"/Year/2020/{day}/{part}");
+            var response = await _http.GetAsync($"/Year/{year}/{day}/{part}");
             try
             {
                 return await response.Content.ReadFromJsonAsync<T>() ?? default!;
