@@ -13,7 +13,7 @@ namespace AdventOfCodeShared.Models
         private string[] InvalidTokens = Array.Empty<string>();
         private readonly Dictionary<string, int> scoreMap = new();
         private readonly Dictionary<string, string> tokenMap = new();
-        private int[] AutoCompleteTokens = Array.Empty<int>();
+        private long[] AutoCompleteTokens = Array.Empty<long>();
 
         // assume these three arrays are the same length for brevity
         public SyntaxParser(string[] openings, string[] closings, int[] scores)
@@ -30,15 +30,15 @@ namespace AdventOfCodeShared.Models
             }
         }
 
-        public int GetAutoCompletedTokensScore()
+        public long GetAutoCompletedTokensScore()
         {
             var sorted = this.AutoCompleteTokens.OrderBy(x=>x).ToList();
             return sorted[(int)Math.Floor(this.AutoCompleteTokens.Length / 2.0)];
         }
 
-        public int GetInvalidTokensScore()
+        public long GetInvalidTokensScore()
         {
-            var result = 0;
+            long result = 0;
             foreach (var x in this.InvalidTokens)
             {
                 if (scoreMap.ContainsKey(x))
@@ -83,7 +83,7 @@ namespace AdventOfCodeShared.Models
 
             if (openings.Count > 0)
             {
-                var lineScore = 0;
+                long lineScore = 0;
                 var closings = Array.Empty<string>();
                 openings.Reverse();
                 foreach (var x in openings)
@@ -108,7 +108,7 @@ namespace AdventOfCodeShared.Models
         public void ValidateLines(string[] lines)
         {
             this.InvalidTokens = Array.Empty<string>();
-            this.AutoCompleteTokens = Array.Empty<int>();
+            this.AutoCompleteTokens = Array.Empty<long>();
             foreach (var x in lines)
             {
                 this.Validate(x);
