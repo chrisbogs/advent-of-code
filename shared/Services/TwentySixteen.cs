@@ -10,7 +10,14 @@ namespace AdventOfCodeShared.Services
     {
         public static long Day1Part1(string[] input)
         {
-            return 0;
+            var directions = input[0]
+                .Split(',')
+                .Select(x => x.Trim())
+                .Select(x => Tuple.Create(x[0], long.Parse(x[1..])))
+                .ToList();
+
+            var result = Helpers.FollowPath(directions);
+            return result;
         }
         public static long Day1Part2(string[] input)
         {

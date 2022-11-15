@@ -209,5 +209,41 @@ namespace AdventOfCodeShared.Services
             }
             return diff.ToList();
         }
+
+        private enum Compass
+        {
+            North,
+            East,
+            South,
+            West
+        }
+        internal static long FollowPath(List<Tuple<char, long>> directions)
+        {
+            long xAxis = 0;
+            long yAxis = 0;
+            var currentHeading = Compass.North;
+            foreach(var (direction, distance) in directions)
+            {
+                if (direction == 'R')
+                {
+                    currentHeading = (Compass)(((int)currentHeading + 1) % 4);
+                }
+                else if (direction == 'L')
+                {
+                    currentHeading = (Compass)(((int)currentHeading - 1 + 4) % 4);
+                }
+
+                switch (currentHeading)
+                {
+                    case Compass.East: xAxis += distance; break;
+                    case Compass.North: yAxis += distance; break;
+                    case Compass.West: xAxis -= distance; break;
+                    case Compass.South: yAxis -= distance; break;
+                }
+
+            }
+
+            return Math.Abs(xAxis-0) + Math.Abs(yAxis-0);
+        }
     }
 }
