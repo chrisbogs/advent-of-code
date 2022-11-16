@@ -36,6 +36,13 @@ namespace tests
             Assert.Equal(expected, TwentySixteen.Day2Part1(input));
         }
 
+        [Theory]
+        [InlineData(new string[] { "ULL", "RRDDD", "LURDL", "UUUUD" }, "5DB3")]
+
+        public void TestDay2Part2(string[] input, string expected)
+        {
+            Assert.Equal(expected, TwentySixteen.Day2Part2(input));
+        }
         //[Fact]
         //public void TestDay3()
         //{

@@ -49,15 +49,50 @@ namespace AdventOfCodeShared.Logic
                 //var directions = groups.Select(x => Tuple.Create(x.Key, x.Count())).ToList();
                 //points.Add(Geometry.FollowPath(directions));
 
-                startingPoint = Geometry.FollowPathByMovingOneUnitAtATime(startingPoint, line.Select(x => (DPadDirection)x));
+                startingPoint = Geometry.FollowPathByMovingOneUnitAtATime(
+                    startingPoint, 
+                    line.Select(x => (DPadDirection)x),
+                    keyPadMap.Keys);
                 points.Add(startingPoint);
             }
 
             return int.Parse(string.Join("", points.Select(x => keyPadMap[x])));
         }
-        public static long Day2Part2(string[] input)
+        public static string Day2Part2(string[] input)
         {
-            return 0;
+            Dictionary<Point, char> keyPadMap = new()
+            {
+                { new Point(0,0), '5' },
+                { new Point(1,0), '6' },
+                { new Point(2,0), '7' },
+                { new Point(3,0), '8' },
+                { new Point(4,0), '9' },
+
+                { new Point(1,1), '2' },
+                { new Point(2,1), '3' },
+                { new Point(3,1), '4' },
+
+                { new Point(2,2), '1' },
+                
+                { new Point(1,-1), 'A' },
+                { new Point(2,-1), 'B' },
+                { new Point(3,-1), 'C' },
+                
+                { new Point(2,-2), 'D' }
+            };
+
+            var points = new List<Point>();
+            var startingPoint = new Point(0, 0);
+            foreach (var line in input)
+            {
+                startingPoint = Geometry.FollowPathByMovingOneUnitAtATime(
+                    startingPoint, 
+                    line.Select(x => (DPadDirection)x),
+                    keyPadMap.Keys);
+                points.Add(startingPoint);
+            }
+
+            return string.Join("", points.Select(x => keyPadMap[x]));
         }
 
         public static long Day3Part1(string[] input)

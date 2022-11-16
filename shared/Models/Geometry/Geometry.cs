@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace AdventOfCodeShared.Models.Geometry
 {
@@ -55,7 +56,10 @@ namespace AdventOfCodeShared.Models.Geometry
         /// <summary>
         /// Accepts a list of directions and returns the end coordinates.
         /// </summary>
-        public static Point FollowPathByMovingOneUnitAtATime(Point start, IEnumerable<DPadDirection> directions)
+        public static Point FollowPathByMovingOneUnitAtATime(
+            Point start, 
+            IEnumerable<DPadDirection> directions,
+            IEnumerable<Point> validPoints)
         {
             int xAxis = start.X;
             int yAxis = start.Y;
@@ -64,23 +68,25 @@ namespace AdventOfCodeShared.Models.Geometry
                 switch (direction)
                 {
                     case DPadDirection.RIGHT:
+                        if (!validPoints.Contains(new Point(xAxis + 1, yAxis))) break;
                         xAxis++;
                         break;
 
                     case DPadDirection.LEFT:
+                        if (!validPoints.Contains(new Point(xAxis - 1, yAxis))) break;
                         xAxis--;
                         break;
 
                     case DPadDirection.UP:
+                        if (!validPoints.Contains(new Point(xAxis, yAxis+1))) break;
                         yAxis++;
                         break;
 
                     case DPadDirection.DOWN:
+                        if (!validPoints.Contains(new Point(xAxis, yAxis-1))) break;
                         yAxis--;
                         break;
                 }
-                xAxis = Math.Min(Math.Max(xAxis, -1), 1);
-                yAxis = Math.Min(Math.Max(yAxis, -1), 1);
             }
             return new Point(xAxis, yAxis);
         }
