@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace AdventOfCodeShared.Services
+namespace AdventOfCodeShared.Logic
 {
-    public class TwentySixteen
+    public class TwentyEighteen
     {
         public static long Day1Part1(string[] input)
         {
@@ -233,6 +233,5 @@ namespace AdventOfCodeShared.Services
         {
             return 0;
         }
-
     }
 }

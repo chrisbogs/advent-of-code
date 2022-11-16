@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using AdventOfCodeShared.Services;
+using AdventOfCodeShared.Logic;
 
 namespace Client
 {

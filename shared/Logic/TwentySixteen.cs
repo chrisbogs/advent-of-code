@@ -1,20 +1,28 @@
+using AdventOfCodeShared.Models.Geometry;
 using AdventOfCodeShared.Models;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
-namespace AdventOfCodeShared.Services
+namespace AdventOfCodeShared.Logic
 {
-    public class TwentySeventeen
+    public class TwentySixteen
     {
         public static long Day1Part1(string[] input)
         {
-            return 0;
+            var directions = Parsing.ParseDirections(input);
+            var endPoint = Geometry.FollowPath(directions);
+
+            var result = Geometry.CalculateDistanceFromOrigin(endPoint);
+            return result;
         }
+
         public static long Day1Part2(string[] input)
         {
-            return 0;
+            var directions = Parsing.ParseDirections(input);
+            // Find first intersection point
+            var loopbackPoint = Geometry.FindFirstLoopBackInPath(directions);
+            return Geometry.CalculateDistanceFromOrigin(loopbackPoint);
         }
 
         public static long Day2Part1(string[] input)
@@ -233,5 +241,6 @@ namespace AdventOfCodeShared.Services
         {
             return 0;
         }
+
     }
 }

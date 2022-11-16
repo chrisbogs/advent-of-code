@@ -1,4 +1,4 @@
-﻿namespace adventOfCodeShared.Services
+﻿namespace AdventOfCodeShared.Logic
 {
     public class YearTemplate
     {
