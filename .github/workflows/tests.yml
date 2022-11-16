@@ -1,10 +1,9 @@
-name: CI
+name: Build and run tests
 on:
-  push:
-    branches: [ master ]
   pull_request:
+    paths:
+      - '**.cs'
     branches: [ master ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,4 +19,4 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
-      run: dotnet test --no-restore --verbosity normal /p:CollectCoverage=true
+      run: dotnet test --no-restore --verbosity normal
