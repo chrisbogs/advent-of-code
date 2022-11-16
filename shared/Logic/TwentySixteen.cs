@@ -1,8 +1,8 @@
 using AdventOfCodeShared.Models.Geometry;
-using AdventOfCodeShared.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Drawing;
+using AdventOfCodeShared.Models;
 
 namespace AdventOfCodeShared.Logic
 {
@@ -27,7 +27,33 @@ namespace AdventOfCodeShared.Logic
 
         public static long Day2Part1(string[] input)
         {
-            return 0;
+            Dictionary<Point, int> keyPadMap = new()
+            {
+                { new Point(-1,1), 1 },
+                { new Point(0,1), 2 },
+                { new Point(1,1), 3 },
+                { new Point(-1,0), 4 },
+                { new Point(0,0), 5 },
+                { new Point(1,0), 6 },
+                { new Point(-1,-1), 7 },
+                { new Point(0,-1), 8 },
+                { new Point(1,-1), 9 }
+            };
+
+            var points = new List<Point>();
+            var startingPoint = new Point(0,0);
+            foreach (var line in input)
+            {
+                //Alternative: Could optimize this by grouping letters together and using the first method
+                //var groups = line.GroupBy(x => (DPadDirection)x);
+                //var directions = groups.Select(x => Tuple.Create(x.Key, x.Count())).ToList();
+                //points.Add(Geometry.FollowPath(directions));
+
+                startingPoint = Geometry.FollowPathByMovingOneUnitAtATime(startingPoint, line.Select(x => (DPadDirection)x));
+                points.Add(startingPoint);
+            }
+
+            return int.Parse(string.Join("", points.Select(x => keyPadMap[x])));
         }
         public static long Day2Part2(string[] input)
         {

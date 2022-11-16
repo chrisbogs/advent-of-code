@@ -27,10 +27,14 @@ namespace tests
         {
             Assert.Equal(expected, TwentySixteen.Day1Part2(directions));
         }
-        //[Fact]
-        //public void TestDay2()
-        //{
-        //    }
+
+        [Theory]
+        [InlineData(new string[] { "ULL", "RRDDD", "LURDL", "UUUUD" }, 1985)]
+
+        public void TestDay2Part1(string[] input, int expected)
+        {
+            Assert.Equal(expected, TwentySixteen.Day2Part1(input));
+        }
 
         //[Fact]
         //public void TestDay3()
