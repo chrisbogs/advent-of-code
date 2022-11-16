@@ -1,5 +1,5 @@
 using AdventOfCodeShared.Models;
-using AdventOfCodeShared.Services;
+using AdventOfCodeShared.Logic;
 using Server;
 using System.Collections.Generic;
 using Xunit;

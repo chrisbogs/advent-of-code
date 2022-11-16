@@ -1,4 +1,4 @@
-﻿using AdventOfCodeShared.Services;
+﻿using AdventOfCodeShared.Logic;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

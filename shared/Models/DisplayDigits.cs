@@ -1,4 +1,4 @@
-using AdventOfCodeShared.Services;
+using AdventOfCodeShared.Logic;
 using System.Collections.Generic;
 using System.Linq;
 
