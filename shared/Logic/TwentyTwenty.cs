@@ -1,72 +1,83 @@
+using AdventOfCodeShared.Extensions;
 using AdventOfCodeShared.Models;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
-namespace AdventOfCodeShared.Services
+namespace AdventOfCodeShared.Logic
 {
-    public class TwentySixteen
+    public class TwentyTwenty
     {
-        public static long Day1Part1(string[] input)
+        public static int Day1Part1(string[] input)
         {
-            var directions = input[0]
-                .Split(',')
-                .Select(x => x.Trim())
-                .Select(x => Tuple.Create(x[0], long.Parse(x[1..])))
-                .ToList();
-
-            var result = Helpers.FollowPath(directions);
-            return result;
+            var numbers = input.ParseInts();
+            return Helpers.Get2NumbersThatSumUpTo(numbers);
         }
-        public static long Day1Part2(string[] input)
+        public static int Day1Part2(string[] input)
         {
-            return 0;
+            var numbers = input.ParseInts();
+            return Helpers.Get3NumbersThatSumUpTo(numbers);
         }
 
-        public static long Day2Part1(string[] input)
+        public static int Day2Part1(string[] input)
         {
-            return 0;
+            var passwordsWithRules = input.ParsePasswords();
+            return passwordsWithRules.Count(x => x.IsValidv1());
         }
-        public static long Day2Part2(string[] input)
+        public static int Day2Part2(string[] input)
         {
-            return 0;
+            var passwordsWithRules = input.ParsePasswords();
+            return passwordsWithRules.Count(x => x.IsValidv2());
         }
-
         public static long Day3Part1(string[] input)
         {
-            return 0;
-        }
-        public static long Day3Part2(string[] input)
-        {
-            return 0;
+            var map = new Map(input);
+            return map.TraverseAndCountTrees(new Toboggan() { Right = 3, Down = 1 });
         }
 
-        public static long Day4Part1(string[] input)
+        public static long Day3Part2(string[] input)
         {
-            return 0;
+            // calculate how many tree would be hit for all slopes and return the product of those.
+            var map = new Map(input);
+            return new List<Toboggan>(){
+                new Toboggan(){Right=1, Down=1},
+                new Toboggan(){Right=3, Down=1},
+                new Toboggan(){Right=5, Down=1},
+                new Toboggan(){Right=7, Down=1},
+                new Toboggan(){Right=1, Down=2}
+            }
+            .Select(s => map.TraverseAndCountTrees(s))
+            .Aggregate((a, b) => a * b);
         }
-        public static long Day4Part2(string[] input)
+
+        public static int Day4Part1(string[] input)
         {
-            return 0;
+            return Passport.ParsePassports(input).Count(x => x.IsValid);
+        }
+
+        public static int Day4Part2(string[] input)
+        {
+            return Passport.ParsePassports(input).Count(x => x.IsValid);
         }
 
         public static long Day5Part1(string[] input)
         {
-            return 0;
+            return input.Select(x => new BoardingPass(x)).Max(m => m.SeatId);
         }
-        public static long Day5Part2(string[] input)
+        public static int Day5Part2(string[] input)
         {
-            return 0;
+            var seatIds = input.Select(x => new BoardingPass(x).SeatId).OrderBy(x => x);
+            var missingSeatIds = Enumerable.Range((int)seatIds.First(), (int)seatIds.Last()).Where(w => !seatIds.Contains(w));
+            return missingSeatIds.Where(w => seatIds.Contains(w + 1) && seatIds.Contains(w - 1)).FirstOrDefault();
         }
 
-        public static long Day6Part1(string[] input)
+        public static int Day6Part1(string[] input)
         {
-            return 0;
+            return CustomsForm.Parse(input).Sum(x => x.UniqueAnswers);
         }
-        public static long Day6Part2(string[] input)
+        public static int Day6Part2(string[] input)
         {
-            return 0;
+            return CustomsForm.Parse(input).Sum(x => x.CommonAnswers);
         }
 
         public static long Day7Part1(string[] input)
@@ -240,6 +251,5 @@ namespace AdventOfCodeShared.Services
         {
             return 0;
         }
-
     }
 }

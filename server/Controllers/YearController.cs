@@ -1,6 +1,6 @@
-using adventOfCodeShared.Services;
-using AdventOfCodeShared.Services;
+using AdventOfCodeShared.Logic;
 using Microsoft.AspNetCore.Mvc;
+#pragma warning disable CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
 namespace Server
 {
 
@@ -1056,4 +1056,5 @@ namespace Server
             return "invalid parameters";
         }
     }
+    #pragma warning restore CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
 }

@@ -1,12 +1,9 @@
 @inject ApiService Api
 <div>
-    Day @Day
+    Day @Day<br />
+    &emsp;Part 1: @result1<br />
+    &emsp;Part 2: @result2<br />
 </div>
-
-<p>    Part 1: @result1
-    <br />
-       Part 2: @result2
-</p>
 
 @code {
     [Parameter] public int Day { get; set; } = 0;

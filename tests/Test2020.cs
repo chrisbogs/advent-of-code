@@ -1,6 +1,6 @@
 using AdventOfCodeShared.Extensions;
 using AdventOfCodeShared.Models;
-using AdventOfCodeShared.Services;
+using AdventOfCodeShared.Logic;
 using Server;
 using System;
 using System.Collections.Generic;

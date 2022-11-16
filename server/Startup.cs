@@ -1,4 +1,4 @@
-using AdventOfCodeShared.Services;
+using AdventOfCodeShared.Logic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

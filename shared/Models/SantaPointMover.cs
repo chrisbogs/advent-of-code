@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace adventOfCodeShared.Models
+namespace AdventOfCodeShared.Models
 {
     internal class SantaPointMover
     {
