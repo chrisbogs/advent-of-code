@@ -1,6 +1,8 @@
-﻿using System;
+﻿using AdventOfCodeShared.Models;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace AdventOfCodeShared.Models.Geometry
 {
@@ -24,18 +26,18 @@ namespace AdventOfCodeShared.Models.Geometry
         /// where the character is one of: "R", "L".
         /// This example will end up at coordinates: (2,3)
         /// </summary>
-        public static Point FollowPath(List<Tuple<char, int>> directions)
+        public static Point FollowPath(List<Tuple<DPadDirection, int>> directions)
         {
             int xAxis = 0;
             int yAxis = 0;
             var currentHeading = Compass.North;
             foreach (var (direction, distance) in directions)
             {
-                if (direction == 'R')
+                if (direction == DPadDirection.RIGHT)
                 {
                     currentHeading = (Compass)(((int)currentHeading + 1) % 4);
                 }
-                else if (direction == 'L')
+                else if (direction == DPadDirection.LEFT)
                 {
                     currentHeading = (Compass)(((int)currentHeading - 1 + 4) % 4);
                 }
@@ -52,11 +54,49 @@ namespace AdventOfCodeShared.Models.Geometry
         }
 
         /// <summary>
+        /// Accepts a list of directions and returns the end coordinates.
+        /// </summary>
+        public static Point FollowPathByMovingOneUnitAtATime(
+            Point start, 
+            IEnumerable<DPadDirection> directions,
+            IEnumerable<Point> validPoints)
+        {
+            int xAxis = start.X;
+            int yAxis = start.Y;
+            foreach (var direction in directions)
+            {
+                switch (direction)
+                {
+                    case DPadDirection.RIGHT:
+                        if (!validPoints.Contains(new Point(xAxis + 1, yAxis))) break;
+                        xAxis++;
+                        break;
+
+                    case DPadDirection.LEFT:
+                        if (!validPoints.Contains(new Point(xAxis - 1, yAxis))) break;
+                        xAxis--;
+                        break;
+
+                    case DPadDirection.UP:
+                        if (!validPoints.Contains(new Point(xAxis, yAxis+1))) break;
+                        yAxis++;
+                        break;
+
+                    case DPadDirection.DOWN:
+                        if (!validPoints.Contains(new Point(xAxis, yAxis-1))) break;
+                        yAxis--;
+                        break;
+                }
+            }
+            return new Point(xAxis, yAxis);
+        }
+
+        /// <summary>
         /// Given a list of directions in the format:  [("R",2), ("L", 3)]
         /// where the character is one of: R,L
         /// Returns a list of cartesian points that make up the path.
         /// </summary>
-        public static Point FindFirstLoopBackInPath(List<Tuple<char, int>> directions)
+        public static Point FindFirstLoopBackInPath(List<Tuple<DPadDirection, int>> directions)
         {
             var path = new HashSet<Point>();
             int xAxis = 0;
@@ -64,11 +104,11 @@ namespace AdventOfCodeShared.Models.Geometry
             var currentHeading = Compass.North;
             foreach (var (direction, distance) in directions)
             {
-                if (direction == 'R')
+                if ((DPadDirection)direction == DPadDirection.RIGHT)
                 {
                     currentHeading = (Compass)(((int)currentHeading + 1) % 4);
                 }
-                else if (direction == 'L')
+                else if ((DPadDirection)direction == DPadDirection.LEFT)
                 {
                     currentHeading = (Compass)(((int)currentHeading - 1 + 4) % 4);
                 }
@@ -155,25 +195,25 @@ namespace AdventOfCodeShared.Models.Geometry
             var stepCount = 0;
             foreach (var step in directions)
             {
-                var direction = step[..1];
+                var direction = (DPadDirection)char.Parse(step[..1]);
                 var distance = int.Parse(step[1..]);
                 for (var i = 1; i <= distance; i++)
                 {
                     switch (direction)
                     {
-                        case "R":
+                        case DPadDirection.RIGHT:
                             previousLocationX++;
                             break;
 
-                        case "L":
+                        case DPadDirection.LEFT:
                             previousLocationX--;
                             break;
 
-                        case "U":
+                        case DPadDirection.UP:
                             previousLocationY++;
                             break;
 
-                        case "D":
+                        case DPadDirection.DOWN:
                             previousLocationY--;
                             break;
                     }
