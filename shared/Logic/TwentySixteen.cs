@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
 using AdventOfCodeShared.Models;
+using AdventOfCodeShared.Extensions;
 
 namespace AdventOfCodeShared.Logic
 {
@@ -97,7 +98,21 @@ namespace AdventOfCodeShared.Logic
 
         public static long Day3Part1(string[] input)
         {
-            return 0;
+            var sum = 0;
+            var lengths = input.ParseMultipleIntsOnOneLine();
+            // one side has to be larger than the sum of the other 2
+            if (lengths == null) return 0;
+            foreach(var triangle in lengths)
+            {
+                var max = triangle.Max();
+                triangle.Remove(max);
+                if (max < triangle.Sum())
+                {
+                    sum++;
+                }
+            }
+
+            return sum;
         }
         public static long Day3Part2(string[] input)
         {

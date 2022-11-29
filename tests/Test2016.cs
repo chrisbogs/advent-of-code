@@ -43,10 +43,13 @@ namespace tests
         {
             Assert.Equal(expected, TwentySixteen.Day2Part2(input));
         }
-        //[Fact]
-        //public void TestDay3()
-        //{
-        //    }
+
+        [Fact]
+        public void TestDay3()
+        {
+            Assert.Equal(1, TwentySixteen.Day3Part1(new string[] { "5 10 14" }));
+            Assert.Equal(0, TwentySixteen.Day3Part1(new string[] { "5 10 25" }));
+        }
 
         //[Fact]
         //public void TestDay4()

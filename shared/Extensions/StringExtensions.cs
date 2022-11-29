@@ -2,6 +2,7 @@ using AdventOfCodeShared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AdventOfCodeShared.Extensions
@@ -13,6 +14,19 @@ namespace AdventOfCodeShared.Extensions
             return await System.IO.File.ReadAllLinesAsync(filePath);
         }
 
+        public static List<List<int>> ParseMultipleIntsOnOneLine(this string[] s)
+        {
+            return s.Select(x =>
+                    Regex.Matches(x, @"\d+")
+                   .Cast<Match>()
+                   .Select(m => int.Parse(m.Value))
+                   .ToList()
+                ).ToList();
+        }
+
+        /// <summary>
+        /// This parses a string of integers (one per line) into a list of ints.
+        /// </summary>
         public static IEnumerable<int> ParseInts(this string[] s)
         {
             var splitContents = new List<string>(s);
