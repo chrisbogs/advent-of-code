@@ -1,14 +1,20 @@
-﻿namespace AdventOfCodeShared.Logic
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace AdventOfCodeShared.Logic
 {
     public class TwentyTwentyTwo
     {
         public static long Day1Part1(string[] input)
         {
-            return 0;
+            List<long> calories = Helpers.SumContiguousLines(input);
+            return calories.Max();
         }
+
         public static long Day1Part2(string[] input)
         {
-            return 0;
+            List<long> calories = Helpers.SumContiguousLines(input);
+            return calories.OrderByDescending(x => x).Take(3).Sum();
         }
 
         public static long Day2Part1(string[] input)
