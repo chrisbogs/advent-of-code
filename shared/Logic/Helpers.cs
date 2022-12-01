@@ -437,5 +437,27 @@ namespace AdventOfCodeShared.Logic
             }
             return maxSignal;
         }
+
+        public static List<long> SumContiguousLines(string[] input)
+        {
+            var calories = new List<long>();
+            long currentSum = 0;
+            foreach (var line in input)
+            {
+                var trimmed = line.Trim();
+                if (string.IsNullOrWhiteSpace(trimmed))
+                {
+                    calories.Add(currentSum);
+                    currentSum = 0;
+                }
+                else
+                {
+                    currentSum += long.Parse(trimmed);
+                }
+            }
+            calories.Add(currentSum);
+            return calories;
+        }
+
     }
 }
