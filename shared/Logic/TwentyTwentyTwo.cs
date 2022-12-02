@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AdventOfCodeShared.Logic
@@ -17,13 +18,131 @@ namespace AdventOfCodeShared.Logic
             return calories.OrderByDescending(x => x).Take(3).Sum();
         }
 
+        public enum OpponentShape {
+            Rock = 'A',
+            Paper = 'B',
+            Scissors = 'C'
+        }
+        public enum PlayerShape
+        {
+            Rock = 'X',
+            Paper = 'Y',
+            Scissors = 'Z'
+        }
+        public enum ShapeScore {
+            Rock=1,
+            Paper=2,
+            Scissors=3
+        }
+        public enum RoundScore {
+            Lost=0,
+            Draw=3,
+            Win=6
+        }
         public static long Day2Part1(string[] input)
         {
-            return 0;
+            var lines = input.Select(x => x.Split(' ')).ToList();
+            var totalScore = 0;
+            foreach (var line in lines)
+            {
+                totalScore += RunRockPaperScissorsRound(line);
+            }
+                
+            return totalScore;
         }
+        public static int RunRockPaperScissorsRound(string[] line) 
+        {
+            var opponentLetter = line[0][0];
+            var playerLetter = line[1][0];
+            var roundScore = 0;
+            switch ((OpponentShape)opponentLetter)
+            {
+                case OpponentShape.Rock:
+                    switch ((PlayerShape)playerLetter)
+                    {
+                        case PlayerShape.Rock:
+                            roundScore = (int)RoundScore.Draw + (int)ShapeScore.Rock; break;
+                        case PlayerShape.Paper:
+                            roundScore = (int)RoundScore.Win + (int)ShapeScore.Paper; break;
+                        case PlayerShape.Scissors:
+                            roundScore = (int)RoundScore.Lost + (int)ShapeScore.Scissors; break;
+                    }
+                    break;
+                case OpponentShape.Paper:
+                    switch ((PlayerShape)playerLetter)
+                    {
+                        case PlayerShape.Rock:
+                            roundScore = (int)RoundScore.Lost + (int)ShapeScore.Rock; break;
+                        case PlayerShape.Paper:
+                            roundScore = (int)RoundScore.Draw + (int)ShapeScore.Paper; break;
+                        case PlayerShape.Scissors:
+                            roundScore = (int)RoundScore.Win + (int)ShapeScore.Scissors; break;
+                    }
+                    break;
+                case OpponentShape.Scissors:
+                    switch ((PlayerShape)playerLetter)
+                    {
+                        case PlayerShape.Rock:
+                            roundScore = (int)RoundScore.Win + (int)ShapeScore.Rock; break;
+                        case PlayerShape.Paper:
+                            roundScore = (int)RoundScore.Lost + (int)ShapeScore.Paper; break;
+                        case PlayerShape.Scissors:
+                            roundScore = (int)RoundScore.Draw + (int)ShapeScore.Scissors; break;
+                    }
+                    break;
+            }
+            return roundScore;
+        }
+
         public static long Day2Part2(string[] input)
         {
-            return 0;
+            var lines = input.Select(x => x.Split(' ')).ToList();
+            var totalScore = 0;
+            
+            foreach (var line in lines)
+            {
+                var shapes = Array.Empty<string>();
+                // calculate which shape to use
+                var opponentShape = line[0][0];
+                var outcome = line[1][0];
+                switch (outcome) {
+                    case 'X': //lose
+                        switch ((OpponentShape)opponentShape) {
+                            case OpponentShape.Rock:
+                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Scissors}" };break;
+                            case OpponentShape.Paper:
+                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Rock}" }; break;
+                            case OpponentShape.Scissors:
+                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Paper}" }; break;
+                        }
+                        break;
+                    case 'Y': //tie
+                        switch ((OpponentShape)opponentShape)
+                        {
+                            case OpponentShape.Rock:
+                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Rock}" }; break;
+                            case OpponentShape.Paper:
+                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Paper}" }; break;
+                            case OpponentShape.Scissors:
+                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Scissors}" }; break;
+                        }
+                        break;
+                    case 'Z': //win
+                        switch ((OpponentShape)opponentShape)
+                        {
+                            case OpponentShape.Rock:
+                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Paper}" }; break;
+                            case OpponentShape.Paper:
+                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Scissors}" }; break;
+                            case OpponentShape.Scissors:
+                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Rock}" }; break;
+                        }
+                        break;
+                }
+                totalScore += RunRockPaperScissorsRound(shapes);
+            }
+
+            return totalScore;
         }
 
         public static long Day3Part1(string[] input)
