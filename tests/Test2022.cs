@@ -35,5 +35,32 @@ namespace tests
         {
             Assert.Equal(expected, TwentyTwentyTwo.Day2Part2(input));
         }
+
+        [Theory]
+        [InlineData(new string[] { 
+            "vJrwpWtwJgWrhcsFMMfFFhFp",
+            "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL",
+            "PmmdzqPrVvPwwTWBwg",
+            "wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn",
+            "ttgJtRGJQctTZtZT",
+            "CrZsJsPPZsGzwwsLwLmpwMDw"
+         }, 157)]
+        public void Day3Part1(string[] input, int expected)
+        {
+            Assert.Equal(expected, TwentyTwentyTwo.Day3Part1(input));
+        }
+        [Theory]
+        [InlineData(new string[] {
+            "vJrwpWtwJgWrhcsFMMfFFhFp",
+            "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL",
+            "PmmdzqPrVvPwwTWBwg",
+            "wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn",
+            "ttgJtRGJQctTZtZT",
+            "CrZsJsPPZsGzwwsLwLmpwMDw"
+         }, 70)]
+        public void Day3Part2(string[] input, int expected)
+        {
+            Assert.Equal(expected, TwentyTwentyTwo.Day3Part2(input));
+        }
     }
 }
