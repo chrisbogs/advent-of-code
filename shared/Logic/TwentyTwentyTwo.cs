@@ -232,11 +232,51 @@ namespace AdventOfCodeShared.Logic
 
         public static long Day4Part1(string[] input)
         {
-            return 0;
+            var sum = 0;
+            foreach (var line in input)
+            {
+                var parts = line.Split(',');
+                var set1 = parts[0].Split('-').Select(long.Parse).Take(2).ToList();
+                var set2 = parts[1].Split('-').Select(long.Parse).Take(2).ToList();
+                // check if one group of integers is fully contained in the second set
+                if (FullyContains(set1, set2) || FullyContains(set2, set1))
+                {
+                    sum++;
+                }
+            }
+            return sum;
         }
+        private static bool FullyContains(List<long> set1, List<long> set2)
+        {
+            if (!set1.Any() || !set2.Any()) return false;
+
+            return set1[0] <= set2[0] && set1[1] >= set2[1];
+        }
+        private static bool Hasintersection(List<long> set1, List<long> set2)
+        {
+            if (!set1.Any() || !set2.Any()) return false;
+            
+            return
+                (set1[0] <= set2[0] && set1[1] >= set2[0])
+                || (set1[0] <= set2[1] && set1[1] >= set2[1])
+                ;
+        }
+
         public static long Day4Part2(string[] input)
         {
-            return 0;
+            var sum = 0;
+            foreach (var line in input)
+            {
+                var parts = line.Split(',');
+                var set1 = parts[0].Split('-').Select(long.Parse).Take(2).ToList();
+                var set2 = parts[1].Split('-').Select(long.Parse).Take(2).ToList();
+                // check if one group of integers is fully contained in the second set
+                if (Hasintersection(set1, set2) || Hasintersection(set2, set1))
+                {
+                    sum++;
+                }
+            }
+            return sum;
         }
 
         public static long Day5Part1(string[] input)
