@@ -279,13 +279,110 @@ namespace AdventOfCodeShared.Logic
             return sum;
         }
 
-        public static long Day5Part1(string[] input)
+        public static string Day5Part1(string[] input)
         {
-            return 0;
+            List<Stack<char>> stacks;
+            List<Tuple<int, int, int>> instructions;
+            ParseStacks(input, out stacks, out instructions);
+
+            if (!stacks.Any() || !instructions.Any()) return "";
+
+            // execute instructions
+            foreach (var (count, sourceColumn, destColumn) in instructions)
+            {
+                for (var i = 0; i < count; i++)
+                {
+                    if (stacks[sourceColumn - 1].Count > 0)
+                    {
+                        var itemBeingMoved = stacks[sourceColumn - 1].Pop();
+                        stacks[destColumn - 1].Push(itemBeingMoved);
+                    }
+                }
+            }
+
+            return string.Join("", stacks.Where(x => x.Count > 0).Select(x => x.Pop()));
         }
-        public static long Day5Part2(string[] input)
+
+        private static void ParseStacks(string[] input, out List<Stack<char>> stacks, out List<Tuple<int, int, int>> instructions)
         {
-            return 0;
+            bool secondPart = false;
+            stacks = new List<Stack<char>>();
+            instructions = new();
+            foreach (var line in input)
+            {
+                if (!secondPart && line == string.Empty)
+                {
+                    secondPart = true;
+                }
+                if (!secondPart)
+                {
+                    var parts = line.Split(" ").Where(x => !string.IsNullOrEmpty(x)).ToList();
+                    if (int.TryParse(parts[0], out int columnNum))
+                    {
+                        // skip the column # 
+                        continue;
+                    }
+                    else
+                    {
+                        int stackIndex = 0;
+                        // parse the items on the stacks
+                        for (int i = 0; i < line.Length - 1; i += 4)
+                        {
+                            if (stacks.Count - 1 < stackIndex)
+                            {
+                                stacks.Add(new Stack<char>());
+                            }
+                            if (line[i + 1] != ' ')
+                            {
+                                stacks[stackIndex].Push(line[i + 1]);
+                            }
+                            stackIndex++;
+                        }
+
+                    }
+                }
+                else
+                {
+                    var parts = line.Split(" ").Where(x => !string.IsNullOrEmpty(x)).ToList();
+                    if (parts.Count < 5) continue;
+                    instructions.Add(Tuple.Create(
+                        int.Parse(parts[1]),
+                        int.Parse(parts[3]),
+                        int.Parse(parts[5])));
+                }
+            }
+
+            // I parse it upside down, so need to reverse it.
+            for (int i = 0; i < stacks.Count; i++)
+            {
+                stacks[i] = new Stack<char>(stacks[i]);
+            }
+        }
+
+        public static string Day5Part2(string[] input)
+        {
+            List<Stack<char>> stacks;
+            List<Tuple<int, int, int>> instructions;
+            ParseStacks(input, out stacks, out instructions);
+
+            if (!stacks.Any() || !instructions.Any()) return "";
+
+            // execute instructions
+            foreach (var (count, sourceColumn, destColumn) in instructions)
+            {
+                var itemsBeingMoved = new List<char>();
+                for (var i = 0; i < count; i++)
+                {
+                    if (stacks[sourceColumn - 1].Count > 0)
+                    {
+                        itemsBeingMoved.Add(stacks[sourceColumn - 1].Pop());
+                    }
+                }
+                itemsBeingMoved.Reverse();
+                itemsBeingMoved.ForEach(x=>stacks[destColumn - 1].Push(x));
+            }
+
+            return string.Join("", stacks.Where(x => x.Count > 0).Select(x => x.Pop()));
         }
 
         public static long Day6Part1(string[] input)
