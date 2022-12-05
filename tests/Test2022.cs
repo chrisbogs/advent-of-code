@@ -90,6 +90,39 @@ namespace tests
             Assert.Equal(expected, TwentyTwentyTwo.Day4Part2(input));
         }
 
+        [Theory]
+        [InlineData(new string[] {
+            "    [D]    ",
+            "[N] [C]    ",
+            "[Z] [M] [P]",
+            " 1   2   3",
+            "",
+            "move 1 from 2 to 1",
+            "move 3 from 1 to 3",
+            "move 2 from 2 to 1",
+            "move 1 from 1 to 2"
+            }, "CMZ")]
+        public void Day5Part1(string[] input, string expected)
+        {
+            Assert.Equal(expected, TwentyTwentyTwo.Day5Part1(input));
+        }
+        [Theory]
+        [InlineData(new string[] {
+            "    [D]    ",
+            "[N] [C]    ",
+            "[Z] [M] [P]",
+            " 1   2   3",
+            "",
+            "move 1 from 2 to 1",
+            "move 3 from 1 to 3",
+            "move 2 from 2 to 1",
+            "move 1 from 1 to 2"
+            }, "MCD")]
+        public void Day5Part2(string[] input, string expected)
+        {
+            Assert.Equal(expected, TwentyTwentyTwo.Day5Part2(input));
+        }
+
 
 
     }
