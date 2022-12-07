@@ -387,10 +387,28 @@ namespace AdventOfCodeShared.Logic
 
         public static long Day6Part1(string[] input)
         {
-            return 0;
+            var dataStream = input[0];
+            return FindFirstDistinctSubString(dataStream, 4);
         }
         public static long Day6Part2(string[] input)
         {
+            var dataStream = input[0];
+            return FindFirstDistinctSubString(dataStream, 14);
+        }
+
+        private static long FindFirstDistinctSubString(string dataStream, int length)
+        {
+            for (int i = length; i < dataStream.Length; i++)
+            {
+                var startIndex = i - length;
+                var packet = dataStream[startIndex..i];
+                var uniqueCount = new HashSet<char>(packet).Count;
+                if (uniqueCount == packet.Length)
+                {
+                    return i;
+                }
+            }
+
             return 0;
         }
 
