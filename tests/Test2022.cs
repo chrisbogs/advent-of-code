@@ -122,7 +122,27 @@ namespace tests
         {
             Assert.Equal(expected, TwentyTwentyTwo.Day5Part2(input));
         }
-
+        
+        [Theory]
+        [InlineData(new string[] { "mjqjpqmgbljsphdztnvjfqwrcgsmlb" }, 7)]
+        [InlineData(new string[] { "bvwbjplbgvbhsrlpgdmjqwftvncz" }, 5)]
+        [InlineData(new string[] { "nppdvjthqldpwncqszvftbrmjlhg" }, 6)]
+        [InlineData(new string[] { "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg" }, 10)]
+        [InlineData(new string[] { "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw" }, 11)]
+        public void Day6Part1(string[] input, int expected)
+        {
+            Assert.Equal(expected, TwentyTwentyTwo.Day6Part1(input));
+        }
+        [Theory]
+        [InlineData(new string[] { "mjqjpqmgbljsphdztnvjfqwrcgsmlb" }, 19)]
+        [InlineData(new string[] { "bvwbjplbgvbhsrlpgdmjqwftvncz" }, 23)]
+        [InlineData(new string[] { "nppdvjthqldpwncqszvftbrmjlhg" }, 23)]
+        [InlineData(new string[] { "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg" }, 29)]
+        [InlineData(new string[] { "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw" }, 26)]
+        public void Day6Part2(string[] input, int expected)
+        {
+            Assert.Equal(expected, TwentyTwentyTwo.Day6Part2(input));
+        }
 
 
     }
