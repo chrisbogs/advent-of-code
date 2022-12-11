@@ -516,12 +516,187 @@ namespace AdventOfCodeShared.Logic
 
         public static long Day8Part1(string[] input)
         {
-            return 0;
+            //parse grid
+            var grid = new List<List<int>>();
+            foreach (var line in input)
+            {
+                var ints = line.Select(x => int.Parse(x.ToString())).ToList();
+                grid.Add(ints);
+            }
+
+            var visibleCount = 0;
+            for (int j = 0; j < grid.Count; j++)
+            {
+                for (int k = 0; k < grid[j].Count; k++)
+                {
+                    if (IsVisible(grid, j, k))
+                    {
+                        visibleCount++;
+                    }
+                }
+            }
+
+            return visibleCount;
+        }
+
+        public static bool IsVisible(List<List<int>> grid, int row, int col)
+        {
+            // if any adjacent row's integers are all greater than myself then return true.
+            var currentSize = grid[row][col];
+            return isVisibleLeft(grid, row, col, currentSize)
+            || isVisibleRight(grid, row, col, currentSize)
+            || isVisibleUp(grid, row, col, currentSize)
+            || isVisibleDown(grid, row, col, currentSize)
+            ;
+        }
+
+        private static bool isVisibleDown(List<List<int>> grid, int row, int col, int currentSize)
+        {
+            for (int i = grid.Count - 1; i > row; i--)
+            {
+                if (grid[i][col] >= currentSize)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool isVisibleUp(List<List<int>> grid, int row, int col, int currentSize)
+        {
+            for (int i = 0; i < row; i++)
+            {
+                if (grid[i][col] >= currentSize)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool isVisibleRight(List<List<int>> grid, int row, int col, int currentSize)
+        {
+            for (int i = grid[row].Count - 1; i > col; i--)
+            {
+                if (grid[row][i] >= currentSize)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool isVisibleLeft(List<List<int>> grid, int row, int col, int currentSize)
+        {
+            for (int i = 0; i < col; i++)
+            {
+                if (grid[row][i] >= currentSize)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public static long Day8Part2(string[] input)
         {
-            return 0;
+            //parse grid
+            var grid = new List<List<int>>();
+            foreach (var line in input)
+            {
+                var ints = line.Select(x => int.Parse(x.ToString())).ToList();
+                grid.Add(ints);
+            }
+
+            var currentScore = 0;
+            for (int j = 0; j < grid.Count; j++)
+            {
+                for (int k = 0; k < grid[j].Count; k++)
+                {
+                    // find max scenic score
+                    var newScore = Score(grid, j, k);
+                    if (newScore > currentScore)
+                    {
+                        currentScore = newScore;
+                    }
+                }
+            }
+            //not 3214400
+
+            return currentScore;
+        }
+        public static int Score(List<List<int>> grid, int row, int col)
+        {
+            var currentSize = grid[row][col];
+            return 
+            scoreUp(grid, row, col, currentSize)
+            * scoreLeft(grid, row, col, currentSize)
+            * scoreRight(grid, row, col, currentSize)
+            * scoreDown(grid, row, col, currentSize);
+        }
+
+        private static int scoreDown(List<List<int>> grid, int row, int col, int currentSize)
+        {
+            var score = 0;
+            for (int i = grid.Count - 1; i > row; i--)
+            {
+                score++;
+                if (grid[i][col] >= currentSize)
+                {
+                    return score;
+                }
+            }
+
+            return score;
+        }
+
+        private static int scoreUp(List<List<int>> grid, int row, int col, int currentSize)
+        {
+            var score = 0;
+            for (int i = 0; i < row; i++)
+            {
+                score++;
+                if (grid[i][col] >= currentSize)
+                {
+                    return score;
+                }
+            }
+
+            return score;
+        }
+
+        private static int scoreRight(List<List<int>> grid, int row, int col, int currentSize)
+        {
+            var score = 0;
+            for (int i = grid[row].Count - 1; i > col; i--)
+            {
+                score++;
+                if (grid[row][i] >= currentSize)
+                {
+                    return score;
+                }
+            }
+
+            return score;
+        }
+
+        private static int scoreLeft(List<List<int>> grid, int row, int col, int currentSize)
+        {
+            var score = 0;
+            for (int i = 0; i < col; i++)
+            {
+                score++;
+                if (grid[row][i] >= currentSize)
+                {
+                    return score;
+                }
+            }
+
+            return score;
         }
 
         public static long Day9Part1(string[] input)
