@@ -1,5 +1,7 @@
-﻿using System;
+﻿using AdventOfCodeShared.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace AdventOfCodeShared.Logic
@@ -414,11 +416,102 @@ namespace AdventOfCodeShared.Logic
 
         public static long Day7Part1(string[] input)
         {
-            return 0;
+            DirectoryNode<string> root = ParseTerminalInput(input);
+
+            //Console.WriteLine(root);
+            var files = root.FindAllChildrenLessThan(100000);
+            return files.Sum(x => x.Size);
         }
+
+        /// <summary>
+        /// Returns an object which represents the directory structure of the file system.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        private static DirectoryNode<string> ParseTerminalInput(string[] input)
+        {
+            const char COMMAND_START = '$';
+
+            List<Tuple<string, List<string>>> commands = new();
+            Tuple<string, List<string>> currentCommand = null;
+            foreach (var line in input)
+            {
+                if (line.StartsWith(COMMAND_START))
+                {
+                    currentCommand = Tuple.Create(line.Split("$")[1], new List<string>());
+                    commands.Add(currentCommand);
+                }
+                else
+                {
+                    if (currentCommand != null)
+                    {
+                        currentCommand.Item2.Add(line);
+                    }
+                }
+            }
+
+            // analyze commands and output
+            var rootName = "/";
+            var currentDirectory = new DirectoryNode<string>(rootName, new List<Tuple<string, int>>(), null);
+            var root = currentDirectory;
+            foreach (var command in commands)
+            {
+                if (command.Item1.Trim().ToLower().StartsWith("cd"))
+                {
+                    var param = command.Item1.Split("cd")[1].Trim();
+                    if (param == "..")
+                    {
+                        currentDirectory = currentDirectory.Parent ?? currentDirectory;
+                    }
+                    else if (param.Equals(rootName))
+                    {
+                        currentDirectory = root;
+                    }
+                    else
+                    {
+                        // if child with same name does not already exist, add it
+                        currentDirectory = currentDirectory.AddChild<DirectoryNode<string>>(
+                            param, new List<Tuple<string, int>>());
+                    }
+                }
+                if (command.Item1.Trim().ToLower() == "ls")
+                {
+                    foreach (var output in command.Item2)
+                    {
+                        if (output.StartsWith("dir"))
+                        {
+                            var directoryName = output.Split("dir")[1].Trim().ToLower();
+                            currentDirectory.AddChild<DirectoryNode<string>>(directoryName,
+                                new List<Tuple<string, int>>());
+                        }
+                        else
+                        {
+                            var words = output.Split(' ');
+                            var size = int.Parse(words[0]);
+                            var fileName = words[1];
+                            currentDirectory.AddFile(Tuple.Create(fileName, size));
+                        }
+                    }
+                }
+            }
+
+            return root;
+        }
+
         public static long Day7Part2(string[] input)
         {
-            return 0;
+            const int availableSpace = 70_000_000;
+            const int spaceNeeded = 30_000_000;
+            DirectoryNode<string> root = ParseTerminalInput(input);
+
+            var unUsedSpace = availableSpace - root.Size;
+            if (unUsedSpace > spaceNeeded)
+            {
+                return 0;
+            }
+            
+            var files = root.FindAllChildrenGreaterThan(spaceNeeded - unUsedSpace);
+            return files?.Min(x=>x.Size) ?? 0;
         }
 
         public static long Day8Part1(string[] input)
