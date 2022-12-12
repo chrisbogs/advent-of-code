@@ -1,4 +1,5 @@
 ﻿using AdventOfCodeShared.Logic;
+using System.Collections.Generic;
 using Xunit;
 
 namespace tests
@@ -37,7 +38,7 @@ namespace tests
         }
 
         [Theory]
-        [InlineData(new string[] { 
+        [InlineData(new string[] {
             "vJrwpWtwJgWrhcsFMMfFFhFp",
             "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL",
             "PmmdzqPrVvPwwTWBwg",
@@ -122,7 +123,7 @@ namespace tests
         {
             Assert.Equal(expected, TwentyTwentyTwo.Day5Part2(input));
         }
-        
+
         [Theory]
         [InlineData(new string[] { "mjqjpqmgbljsphdztnvjfqwrcgsmlb" }, 7)]
         [InlineData(new string[] { "bvwbjplbgvbhsrlpgdmjqwftvncz" }, 5)]
@@ -145,7 +146,7 @@ namespace tests
         }
 
         [Theory]
-        [InlineData(new string[] { 
+        [InlineData(new string[] {
             "$ cd /",
             "$ ls",
             "dir a",
@@ -168,7 +169,7 @@ namespace tests
             "4060174 j",
             "8033020 d.log",
             "5626152 d.ext",
-            "7214296 k" 
+            "7214296 k"
             }, 95437)]
         public void Day7Part1(string[] input, int expected)
         {
@@ -205,6 +206,65 @@ namespace tests
             Assert.Equal(expected, TwentyTwentyTwo.Day7Part2(input));
         }
 
+        [Theory]
+        [InlineData(new string[] {
+            "30373",
+            "25512",
+            "65332",
+            "33549",
+            "35390"
+            }, 21)]
+        public void Day8Part1(string[] input, int expected)
+        {
+            var result = TwentyTwentyTwo.Day8Part1(input);
+            Assert.Equal(expected, result);
+        }
+        [Fact]
+        public void IsVisible()
+        {
+            var grid = new List<List<int>>()
+            {
+                new List<int>(){ 3,0,3,7,3 },
+                new List<int>(){ 2,5,5,1,2 },
+                new List<int>(){6,5,3,3,2 },
+                new List<int>(){3,3,5,4,9 },
+                new List<int>(){ 3,5,3,9,0 }
+            };
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 0, 0));
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 1, 0));
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 1, 0));
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 1, 0));
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 1, 0));
 
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 0, 0));
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 0, 1));
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 0, 2));
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 0, 3));
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 0, 4));
+
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 4, 0));
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 4, 1));
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 4, 2));
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 4, 3));
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 4, 4));
+
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 0, 4));
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 1, 4));
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 2, 4));
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 3, 4));
+            Assert.True(TwentyTwentyTwo.IsVisible(grid, 4, 4));
+        }
+        [Theory]
+        [InlineData(new string[] {
+            "30373",
+            "25512",
+            "65332",
+            "33549",
+            "35390"
+            }, 8)]
+        public void Day8Part2(string[] input, int expected)
+        {
+            Assert.Equal(expected, TwentyTwentyTwo.Day8Part2(input));
+        }
     }
 }
