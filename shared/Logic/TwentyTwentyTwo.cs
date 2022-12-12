@@ -601,7 +601,7 @@ namespace AdventOfCodeShared.Logic
 
             return true;
         }
-
+        
         public static long Day8Part2(string[] input)
         {
             //parse grid
@@ -612,37 +612,33 @@ namespace AdventOfCodeShared.Logic
                 grid.Add(ints);
             }
 
-            var currentScore = 0;
-            for (int j = 0; j < grid.Count; j++)
+            var maxScore = 0;
+            for (int row = 1; row < grid.Count-1; row++)
             {
-                for (int k = 0; k < grid[j].Count; k++)
+                for (int col = 1; col < grid[row].Count-1; col++)
                 {
                     // find max scenic score
-                    var newScore = Score(grid, j, k);
-                    if (newScore > currentScore)
+                    var currentSize = grid[row][col];
+
+                    int newScore = scoreUp(grid, row, col, currentSize)
+                        * scoreLeft(grid, row, col, currentSize)
+                        * scoreDown(grid, row, col, currentSize)
+                        * scoreRight(grid, row, col, currentSize);
+
+                    if (newScore > maxScore)
                     {
-                        currentScore = newScore;
+                        maxScore = newScore;
                     }
                 }
             }
-            //not 3214400
 
-            return currentScore;
-        }
-        public static int Score(List<List<int>> grid, int row, int col)
-        {
-            var currentSize = grid[row][col];
-            return 
-            scoreUp(grid, row, col, currentSize)
-            * scoreLeft(grid, row, col, currentSize)
-            * scoreRight(grid, row, col, currentSize)
-            * scoreDown(grid, row, col, currentSize);
+            return maxScore;
         }
 
         private static int scoreDown(List<List<int>> grid, int row, int col, int currentSize)
         {
             var score = 0;
-            for (int i = grid.Count - 1; i > row; i--)
+            for (int i = row+1; i < grid.Count; i++)
             {
                 score++;
                 if (grid[i][col] >= currentSize)
@@ -657,7 +653,7 @@ namespace AdventOfCodeShared.Logic
         private static int scoreUp(List<List<int>> grid, int row, int col, int currentSize)
         {
             var score = 0;
-            for (int i = 0; i < row; i++)
+            for (int i = row-1; i >=0 ; i--)
             {
                 score++;
                 if (grid[i][col] >= currentSize)
@@ -672,7 +668,7 @@ namespace AdventOfCodeShared.Logic
         private static int scoreRight(List<List<int>> grid, int row, int col, int currentSize)
         {
             var score = 0;
-            for (int i = grid[row].Count - 1; i > col; i--)
+            for (int i = col+1; i< grid[row].Count; i++)
             {
                 score++;
                 if (grid[row][i] >= currentSize)
@@ -687,7 +683,7 @@ namespace AdventOfCodeShared.Logic
         private static int scoreLeft(List<List<int>> grid, int row, int col, int currentSize)
         {
             var score = 0;
-            for (int i = 0; i < col; i++)
+            for (int i = col-1; i >= 0; i--)
             {
                 score++;
                 if (grid[row][i] >= currentSize)

@@ -1,7 +1,5 @@
 ﻿using AdventOfCodeShared.Logic;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using Xunit;
 
 namespace tests
@@ -40,7 +38,7 @@ namespace tests
         }
 
         [Theory]
-        [InlineData(new string[] { 
+        [InlineData(new string[] {
             "vJrwpWtwJgWrhcsFMMfFFhFp",
             "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL",
             "PmmdzqPrVvPwwTWBwg",
@@ -125,7 +123,7 @@ namespace tests
         {
             Assert.Equal(expected, TwentyTwentyTwo.Day5Part2(input));
         }
-        
+
         [Theory]
         [InlineData(new string[] { "mjqjpqmgbljsphdztnvjfqwrcgsmlb" }, 7)]
         [InlineData(new string[] { "bvwbjplbgvbhsrlpgdmjqwftvncz" }, 5)]
@@ -148,7 +146,7 @@ namespace tests
         }
 
         [Theory]
-        [InlineData(new string[] { 
+        [InlineData(new string[] {
             "$ cd /",
             "$ ls",
             "dir a",
@@ -171,7 +169,7 @@ namespace tests
             "4060174 j",
             "8033020 d.log",
             "5626152 d.ext",
-            "7214296 k" 
+            "7214296 k"
             }, 95437)]
         public void Day7Part1(string[] input, int expected)
         {
@@ -268,7 +266,5 @@ namespace tests
         {
             Assert.Equal(expected, TwentyTwentyTwo.Day8Part2(input));
         }
-
-
     }
 }
