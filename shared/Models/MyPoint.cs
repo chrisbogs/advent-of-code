@@ -1,3 +1,6 @@
+using System;
+using System.Drawing;
+
 namespace AdventOfCodeShared.Models
 {
     public class MyPoint
@@ -13,6 +16,15 @@ namespace AdventOfCodeShared.Models
             return new MyPoint(
                 int.Parse(coordinates[0]),
                 int.Parse(coordinates[1]));
+        }
+
+        internal static double Distance(Point headPosition, Point tailPosition)
+        {
+            return Math.Sqrt(
+                (headPosition.X - tailPosition.X)
+                * (headPosition.X - tailPosition.X)
+                + (headPosition.Y - tailPosition.Y) 
+                * (headPosition.Y - tailPosition.Y));
         }
 
         public float Slope(MyPoint other)

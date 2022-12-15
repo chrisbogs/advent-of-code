@@ -1,7 +1,9 @@
 ﻿using AdventOfCodeShared.Models;
+using AdventOfCodeShared.Models.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 
 namespace AdventOfCodeShared.Logic
@@ -20,7 +22,8 @@ namespace AdventOfCodeShared.Logic
             return calories.OrderByDescending(x => x).Take(3).Sum();
         }
 
-        public enum OpponentShape {
+        public enum OpponentShape
+        {
             Rock = 'A',
             Paper = 'B',
             Scissors = 'C'
@@ -31,15 +34,17 @@ namespace AdventOfCodeShared.Logic
             Paper = 'Y',
             Scissors = 'Z'
         }
-        public enum ShapeScore {
-            Rock=1,
-            Paper=2,
-            Scissors=3
+        public enum ShapeScore
+        {
+            Rock = 1,
+            Paper = 2,
+            Scissors = 3
         }
-        public enum RoundScore {
-            Lost=0,
-            Draw=3,
-            Win=6
+        public enum RoundScore
+        {
+            Lost = 0,
+            Draw = 3,
+            Win = 6
         }
         public static long Day2Part1(string[] input)
         {
@@ -49,10 +54,10 @@ namespace AdventOfCodeShared.Logic
             {
                 totalScore += RunRockPaperScissorsRound(line);
             }
-                
+
             return totalScore;
         }
-        public static int RunRockPaperScissorsRound(string[] line) 
+        public static int RunRockPaperScissorsRound(string[] line)
         {
             var opponentLetter = line[0][0];
             var playerLetter = line[1][0];
@@ -100,18 +105,20 @@ namespace AdventOfCodeShared.Logic
         {
             var lines = input.Select(x => x.Split(' ')).ToList();
             var totalScore = 0;
-            
+
             foreach (var line in lines)
             {
                 var shapes = Array.Empty<string>();
                 // calculate which shape to use
                 var opponentShape = line[0][0];
                 var outcome = line[1][0];
-                switch (outcome) {
+                switch (outcome)
+                {
                     case 'X': //lose
-                        switch ((OpponentShape)opponentShape) {
+                        switch ((OpponentShape)opponentShape)
+                        {
                             case OpponentShape.Rock:
-                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Scissors}" };break;
+                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Scissors}" }; break;
                             case OpponentShape.Paper:
                                 shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Rock}" }; break;
                             case OpponentShape.Scissors:
@@ -220,11 +227,11 @@ namespace AdventOfCodeShared.Logic
         public static long Day3Part2(string[] input)
         {
             var sum = 0;
-            for(int i = 0;i<input.Length-2;i +=3)
+            for (int i = 0; i < input.Length - 2; i += 3)
             {
                 var first = input[i];
-                var second= input[i+1];
-                var third = input[i+2];
+                var second = input[i + 1];
+                var third = input[i + 2];
                 var sharedLetter = first.Intersect(second).Intersect(third).FirstOrDefault();
                 var priority = priorityMap[sharedLetter];
                 sum += priority;
@@ -257,7 +264,7 @@ namespace AdventOfCodeShared.Logic
         private static bool Hasintersection(List<long> set1, List<long> set2)
         {
             if (!set1.Any() || !set2.Any()) return false;
-            
+
             return
                 (set1[0] <= set2[0] && set1[1] >= set2[0])
                 || (set1[0] <= set2[1] && set1[1] >= set2[1])
@@ -381,7 +388,7 @@ namespace AdventOfCodeShared.Logic
                     }
                 }
                 itemsBeingMoved.Reverse();
-                itemsBeingMoved.ForEach(x=>stacks[destColumn - 1].Push(x));
+                itemsBeingMoved.ForEach(x => stacks[destColumn - 1].Push(x));
             }
 
             return string.Join("", stacks.Where(x => x.Count > 0).Select(x => x.Pop()));
@@ -509,9 +516,9 @@ namespace AdventOfCodeShared.Logic
             {
                 return 0;
             }
-            
+
             var files = root.FindAllChildrenGreaterThan(spaceNeeded - unUsedSpace);
-            return files?.Min(x=>x.Size) ?? 0;
+            return files?.Min(x => x.Size) ?? 0;
         }
 
         public static long Day8Part1(string[] input)
@@ -601,7 +608,7 @@ namespace AdventOfCodeShared.Logic
 
             return true;
         }
-        
+
         public static long Day8Part2(string[] input)
         {
             //parse grid
@@ -613,9 +620,9 @@ namespace AdventOfCodeShared.Logic
             }
 
             var maxScore = 0;
-            for (int row = 1; row < grid.Count-1; row++)
+            for (int row = 1; row < grid.Count - 1; row++)
             {
-                for (int col = 1; col < grid[row].Count-1; col++)
+                for (int col = 1; col < grid[row].Count - 1; col++)
                 {
                     // find max scenic score
                     var currentSize = grid[row][col];
@@ -638,7 +645,7 @@ namespace AdventOfCodeShared.Logic
         private static int scoreDown(List<List<int>> grid, int row, int col, int currentSize)
         {
             var score = 0;
-            for (int i = row+1; i < grid.Count; i++)
+            for (int i = row + 1; i < grid.Count; i++)
             {
                 score++;
                 if (grid[i][col] >= currentSize)
@@ -653,7 +660,7 @@ namespace AdventOfCodeShared.Logic
         private static int scoreUp(List<List<int>> grid, int row, int col, int currentSize)
         {
             var score = 0;
-            for (int i = row-1; i >=0 ; i--)
+            for (int i = row - 1; i >= 0; i--)
             {
                 score++;
                 if (grid[i][col] >= currentSize)
@@ -668,7 +675,7 @@ namespace AdventOfCodeShared.Logic
         private static int scoreRight(List<List<int>> grid, int row, int col, int currentSize)
         {
             var score = 0;
-            for (int i = col+1; i< grid[row].Count; i++)
+            for (int i = col + 1; i < grid[row].Count; i++)
             {
                 score++;
                 if (grid[row][i] >= currentSize)
@@ -683,7 +690,7 @@ namespace AdventOfCodeShared.Logic
         private static int scoreLeft(List<List<int>> grid, int row, int col, int currentSize)
         {
             var score = 0;
-            for (int i = col-1; i >= 0; i--)
+            for (int i = col - 1; i >= 0; i--)
             {
                 score++;
                 if (grid[row][i] >= currentSize)
@@ -697,11 +704,19 @@ namespace AdventOfCodeShared.Logic
 
         public static long Day9Part1(string[] input)
         {
-            return 0;
+            var directions = Parsing.ParseDirections(input);
+
+            List<Point> tailPath = MoveRopeAndTrackPath(directions, 2);
+
+            return tailPath.Distinct().Count();
         }
         public static long Day9Part2(string[] input)
         {
-            return 0;
+            var directions = Parsing.ParseDirections(input);
+
+            List<Point> tailPath = MoveRopeAndTrackPath(directions, 10);
+
+            return tailPath.Distinct().Count();
         }
 
         public static long Day10Part1(string[] input)
@@ -846,6 +861,185 @@ namespace AdventOfCodeShared.Logic
         public static int Day25Part2(string[] input)
         {
             return 0;
+        }
+
+        private static List<Point> MoveRopeAndTrackPath(
+            List<Tuple<DPadDirection, int>> directions,
+            int numKnots)
+        {
+            var knotPositions = new List<Point>();
+            for (var i = 0; i < numKnots; i++)
+            {
+                knotPositions.Add(new Point(0, 0));
+            }
+
+            var tailPath = new List<Point>() { knotPositions[knotPositions.Count-1] };
+            foreach (var movement in directions)
+            {
+                //If the head is ever two steps directly up, down, left, or right
+                //from the tail, the tail must also move one step in that direction
+                //so it remains close enough
+                //Otherwise, if the head and tail aren't touching and aren't in the same row or column, the tail always moves one step diagonally to keep up
+                Point head;
+                for (int i = 0; i < movement.Item2; i++)
+                {
+                    switch (movement.Item1)
+                    {
+                        case DPadDirection.RIGHT:
+                            head = knotPositions[0];
+                            knotPositions[0] = new Point(head.X+1, head.Y);
+                            for (int j = 1; j < knotPositions.Count; j++)
+                            {
+                                knotPositions[j] = MoveKnotGeneral(knotPositions[j-1], knotPositions[j]);
+                            }
+                            break;
+                        case DPadDirection.DOWN:
+                            head = knotPositions[0];
+                            knotPositions[0] = new Point(head.X, head.Y-1);
+                            for (int j = 1; j < knotPositions.Count; j++)
+                            {
+                                knotPositions[j] = MoveKnotGeneral(knotPositions[j - 1], knotPositions[j]);
+                            }
+                            break;
+                        case DPadDirection.LEFT:
+                            head = knotPositions[0];
+                            knotPositions[0] = new Point(head.X-1, head.Y);
+                            for (int j = 1; j < knotPositions.Count; j++)
+                            {
+                                knotPositions[j] = MoveKnotGeneral(knotPositions[j - 1], knotPositions[j]);
+                            }
+                            break;
+                        case DPadDirection.UP:
+                            head = knotPositions[0];
+                            knotPositions[0] = new Point(head.X, head.Y+1);
+                            for (int j = 1; j < knotPositions.Count; j++)
+                            {
+                                knotPositions[j] = MoveKnotGeneral(knotPositions[j - 1], knotPositions[j]);
+                            }
+                            break;
+                    }
+                    tailPath.Add(knotPositions[knotPositions.Count-1]);
+                }
+            }
+            return tailPath;
+        }
+
+        private static Point MoveKnotGeneral(Point headPosition, Point tailPosition)
+        {
+            //TODO: improve this algorithm, it is not smart and the complexity is bad since we are checking all directions.
+            var distance = Math.Floor(MyPoint.Distance(headPosition, tailPosition));
+            if (Math.Abs(distance) <= 1) return tailPosition;
+    
+            Point newPosition = MoveKnotPositionDown(headPosition, tailPosition);
+            distance = Math.Floor(MyPoint.Distance(headPosition, newPosition));
+        
+            if (Math.Abs(distance) <= 1) return newPosition;
+            
+            newPosition = MoveKnotPositionUp(headPosition, tailPosition);
+            distance = Math.Floor(MyPoint.Distance(headPosition, newPosition));
+
+            if (Math.Abs(distance) <= 1) return newPosition;
+
+            newPosition = MoveKnotPositionLeft(headPosition, tailPosition);
+            distance = Math.Floor(MyPoint.Distance(headPosition, newPosition));
+
+            if (Math.Abs(distance) <= 1) return newPosition;
+
+            newPosition = MoveKnotPositionRight(headPosition, tailPosition);
+            distance = Math.Floor(MyPoint.Distance(headPosition, newPosition));
+            if (Math.Abs(distance) <= 1) return newPosition;
+
+            return new Point(0, 0); ;
+        }
+        private static Point MoveKnotPositionLeft(Point headPosition, Point tailPosition)
+        {
+            var distance = Math.Floor(MyPoint.Distance(headPosition, tailPosition));
+            if (Math.Abs(distance) > 1)
+            {
+                if (headPosition.X != tailPosition.X && headPosition.Y != tailPosition.Y)
+                {
+                    // move diagonally
+                    if (headPosition.Y > tailPosition.Y)
+                    {
+                        tailPosition.Y++;
+                    }
+                    else
+                    {
+                        tailPosition.Y--;
+                    }
+                }
+                tailPosition.X--;
+            }
+            return tailPosition;
+        }
+
+        private static Point MoveKnotPositionDown(Point headPosition, Point tailPosition)
+        {
+            double distance = Math.Floor(MyPoint.Distance(headPosition, tailPosition));
+            if (Math.Abs(distance) > 1)
+            {
+                if (headPosition.X != tailPosition.X && headPosition.Y != tailPosition.Y)
+                {
+                    // move diagonally
+                    if (headPosition.X > tailPosition.X)
+                    {
+                        tailPosition.X++;
+                    }
+                    else
+                    {
+                        tailPosition.X--;
+                    }
+                }
+                tailPosition.Y--;
+            }
+
+            return tailPosition;
+        }
+
+        private static Point MoveKnotPositionRight(Point parentKnot, Point tailPosition)
+        {
+            double distance = Math.Floor(MyPoint.Distance(parentKnot, tailPosition));
+            if (Math.Abs(distance) > 1)
+            {
+                if (parentKnot.X != tailPosition.X && parentKnot.Y != tailPosition.Y)
+                {
+                    // move diagonally
+                    if (parentKnot.Y > tailPosition.Y)
+                    {
+                        tailPosition.Y += 1;
+                    }
+                    else
+                    {
+                        tailPosition.Y -= 1;
+                    }
+                }
+                tailPosition.X += 1;
+            }
+
+            return tailPosition;
+        }
+
+        private static Point MoveKnotPositionUp(Point headPosition, Point tailPosition)
+        {
+            var distance = Math.Floor(MyPoint.Distance(headPosition, tailPosition));
+            if (Math.Abs(distance) > 1)
+            {
+                if (headPosition.X != tailPosition.X && headPosition.Y != tailPosition.Y)
+                {
+                    // move diagonally
+                    if (headPosition.X > tailPosition.X)
+                    {
+                        tailPosition.X++;
+                    }
+                    else
+                    {
+                        tailPosition.X--;
+                    }
+                }
+                tailPosition.Y++;
+            }
+
+            return tailPosition;
         }
     }
 }
