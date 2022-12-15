@@ -1,5 +1,4 @@
-﻿using AdventOfCodeShared.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,11 +12,12 @@ namespace AdventOfCodeShared.Models.Geometry
         /// </summary>
         public static List<Tuple<DPadDirection, int>> ParseDirections(string[] input)
         {
-            return input[0]
-                .Split(',')
+            return input.SelectMany(x=>
+                x.Split(',')
+                .Where(s => !string.IsNullOrEmpty(s))
                 .Select(x => x.Trim())
                 .Select(x => Tuple.Create((DPadDirection)x[0], int.Parse(x[1..])))
-                .ToList();
+                ).ToList();
         }
     }
 }

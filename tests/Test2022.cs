@@ -266,5 +266,46 @@ namespace tests
         {
             Assert.Equal(expected, TwentyTwentyTwo.Day8Part2(input));
         }
+        
+        [Theory]
+        [InlineData(new string[] {
+            "R 4",
+            "U 4",
+            "L 3",
+            "D 1",
+            "R 4",
+            "D 1",
+            "L 5",
+            "R 2"
+            }, 13)]
+        public void Day9Part1(string[] input, int expected)
+        {
+            Assert.Equal(expected, TwentyTwentyTwo.Day9Part1(input));
+        }
+        [Theory]
+        [InlineData(new string[] {
+            "R 4",
+            "U 4",
+            "L 3",
+            "D 1",
+            "R 4",
+            "D 1",
+            "L 5",
+            "R 2"
+            }, 1)]
+        [InlineData(new string[] {
+            "R 5",
+            "U 8",
+            "L 8",
+            "D 3",
+            "R 17",
+            "D 10",
+            "L 25",
+            "U 20",
+            }, 36)]
+        public void Day9Part2(string[] input, int expected)
+        {
+            Assert.Equal(expected, TwentyTwentyTwo.Day9Part2(input));
+        }
     }
 }
