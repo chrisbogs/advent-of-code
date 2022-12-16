@@ -1,5 +1,6 @@
 using AdventOfCodeShared.Logic;
 using Microsoft.AspNetCore.Mvc;
+using System;
 #pragma warning disable CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
 namespace Server
 {
@@ -17,7 +18,16 @@ namespace Server
         [HttpGet("{year:int}/{day:int}/{part:int}")]
         public string Router(int year, int day, int part)
         {
-            var input = this.inputRetriever.GetInput(year, day).Result;
+            var input = Array.Empty<string>();
+            try
+            {
+                 input = this.inputRetriever.GetInput(year, day).Result;
+            }
+            catch (System.AggregateException)
+            {
+                return string.Empty;
+            }
+
             switch (year)
             {
                 case 2022:

@@ -729,6 +729,10 @@ namespace AdventOfCodeShared.Logic
         }
         public static long Day10Part2(string[] input)
         {
+            var instructions = CommunicationSystemComputer.ParseInstructions(input);
+            var comp = new CommunicationSystemComputer();
+            comp.Run(instructions, draw:true);
+            comp.PrintScreen();
             return 0;
         }
 
