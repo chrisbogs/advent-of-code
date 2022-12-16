@@ -721,10 +721,18 @@ namespace AdventOfCodeShared.Logic
 
         public static long Day10Part1(string[] input)
         {
-            return 0;
+            var instructions = CommunicationSystemComputer.ParseInstructions(input);
+            //Find the signal strength during the 20th, 60th, 100th, 140th, 180th, and 220th cycles. What is the sum of these six signal strengths ?
+            var comp = new CommunicationSystemComputer();
+            comp.Run(instructions);
+            return comp.CombinedSignalStrengths;
         }
         public static long Day10Part2(string[] input)
         {
+            var instructions = CommunicationSystemComputer.ParseInstructions(input);
+            var comp = new CommunicationSystemComputer();
+            comp.Run(instructions, draw:true);
+            comp.PrintScreen();
             return 0;
         }
 
