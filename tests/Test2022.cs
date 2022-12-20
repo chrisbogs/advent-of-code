@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Xunit;
+using static AdventOfCodeShared.Logic.TwentyTwentyTwo;
 
 namespace tests
 {
@@ -232,29 +233,29 @@ namespace tests
                 new List<int>(){3,3,5,4,9 },
                 new List<int>(){ 3,5,3,9,0 }
             };
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 0, 0));
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 1, 0));
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 1, 0));
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 1, 0));
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 1, 0));
+            Assert.True(Helpers.IsVisible(grid, 0, 0));
+            Assert.True(Helpers.IsVisible(grid, 1, 0));
+            Assert.True(Helpers.IsVisible(grid, 1, 0));
+            Assert.True(Helpers.IsVisible(grid, 1, 0));
+            Assert.True(Helpers.IsVisible(grid, 1, 0));
 
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 0, 0));
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 0, 1));
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 0, 2));
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 0, 3));
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 0, 4));
+            Assert.True(Helpers.IsVisible(grid, 0, 0));
+            Assert.True(Helpers.IsVisible(grid, 0, 1));
+            Assert.True(Helpers.IsVisible(grid, 0, 2));
+            Assert.True(Helpers.IsVisible(grid, 0, 3));
+            Assert.True(Helpers.IsVisible(grid, 0, 4));
 
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 4, 0));
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 4, 1));
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 4, 2));
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 4, 3));
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 4, 4));
+            Assert.True(Helpers.IsVisible(grid, 4, 0));
+            Assert.True(Helpers.IsVisible(grid, 4, 1));
+            Assert.True(Helpers.IsVisible(grid, 4, 2));
+            Assert.True(Helpers.IsVisible(grid, 4, 3));
+            Assert.True(Helpers.IsVisible(grid, 4, 4));
 
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 0, 4));
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 1, 4));
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 2, 4));
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 3, 4));
-            Assert.True(TwentyTwentyTwo.IsVisible(grid, 4, 4));
+            Assert.True(Helpers.IsVisible(grid, 0, 4));
+            Assert.True(Helpers.IsVisible(grid, 1, 4));
+            Assert.True(Helpers.IsVisible(grid, 2, 4));
+            Assert.True(Helpers.IsVisible(grid, 3, 4));
+            Assert.True(Helpers.IsVisible(grid, 4, 4));
         }
         [Theory]
         [InlineData(new string[] {
@@ -628,5 +629,82 @@ namespace tests
             Assert.Equal(expected, s.ToString());
         }
 
+        [Theory]
+        [InlineData(new string[] {
+        "Monkey 0:",
+        "  Starting items: 79, 98",
+        "  Operation: new = old * 19",
+        "  Test: divisible by 23",
+        "    If true: throw to monkey 2",
+        "    If false: throw to monkey 3",
+        "",
+        "Monkey 1:",
+        "  Starting items: 54, 65, 75, 74",
+        "  Operation: new = old + 6",
+        "  Test: divisible by 19",
+        "    If true: throw to monkey 2",
+        "    If false: throw to monkey 0",
+        "",
+        "Monkey 2:",
+        "  Starting items: 79, 60, 97",
+        "  Operation: new = old * old",
+        "  Test: divisible by 13",
+        "    If true: throw to monkey 1",
+        "    If false: throw to monkey 3",
+        "",
+        "Monkey 3:",
+        "  Starting items: 74",
+        "  Operation: new = old + 3",
+        "  Test: divisible by 17",
+        "    If true: throw to monkey 0",
+        "    If false: throw to monkey 1" }, 10605)]
+        public void Day11Part1(string[] input, int expected)
+        {
+            Assert.Equal(expected, TwentyTwentyTwo.Day11Part1(input));
+        }
+        [Theory]
+        [InlineData(new string[] {
+        "Monkey 0:",
+        "  Starting items: 79, 98",
+        "  Operation: new = old * 19",
+        "  Test: divisible by 23",
+        "    If true: throw to monkey 2",
+        "    If false: throw to monkey 3",
+        "",
+        "Monkey 1:",
+        "  Starting items: 54, 65, 75, 74",
+        "  Operation: new = old + 6",
+        "  Test: divisible by 19",
+        "    If true: throw to monkey 2",
+        "    If false: throw to monkey 0",
+        "",
+        "Monkey 2:",
+        "  Starting items: 79, 60, 97",
+        "  Operation: new = old * old",
+        "  Test: divisible by 13",
+        "    If true: throw to monkey 1",
+        "    If false: throw to monkey 3",
+        "",
+        "Monkey 3:",
+        "  Starting items: 74",
+        "  Operation: new = old + 3",
+        "  Test: divisible by 17",
+        "    If true: throw to monkey 0",
+        "    If false: throw to monkey 1" }, 2713310158)]
+        public void Day11Part2(string[] input, long expected)
+        {
+            Assert.Equal(6 * 4, TwentyTwentyTwo.Day11Part2(input, 1));
+            //Assert.Equal(103 * 99, TwentyTwentyTwo.Day11Part2(input, 20));
+            //Assert.Equal(5204*5192, TwentyTwentyTwo.Day11Part2(input, 1000));
+            //Assert.Equal(10391*10419, TwentyTwentyTwo.Day11Part2(input, 2000));
+            //Assert.Equal(15593 * 15638, TwentyTwentyTwo.Day11Part2(input, 3000));
+            //Assert.Equal(20797 * 20858, TwentyTwentyTwo.Day11Part2(input, 4000));
+            //Assert.Equal(26075 * 26000, TwentyTwentyTwo.Day11Part2(input, 5000));
+            //Assert.Equal(31294 * 31204, TwentyTwentyTwo.Day11Part2(input, 6000));
+            //Assert.Equal(36508 * 36400, TwentyTwentyTwo.Day11Part2(input, 7000));
+            //Assert.Equal(41606 * 41728, TwentyTwentyTwo.Day11Part2(input, 8000));
+            //Assert.Equal(2_197_354_615, TwentyTwentyTwo.Day11Part2(input, 9000));
+            //Assert.Equal(expected, TwentyTwentyTwo.Day11Part2(input));
+        }
     }
 }
