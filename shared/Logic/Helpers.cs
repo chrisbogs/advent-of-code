@@ -9,6 +9,14 @@ namespace AdventOfCodeShared.Logic
     public class Helpers
     {
         private const int magicNumber = 2020;
+        
+        public enum MathOperator
+        {
+            Add = '+',
+            Subtract = '-',
+            Multiply = '*',
+            Divide = '/'
+        }
 
         // TODO: make this a generate algorithm to gather the permutations of the `numbers` collection
         public static int Get2NumbersThatSumUpTo(IEnumerable<int> numbers)
