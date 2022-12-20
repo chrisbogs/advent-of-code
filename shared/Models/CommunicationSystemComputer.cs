@@ -30,7 +30,7 @@ namespace AdventOfCodeShared.Models
         private const int SCREEN_WIDTH = 40;
         private const int SCREEN_HEIGHT = 6;
         private const char LIT = '#';
-        private const char DARK = ' ';
+        private const char DARK = '.';
         private char[] Screen;
 
         public CommunicationSystemComputer()

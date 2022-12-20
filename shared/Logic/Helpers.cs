@@ -3,13 +3,38 @@ using AdventOfCodeShared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Drawing;
 
 namespace AdventOfCodeShared.Logic
 {
     public class Helpers
     {
         private const int magicNumber = 2020;
-        
+
+        public enum OpponentShape
+        {
+            Rock = 'A',
+            Paper = 'B',
+            Scissors = 'C'
+        }
+        public enum PlayerShape
+        {
+            Rock = 'X',
+            Paper = 'Y',
+            Scissors = 'Z'
+        }
+        public enum ShapeScore
+        {
+            Rock = 1,
+            Paper = 2,
+            Scissors = 3
+        }
+        public enum RoundScore
+        {
+            Lost = 0,
+            Draw = 3,
+            Win = 6
+        }
         public enum MathOperator
         {
             Add = '+',
@@ -467,5 +492,522 @@ namespace AdventOfCodeShared.Logic
             return calories;
         }
 
+        public static int DetermineScore(List<List<int>> grid)
+        {
+            var maxScore = 0;
+            for (int row = 1; row < grid.Count - 1; row++)
+            {
+                for (int col = 1; col < grid[row].Count - 1; col++)
+                {
+                    // find max scenic score
+                    var currentSize = grid[row][col];
+
+                    int newScore = scoreUp(grid, row, col, currentSize)
+                        * scoreLeft(grid, row, col, currentSize)
+                        * scoreDown(grid, row, col, currentSize)
+                        * scoreRight(grid, row, col, currentSize);
+
+                    if (newScore > maxScore)
+                    {
+                        maxScore = newScore;
+                    }
+                }
+            }
+
+            return maxScore;
+        }
+
+        public static bool IsVisible(List<List<int>> grid, int row, int col)
+        {
+            // if any adjacent row's integers are all greater than myself then return true.
+            var currentSize = grid[row][col];
+            return isVisibleLeft(grid, row, col, currentSize)
+            || isVisibleRight(grid, row, col, currentSize)
+            || isVisibleUp(grid, row, col, currentSize)
+            || isVisibleDown(grid, row, col, currentSize)
+            ;
+        }
+
+        private static bool isVisibleDown(List<List<int>> grid, int row, int col, int currentSize)
+        {
+            for (int i = grid.Count - 1; i > row; i--)
+            {
+                if (grid[i][col] >= currentSize)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool isVisibleUp(List<List<int>> grid, int row, int col, int currentSize)
+        {
+            for (int i = 0; i < row; i++)
+            {
+                if (grid[i][col] >= currentSize)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool isVisibleRight(List<List<int>> grid, int row, int col, int currentSize)
+        {
+            for (int i = grid[row].Count - 1; i > col; i--)
+            {
+                if (grid[row][i] >= currentSize)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool isVisibleLeft(List<List<int>> grid, int row, int col, int currentSize)
+        {
+            for (int i = 0; i < col; i++)
+            {
+                if (grid[row][i] >= currentSize)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static int scoreDown(List<List<int>> grid, int row, int col, int currentSize)
+        {
+            var score = 0;
+            for (int i = row + 1; i < grid.Count; i++)
+            {
+                score++;
+                if (grid[i][col] >= currentSize)
+                {
+                    return score;
+                }
+            }
+
+            return score;
+        }
+
+        private static int scoreUp(List<List<int>> grid, int row, int col, int currentSize)
+        {
+            var score = 0;
+            for (int i = row - 1; i >= 0; i--)
+            {
+                score++;
+                if (grid[i][col] >= currentSize)
+                {
+                    return score;
+                }
+            }
+
+            return score;
+        }
+
+        private static int scoreRight(List<List<int>> grid, int row, int col, int currentSize)
+        {
+            var score = 0;
+            for (int i = col + 1; i < grid[row].Count; i++)
+            {
+                score++;
+                if (grid[row][i] >= currentSize)
+                {
+                    return score;
+                }
+            }
+
+            return score;
+        }
+
+        private static int scoreLeft(List<List<int>> grid, int row, int col, int currentSize)
+        {
+            var score = 0;
+            for (int i = col - 1; i >= 0; i--)
+            {
+                score++;
+                if (grid[row][i] >= currentSize)
+                {
+                    return score;
+                }
+            }
+
+            return score;
+        }
+
+        public static List<Point> MoveRopeAndTrackPath(
+    List<Tuple<DPadDirection, int>> directions,
+    int numKnots)
+        {
+            var knotPositions = new List<Point>();
+            for (var i = 0; i < numKnots; i++)
+            {
+                knotPositions.Add(new Point(0, 0));
+            }
+
+            var tailPath = new List<Point>() { knotPositions[knotPositions.Count - 1] };
+            foreach (var movement in directions)
+            {
+                //If the head is ever two steps directly up, down, left, or right
+                //from the tail, the tail must also move one step in that direction
+                //so it remains close enough
+                //Otherwise, if the head and tail aren't touching and aren't in the same row or column, the tail always moves one step diagonally to keep up
+                Point head;
+                for (int i = 0; i < movement.Item2; i++)
+                {
+                    switch (movement.Item1)
+                    {
+                        case DPadDirection.RIGHT:
+                            head = knotPositions[0];
+                            knotPositions[0] = new Point(head.X + 1, head.Y);
+                            for (int j = 1; j < knotPositions.Count; j++)
+                            {
+                                knotPositions[j] = MoveKnotGeneral(knotPositions[j - 1], knotPositions[j]);
+                            }
+                            break;
+                        case DPadDirection.DOWN:
+                            head = knotPositions[0];
+                            knotPositions[0] = new Point(head.X, head.Y - 1);
+                            for (int j = 1; j < knotPositions.Count; j++)
+                            {
+                                knotPositions[j] = MoveKnotGeneral(knotPositions[j - 1], knotPositions[j]);
+                            }
+                            break;
+                        case DPadDirection.LEFT:
+                            head = knotPositions[0];
+                            knotPositions[0] = new Point(head.X - 1, head.Y);
+                            for (int j = 1; j < knotPositions.Count; j++)
+                            {
+                                knotPositions[j] = MoveKnotGeneral(knotPositions[j - 1], knotPositions[j]);
+                            }
+                            break;
+                        case DPadDirection.UP:
+                            head = knotPositions[0];
+                            knotPositions[0] = new Point(head.X, head.Y + 1);
+                            for (int j = 1; j < knotPositions.Count; j++)
+                            {
+                                knotPositions[j] = MoveKnotGeneral(knotPositions[j - 1], knotPositions[j]);
+                            }
+                            break;
+                    }
+                    tailPath.Add(knotPositions[knotPositions.Count - 1]);
+                }
+            }
+            return tailPath;
+        }
+
+        public static Point MoveKnotGeneral(Point headPosition, Point tailPosition)
+        {
+            //TODO: improve this algorithm, it is not smart and the complexity is bad since we are checking all directions.
+            var distance = Math.Floor(MyPoint.Distance(headPosition, tailPosition));
+            if (Math.Abs(distance) <= 1) return tailPosition;
+
+            Point newPosition = MoveKnotPositionDown(headPosition, tailPosition);
+            distance = Math.Floor(MyPoint.Distance(headPosition, newPosition));
+
+            if (Math.Abs(distance) <= 1) return newPosition;
+
+            newPosition = MoveKnotPositionUp(headPosition, tailPosition);
+            distance = Math.Floor(MyPoint.Distance(headPosition, newPosition));
+
+            if (Math.Abs(distance) <= 1) return newPosition;
+
+            newPosition = MoveKnotPositionLeft(headPosition, tailPosition);
+            distance = Math.Floor(MyPoint.Distance(headPosition, newPosition));
+
+            if (Math.Abs(distance) <= 1) return newPosition;
+
+            newPosition = MoveKnotPositionRight(headPosition, tailPosition);
+            distance = Math.Floor(MyPoint.Distance(headPosition, newPosition));
+            if (Math.Abs(distance) <= 1) return newPosition;
+
+            return new Point(0, 0); ;
+        }
+        private static Point MoveKnotPositionLeft(Point headPosition, Point tailPosition)
+        {
+            var distance = Math.Floor(MyPoint.Distance(headPosition, tailPosition));
+            if (Math.Abs(distance) > 1)
+            {
+                if (headPosition.X != tailPosition.X && headPosition.Y != tailPosition.Y)
+                {
+                    // move diagonally
+                    if (headPosition.Y > tailPosition.Y)
+                    {
+                        tailPosition.Y++;
+                    }
+                    else
+                    {
+                        tailPosition.Y--;
+                    }
+                }
+                tailPosition.X--;
+            }
+            return tailPosition;
+        }
+
+        private static Point MoveKnotPositionDown(Point headPosition, Point tailPosition)
+        {
+            double distance = Math.Floor(MyPoint.Distance(headPosition, tailPosition));
+            if (Math.Abs(distance) > 1)
+            {
+                if (headPosition.X != tailPosition.X && headPosition.Y != tailPosition.Y)
+                {
+                    // move diagonally
+                    if (headPosition.X > tailPosition.X)
+                    {
+                        tailPosition.X++;
+                    }
+                    else
+                    {
+                        tailPosition.X--;
+                    }
+                }
+                tailPosition.Y--;
+            }
+
+            return tailPosition;
+        }
+
+        private static Point MoveKnotPositionRight(Point parentKnot, Point tailPosition)
+        {
+            double distance = Math.Floor(MyPoint.Distance(parentKnot, tailPosition));
+            if (Math.Abs(distance) > 1)
+            {
+                if (parentKnot.X != tailPosition.X && parentKnot.Y != tailPosition.Y)
+                {
+                    // move diagonally
+                    if (parentKnot.Y > tailPosition.Y)
+                    {
+                        tailPosition.Y += 1;
+                    }
+                    else
+                    {
+                        tailPosition.Y -= 1;
+                    }
+                }
+                tailPosition.X += 1;
+            }
+
+            return tailPosition;
+        }
+
+        private static Point MoveKnotPositionUp(Point headPosition, Point tailPosition)
+        {
+            var distance = Math.Floor(MyPoint.Distance(headPosition, tailPosition));
+            if (Math.Abs(distance) > 1)
+            {
+                if (headPosition.X != tailPosition.X && headPosition.Y != tailPosition.Y)
+                {
+                    // move diagonally
+                    if (headPosition.X > tailPosition.X)
+                    {
+                        tailPosition.X++;
+                    }
+                    else
+                    {
+                        tailPosition.X--;
+                    }
+                }
+                tailPosition.Y++;
+            }
+
+            return tailPosition;
+        }
+
+        public static int RunRockPaperScissorsRound(string[] line)
+        {
+            var opponentLetter = line[0][0];
+            var playerLetter = line[1][0];
+            var roundScore = 0;
+            switch ((OpponentShape)opponentLetter)
+            {
+                case OpponentShape.Rock:
+                    switch ((PlayerShape)playerLetter)
+                    {
+                        case PlayerShape.Rock:
+                            roundScore = (int)RoundScore.Draw + (int)ShapeScore.Rock; break;
+                        case PlayerShape.Paper:
+                            roundScore = (int)RoundScore.Win + (int)ShapeScore.Paper; break;
+                        case PlayerShape.Scissors:
+                            roundScore = (int)RoundScore.Lost + (int)ShapeScore.Scissors; break;
+                    }
+                    break;
+                case OpponentShape.Paper:
+                    switch ((PlayerShape)playerLetter)
+                    {
+                        case PlayerShape.Rock:
+                            roundScore = (int)RoundScore.Lost + (int)ShapeScore.Rock; break;
+                        case PlayerShape.Paper:
+                            roundScore = (int)RoundScore.Draw + (int)ShapeScore.Paper; break;
+                        case PlayerShape.Scissors:
+                            roundScore = (int)RoundScore.Win + (int)ShapeScore.Scissors; break;
+                    }
+                    break;
+                case OpponentShape.Scissors:
+                    switch ((PlayerShape)playerLetter)
+                    {
+                        case PlayerShape.Rock:
+                            roundScore = (int)RoundScore.Win + (int)ShapeScore.Rock; break;
+                        case PlayerShape.Paper:
+                            roundScore = (int)RoundScore.Lost + (int)ShapeScore.Paper; break;
+                        case PlayerShape.Scissors:
+                            roundScore = (int)RoundScore.Draw + (int)ShapeScore.Scissors; break;
+                    }
+                    break;
+            }
+            return roundScore;
+        }
+
+        public static void ParseStacks(string[] input, out List<Stack<char>> stacks, out List<Tuple<int, int, int>> instructions)
+        {
+            bool secondPart = false;
+            stacks = new List<Stack<char>>();
+            instructions = new();
+            foreach (var line in input)
+            {
+                if (!secondPart && line == string.Empty)
+                {
+                    secondPart = true;
+                }
+                if (!secondPart)
+                {
+                    var parts = line.Split(" ").Where(x => !string.IsNullOrEmpty(x)).ToList();
+                    if (int.TryParse(parts[0], out int columnNum))
+                    {
+                        // skip the column # 
+                        continue;
+                    }
+                    else
+                    {
+                        int stackIndex = 0;
+                        // parse the items on the stacks
+                        for (int i = 0; i < line.Length - 1; i += 4)
+                        {
+                            if (stacks.Count - 1 < stackIndex)
+                            {
+                                stacks.Add(new Stack<char>());
+                            }
+                            if (line[i + 1] != ' ')
+                            {
+                                stacks[stackIndex].Push(line[i + 1]);
+                            }
+                            stackIndex++;
+                        }
+
+                    }
+                }
+                else
+                {
+                    var parts = line.Split(" ").Where(x => !string.IsNullOrEmpty(x)).ToList();
+                    if (parts.Count < 5) continue;
+                    instructions.Add(Tuple.Create(
+                        int.Parse(parts[1]),
+                        int.Parse(parts[3]),
+                        int.Parse(parts[5])));
+                }
+            }
+
+            // I parse it upside down, so need to reverse it.
+            for (int i = 0; i < stacks.Count; i++)
+            {
+                stacks[i] = new Stack<char>(stacks[i]);
+            }
+        }
+
+        public static long FindFirstDistinctSubString(string dataStream, int length)
+        {
+            for (int i = length; i < dataStream.Length; i++)
+            {
+                var startIndex = i - length;
+                var packet = dataStream[startIndex..i];
+                var uniqueCount = new HashSet<char>(packet).Count;
+                if (uniqueCount == packet.Length)
+                {
+                    return i;
+                }
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Returns an object which represents the directory structure of the file system.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static DirectoryNode<string> ParseTerminalInput(string[] input)
+        {
+            const char COMMAND_START = '$';
+
+            List<Tuple<string, List<string>>> commands = new();
+            Tuple<string, List<string>> currentCommand = null;
+            foreach (var line in input)
+            {
+                if (line.StartsWith(COMMAND_START))
+                {
+                    currentCommand = Tuple.Create(line.Split("$")[1], new List<string>());
+                    commands.Add(currentCommand);
+                }
+                else
+                {
+                    if (currentCommand != null)
+                    {
+                        currentCommand.Item2.Add(line);
+                    }
+                }
+            }
+
+            // analyze commands and output
+            var rootName = "/";
+            var currentDirectory = new DirectoryNode<string>(rootName, new List<Tuple<string, int>>(), null);
+            var root = currentDirectory;
+            foreach (var command in commands)
+            {
+                if (command.Item1.Trim().ToLower().StartsWith("cd"))
+                {
+                    var param = command.Item1.Split("cd")[1].Trim();
+                    if (param == "..")
+                    {
+                        currentDirectory = currentDirectory.Parent ?? currentDirectory;
+                    }
+                    else if (param.Equals(rootName))
+                    {
+                        currentDirectory = root;
+                    }
+                    else
+                    {
+                        // if child with same name does not already exist, add it
+                        currentDirectory = currentDirectory.AddChild<DirectoryNode<string>>(
+                            param, new List<Tuple<string, int>>());
+                    }
+                }
+                if (command.Item1.Trim().ToLower() == "ls")
+                {
+                    foreach (var output in command.Item2)
+                    {
+                        if (output.StartsWith("dir"))
+                        {
+                            var directoryName = output.Split("dir")[1].Trim().ToLower();
+                            currentDirectory.AddChild<DirectoryNode<string>>(directoryName,
+                                new List<Tuple<string, int>>());
+                        }
+                        else
+                        {
+                            var words = output.Split(' ');
+                            var size = int.Parse(words[0]);
+                            var fileName = words[1];
+                            currentDirectory.AddFile(Tuple.Create(fileName, size));
+                        }
+                    }
+                }
+            }
+
+            return root;
+        }
     }
 }
