@@ -1,89 +1,142 @@
+using AdventOfCodeShared.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Text;
 
 namespace AdventOfCodeShared.Models
 {
-    public class Grid
+    public class Grid<T> where T : struct
     {
-        private List<List<GridNode>> grid;
+        private readonly List<List<GridNode<T>>> _grid;
 
-        public Grid(string[] gridData)
+        public Grid(List<List<GridNode<T>>> grid) { _grid = grid; }
+
+        private Grid<T> DeepCopy()
         {
-            grid = new List<List<GridNode>>();
+            return new Grid<T>(_grid.Select(x =>
+                x.Select(x => new GridNode<T>(x.Value, x.Visited)
+                ).ToList()
+            ).ToList());
+        }
+
+        /// <summary>
+        /// Accepts lines of integers and parses them into gridNodes.
+        /// </summary>
+        public static Grid<int> ParseIntGrid(string[] gridData)
+        {
+            var grid = new List<List<GridNode<int>>>();
             for (int i = 0; i < gridData.Length; i++)
             {
-                grid.Add(new List<GridNode>());
+                grid.Add(new List<GridNode<int>>());
                 var numbers = gridData[i].Select(x => int.Parse(x.ToString())).ToList();
                 foreach (var n in numbers)
                 {
-                    grid[i].Add(new GridNode(n));
+                    grid[i].Add(new GridNode<int>(n));
                 }
             }
-            // this.grid.forEach(x => console.log(x + ""));
+            return new Grid<int>(grid);
         }
 
-        public GridNode ValueAt(int c, int r) => this.grid[c][r];
-        public int Columns => this.grid.Count;
+                /// <summary>
+        /// Parses lines in the format: ["abcdefff", "asdasdasd"] 
+        /// and converts each char to an GridNode.
+        /// </summary>
+        internal static Grid<char> ParseGridOfLettersIntoNodes(
+            string[] input)
+        {
+            return new Grid<char>(input.Select(line => 
+                    line.Select(x => new GridNode<char>(x)).ToList()
+                ).ToList());
+        }
 
-        public int RowCount(int columnNumber) => this.grid[columnNumber].Count;
+        public GridNode<T> NodeAt(int c, int r) => _grid[c][r];
+        public int Columns => _grid.Count;
+
+        public int RowCount(int columnNumber) => _grid[columnNumber].Count;
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            for (var c = 0; c < Columns; c++)
+            {
+                for (var r = 0; r < RowCount(c); r++)
+                {
+                    //if (c == end.X && r == end.Y) Console.Write('E');
+                    //else if (c == current.X && r == current.Y) Console.Write('X');
+                    //else 
+                    sb.Append(NodeAt(c, r).Visited ? '#' : 'o');
+                }
+                sb.AppendLine();
+            }
+            return sb.ToString();
+        }
 
         public bool LookAbove(int r, int c, bool ignoreVisited = false)
         {
-            if (r - 1 >= 0 && (ignoreVisited || !this.grid[c][r - 1].Visited))
+            if (!typeof(T).Equals(typeof(int))) throw new ArgumentException("Only integer grid supported");
+
+            if (r - 1 >= 0 && (ignoreVisited || !NodeAt(c, r - 1).Visited))
             {
-                return this.grid[c][r - 1].Value < this.grid[c][r].Value;
+                var currentCell = NodeAt(c, r - 1).Value;
+                var aboveCell = NodeAt(c, r).Value;
+                return Convert.ToInt32(currentCell) < Convert.ToInt32(aboveCell);
             }
             return false;
         }
 
         public bool LookBelow(int r, int c, bool ignoreVisited = false)
         {
-            if (r + 1 < this.grid[c].Count && (ignoreVisited || !this.grid[c][r + 1].Visited))
+            if (!typeof(T).Equals(typeof(int))) throw new ArgumentException("Only integer grid supported");
+            if (r + 1 < RowCount(c) && (ignoreVisited || !NodeAt(c, r + 1).Visited))
             {
-                return this.grid[c][r + 1].Value < this.grid[c][r].Value;
+                return Convert.ToInt32(NodeAt(c, r + 1).Value) < Convert.ToInt32(NodeAt(c, r).Value);
             }
             return false;
         }
 
         public bool LookLeft(int r, int c, bool ignoreVisited = false)
         {
-            if (c - 1 >= 0 && (ignoreVisited || !this.grid[c - 1][r].Visited))
+            if (!typeof(T).Equals(typeof(int))) throw new ArgumentException("Only integer grid supported");
+            if (c - 1 >= 0 && (ignoreVisited || !NodeAt(c - 1, r).Visited))
             {
-                return (this.grid[c - 1][r].Value < this.grid[c][r].Value);
+                return (Convert.ToInt32(NodeAt(c - 1, r).Value) < Convert.ToInt32(NodeAt(c, r).Value));
             }
             return false;
         }
         public bool LookRight(int r, int c, bool ignoreVisited = false)
         {
-            if (c + 1 < this.grid.Count && (ignoreVisited || !this.grid[c + 1][r].Visited))
+            if (!typeof(T).Equals(typeof(int))) throw new ArgumentException("Only integer grid supported");
+            if (c + 1 < Columns && (ignoreVisited || !NodeAt(c + 1, r).Visited))
             {
-                return this.grid[c + 1][r].Value < this.grid[c][r].Value;
+                return Convert.ToInt32(NodeAt(c + 1, r).Value) < Convert.ToInt32(NodeAt(c, r).Value);
             }
             return false;
         }
 
         private bool IsMinPoint(int c, int r, bool ignoreVisited = false)
         {
-            if (this.ValueAt(c, r).Value == 9) return false;
-            if (this.LookAbove(r, c, ignoreVisited)) return false;
-            if (this.LookBelow(r, c, ignoreVisited)) return false;
-            if (this.LookLeft(r, c, ignoreVisited)) return false;
-            if (this.LookRight(r, c, ignoreVisited)) return false;
+            if (!typeof(T).Equals(typeof(int))) throw new ArgumentException("Only integer grid supported");
+            if (Convert.ToInt32(NodeAt(c, r).Value) == 9) return false;
+            if (LookAbove(r, c, ignoreVisited)) return false;
+            if (LookBelow(r, c, ignoreVisited)) return false;
+            if (LookLeft(r, c, ignoreVisited)) return false;
+            if (LookRight(r, c, ignoreVisited)) return false;
             return true;
         }
         public List<int> FindMinPoints()
         {
             // for each number, check all adjacent cells for any number higher
             var minPoints = new List<int>();
-            for (var c = 0; c < this.Columns; c++)
+            for (var c = 0; c < Columns; c++)
             {
-                for (var r = 0; r < this.RowCount(c); r++)
+                for (var r = 0; r < RowCount(c); r++)
                 {
-                    if (this.IsMinPoint(c, r))
+                    if (IsMinPoint(c, r))
                     {
-                        var current = this.ValueAt(c, r);
-                        minPoints.Add(current.Value);
+                        var current = NodeAt(c, r);
+                        minPoints.Add(Convert.ToInt32(current.Value));
                     }
                 }
             }
@@ -100,22 +153,22 @@ namespace AdventOfCodeShared.Models
             // The size of a basin is the number of locations within the basin, including the low point.
             var basins = new List<List<int>>();
 
-            for (var c = 0; c < this.Columns; c++)
+            for (var c = 0; c < Columns; c++)
             {
-                for (var r = 0; r < this.RowCount(c); r++)
+                for (var r = 0; r < RowCount(c); r++)
                 {
-                    if (this.IsMinPoint(c, r, true))
+                    if (IsMinPoint(c, r, true))
                     {
-                        this.ValueAt(c, r).Visited = true;
+                        NodeAt(c, r).Visited = true;
                         //This is a min point, look for the rest of the basin points:
                         // for all the adjacent points, check if they are min points excluding the visited nodes
-                        var basin = new List<int>() { this.ValueAt(c, r).Value }.Concat(this.CheckAdjacentPoints(c, r)).ToList();
+                        var basin = new List<int>() { Convert.ToInt32(NodeAt(c, r).Value) }.Concat(CheckAdjacentPoints(c, r)).ToList();
                         basin = basin.OrderBy(x => x).ToList();
                         basins.Add(basin);
                     }
                 }
             }
-            
+
             basins.Sort((a, b) => b.Count - a.Count);
             return basins;
         }
@@ -124,40 +177,40 @@ namespace AdventOfCodeShared.Models
         {
             var basin = new List<int>();
             // check adjacent points and return the ones that are min points (of the unvisited)
-            if (r - 1 >= 0 && !this.grid[c][r - 1].Visited && this.IsMinPoint(c, r - 1))
+            if (r - 1 >= 0 && !NodeAt(c, r - 1).Visited && IsMinPoint(c, r - 1))
             {
-                basin.Add(this.ValueAt(c, r - 1).Value);
-                this.ValueAt(c, r - 1).Visited = true;
+                basin.Add(Convert.ToInt32(NodeAt(c, r - 1).Value));
+                NodeAt(c, r - 1).Visited = true;
                 var rest = this.CheckAdjacentPoints(c, r - 1);
                 if (rest.Count > 0)
                 {
                     basin = basin.Concat(rest).ToList();
                 }
             }
-            if (r + 1 < this.grid[c].Count && !this.grid[c][r + 1].Visited && this.IsMinPoint(c, r + 1))
+            if (r + 1 < RowCount(c) && !NodeAt(c, r + 1).Visited && IsMinPoint(c, r + 1))
             {
-                basin.Add(this.ValueAt(c, r + 1).Value);
-                this.ValueAt(c, r + 1).Visited = true;
+                basin.Add(Convert.ToInt32(NodeAt(c, r + 1).Value));
+                NodeAt(c, r + 1).Visited = true;
                 var rest = this.CheckAdjacentPoints(c, r + 1);
                 if (rest.Count > 0)
                 {
                     basin = basin.Concat(rest).ToList();
                 }
             }
-            if (c - 1 >= 0 && !this.grid[c - 1][r].Visited && this.IsMinPoint(c - 1, r))
+            if (c - 1 >= 0 && !NodeAt(c - 1, r).Visited && IsMinPoint(c - 1, r))
             {
-                basin.Add(this.ValueAt(c - 1, r).Value);
-                this.ValueAt(c - 1, r).Visited = true;
+                basin.Add(Convert.ToInt32(NodeAt(c - 1, r).Value));
+                NodeAt(c - 1, r).Visited = true;
                 var rest = this.CheckAdjacentPoints(c - 1, r);
                 if (rest.Count > 0)
                 {
                     basin = basin.Concat(rest).ToList();
                 }
             }
-            if (c + 1 < this.grid.Count && !this.grid[c + 1][r].Visited && this.IsMinPoint(c + 1, r))
+            if (c + 1 < Columns && !NodeAt(c + 1, r).Visited && IsMinPoint(c + 1, r))
             {
-                basin.Add(this.ValueAt(c + 1, r).Value);
-                this.ValueAt(c + 1, r).Visited = true;
+                basin.Add(Convert.ToInt32(NodeAt(c + 1, r).Value));
+                NodeAt(c + 1, r).Visited = true;
                 var rest = this.CheckAdjacentPoints(c + 1, r);
                 if (rest.Count > 0)
                 {
@@ -166,5 +219,98 @@ namespace AdventOfCodeShared.Models
             }
             return basin;
         }
+
+        private void PrintGrid(Point current, Point end)
+        {
+            Console.WriteLine();
+
+            for (var c = 0; c < Columns; c++)
+            {
+                for (var r = 0; r < RowCount(c); r++)
+                {
+                    if (c == end.X && r == end.Y) Console.Write('E');
+                    else if (c == current.X && r == current.Y) Console.Write('X');
+                    else Console.Write(NodeAt(c, r).Visited ? '#' : 'o');
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
+        }
+
+        internal static (bool, List<GridNode<T>>) FindPath(
+            Grid<T> grid,
+            Point start, Point end)
+        {
+            grid.PrintGrid(start, end);
+            var currentPath = new List<GridNode<T>>();
+            if (grid.NodeAt(start.X, start.Y).Visited)
+            {
+                return (false, currentPath);
+            }
+
+            //During each step, you can move exactly one square up, down, left, or right.
+            //To avoid needing to get out your climbing gear, the elevation of the destination square can be at most
+            //one higher than the elevation of your current square; that is, if your current elevation is m, you could
+            //step to elevation n, but not to elevation o.
+            //(This also means that the elevation of the destination square can be much lower than the elevation of your current square.)
+            List<GridNode<T>> minPath = new() { grid.NodeAt(start.X, start.Y) };
+
+            if (grid.NodeAt(start.X, start.Y).Value.Equals('E'))
+            {
+                return (true, minPath);
+            }
+
+            //keep looking
+            var newPath = new List<GridNode<T>>();
+            var foundEnd = false;
+            Grid<T> newGrid = grid.DeepCopy();
+            newGrid.NodeAt(start.X, start.Y).Visited = true;
+
+            // look up
+            if (start.Y - 1 >= 0
+                && (newGrid.NodeAt(start.X, start.Y).Value.Equals('S')
+                || Convert.ToChar(newGrid.NodeAt(start.X, start.Y).Value) + 1 >= Convert.ToChar(newGrid.NodeAt(start.X, start.Y - 1).Value)))
+            {
+                (foundEnd, currentPath) = FindPath(newGrid, new Point(start.X, start.Y - 1), end);
+            }
+            // look down
+            if (start.Y + 1 < grid.RowCount(start.X)
+                && (newGrid.NodeAt(start.X, start.Y).Value.Equals('S') || Convert.ToChar(newGrid.NodeAt(start.X, start.Y).Value) + 1 >= Convert.ToChar(newGrid.NodeAt(start.X, start.Y + 1).Value)))
+            {
+                (bool foundEndDown, newPath) = FindPath(newGrid, new Point(start.X, start.Y + 1), end);
+                if (foundEndDown)
+                {
+                    currentPath = currentPath.ReturnSmallestNonEmpty(newPath);
+                    foundEnd = true;
+                }
+            }
+            // look left
+            if (start.X - 1 >= 0 && (newGrid.NodeAt(start.X, start.Y).Value.Equals('S') || Convert.ToChar(newGrid.NodeAt(start.X, start.Y).Value) + 1 >= Convert.ToChar(newGrid.NodeAt(start.X - 1, start.Y).Value)))
+            {
+                (bool foundEndLeft, newPath) = FindPath(newGrid, new Point(start.X - 1, start.Y), end);
+                if (foundEndLeft)
+                {
+                    currentPath = currentPath.ReturnSmallestNonEmpty(newPath);
+                    foundEnd = true;
+                }
+            }
+            // look right
+            if (start.X + 1 < grid.Columns
+                && (newGrid.NodeAt(start.X, start.Y).Value.Equals('S')
+                    || Convert.ToChar(newGrid.NodeAt(start.X, start.Y).Value) + 1 >= Convert.ToChar(newGrid.NodeAt(start.X + 1, start.Y).Value)))
+            {
+                (bool foundEndRight, newPath) = FindPath(newGrid, new Point(start.X + 1, start.Y), end);
+                if (foundEndRight)
+                {
+                    currentPath = currentPath.ReturnSmallestNonEmpty(newPath);
+                    foundEnd = true;
+                }
+            }
+
+            return (foundEnd, minPath.Concat(currentPath).ToList());
+        }
+
+
     }
 }

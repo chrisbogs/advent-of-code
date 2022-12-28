@@ -47,7 +47,7 @@ namespace AdventOfCodeShared.Logic
         public static int Get2NumbersThatSumUpTo(IEnumerable<int> numbers)
         {
             var l = numbers.Where(x => x <= magicNumber).OrderBy(x => x).ToList();
-            var length = l.Count();
+            var length = l.Count;
             for (var i = 0; i < length; i++)
             {
                 var startIndex = 0;
@@ -72,7 +72,7 @@ namespace AdventOfCodeShared.Logic
         public static int Get3NumbersThatSumUpTo(IEnumerable<int> numbers)
         {
             var l = numbers.Where(x => x <= magicNumber).OrderBy(x => x).ToList();
-            var length = l.Count();
+            var length = l.Count;
             for (var i = 0; i < length; i++)
             {
                 var startIndex = 0;
@@ -395,7 +395,7 @@ namespace AdventOfCodeShared.Logic
             var allObjects = new Dictionary<string, ObjectNode>();
             //In the map data, this orbital relationship is written AAA)BBB, which means "BBB is in orbit around AAA".
             var orbitInstructions = allOrbits;
-            foreach (var oi in orbitInstructions.Where(x => x.Count() > 0))
+            foreach (var oi in orbitInstructions.Where(x => x.Length > 0))
             {
                 var objects = oi.Split(')');
                 var name = objects[1];
@@ -408,8 +408,11 @@ namespace AdventOfCodeShared.Logic
                 }
                 else
                 {
-                    on = new ObjectNode() { Name = name };
-                    on.Orbitting = new LinkedList<ObjectNode>();
+                    on = new ObjectNode
+                    {
+                        Name = name,
+                        Orbitting = new LinkedList<ObjectNode>()
+                    };
                     allObjects.Add(name, on);
                 }
 
@@ -420,8 +423,11 @@ namespace AdventOfCodeShared.Logic
                 }
                 else
                 {
-                    orbitting = new ObjectNode() { Name = orbittingObjectName };
-                    orbitting.Orbitting = new LinkedList<ObjectNode>();
+                    orbitting = new ObjectNode
+                    {
+                        Name = orbittingObjectName,
+                        Orbitting = new LinkedList<ObjectNode>()
+                    };
                     allObjects.Add(orbittingObjectName, orbitting);
                 }
                 on.Orbitting.AddLast(orbitting);
@@ -502,10 +508,10 @@ namespace AdventOfCodeShared.Logic
                     // find max scenic score
                     var currentSize = grid[row][col];
 
-                    int newScore = scoreUp(grid, row, col, currentSize)
-                        * scoreLeft(grid, row, col, currentSize)
-                        * scoreDown(grid, row, col, currentSize)
-                        * scoreRight(grid, row, col, currentSize);
+                    int newScore = ScoreUp(grid, row, col, currentSize)
+                        * ScoreLeft(grid, row, col, currentSize)
+                        * ScoreDown(grid, row, col, currentSize)
+                        * ScoreRight(grid, row, col, currentSize);
 
                     if (newScore > maxScore)
                     {
@@ -521,14 +527,14 @@ namespace AdventOfCodeShared.Logic
         {
             // if any adjacent row's integers are all greater than myself then return true.
             var currentSize = grid[row][col];
-            return isVisibleLeft(grid, row, col, currentSize)
-            || isVisibleRight(grid, row, col, currentSize)
-            || isVisibleUp(grid, row, col, currentSize)
-            || isVisibleDown(grid, row, col, currentSize)
+            return IsVisibleLeft(grid, row, col, currentSize)
+            || IsVisibleRight(grid, row, col, currentSize)
+            || IsVisibleUp(grid, row, col, currentSize)
+            || IsVisibleDown(grid, row, col, currentSize)
             ;
         }
 
-        private static bool isVisibleDown(List<List<int>> grid, int row, int col, int currentSize)
+        private static bool IsVisibleDown(List<List<int>> grid, int row, int col, int currentSize)
         {
             for (int i = grid.Count - 1; i > row; i--)
             {
@@ -541,7 +547,7 @@ namespace AdventOfCodeShared.Logic
             return true;
         }
 
-        private static bool isVisibleUp(List<List<int>> grid, int row, int col, int currentSize)
+        private static bool IsVisibleUp(List<List<int>> grid, int row, int col, int currentSize)
         {
             for (int i = 0; i < row; i++)
             {
@@ -554,7 +560,7 @@ namespace AdventOfCodeShared.Logic
             return true;
         }
 
-        private static bool isVisibleRight(List<List<int>> grid, int row, int col, int currentSize)
+        private static bool IsVisibleRight(List<List<int>> grid, int row, int col, int currentSize)
         {
             for (int i = grid[row].Count - 1; i > col; i--)
             {
@@ -567,7 +573,7 @@ namespace AdventOfCodeShared.Logic
             return true;
         }
 
-        private static bool isVisibleLeft(List<List<int>> grid, int row, int col, int currentSize)
+        private static bool IsVisibleLeft(List<List<int>> grid, int row, int col, int currentSize)
         {
             for (int i = 0; i < col; i++)
             {
@@ -580,7 +586,7 @@ namespace AdventOfCodeShared.Logic
             return true;
         }
 
-        private static int scoreDown(List<List<int>> grid, int row, int col, int currentSize)
+        private static int ScoreDown(List<List<int>> grid, int row, int col, int currentSize)
         {
             var score = 0;
             for (int i = row + 1; i < grid.Count; i++)
@@ -595,7 +601,7 @@ namespace AdventOfCodeShared.Logic
             return score;
         }
 
-        private static int scoreUp(List<List<int>> grid, int row, int col, int currentSize)
+        private static int ScoreUp(List<List<int>> grid, int row, int col, int currentSize)
         {
             var score = 0;
             for (int i = row - 1; i >= 0; i--)
@@ -610,7 +616,7 @@ namespace AdventOfCodeShared.Logic
             return score;
         }
 
-        private static int scoreRight(List<List<int>> grid, int row, int col, int currentSize)
+        private static int ScoreRight(List<List<int>> grid, int row, int col, int currentSize)
         {
             var score = 0;
             for (int i = col + 1; i < grid[row].Count; i++)
@@ -625,7 +631,7 @@ namespace AdventOfCodeShared.Logic
             return score;
         }
 
-        private static int scoreLeft(List<List<int>> grid, int row, int col, int currentSize)
+        private static int ScoreLeft(List<List<int>> grid, int row, int col, int currentSize)
         {
             var score = 0;
             for (int i = col - 1; i >= 0; i--)
@@ -650,7 +656,7 @@ namespace AdventOfCodeShared.Logic
                 knotPositions.Add(new Point(0, 0));
             }
 
-            var tailPath = new List<Point>() { knotPositions[knotPositions.Count - 1] };
+            var tailPath = new List<Point>() { knotPositions[^1] };
             foreach (var movement in directions)
             {
                 //If the head is ever two steps directly up, down, left, or right
@@ -695,7 +701,7 @@ namespace AdventOfCodeShared.Logic
                             }
                             break;
                     }
-                    tailPath.Add(knotPositions[knotPositions.Count - 1]);
+                    tailPath.Add(knotPositions[^1]);
                 }
             }
             return tailPath;
@@ -955,10 +961,7 @@ namespace AdventOfCodeShared.Logic
                 }
                 else
                 {
-                    if (currentCommand != null)
-                    {
-                        currentCommand.Item2.Add(line);
-                    }
+                    currentCommand?.Item2.Add(line);
                 }
             }
 
@@ -1008,6 +1011,39 @@ namespace AdventOfCodeShared.Logic
             }
 
             return root;
+        }
+
+        /// <summary>
+        /// Given a list of lists of nodes, return the point that contains the start marker
+        /// and the point that contains the end marker.
+        /// ASSUME that both will always exist in the grid.
+        /// </summary>
+        public static Tuple<Point, Point> FindStartAndEndPosition(
+            Grid<char> grid)
+        {
+            const char StartSymbol = 'S';
+            const char EndSymbol = 'E';
+            Point? startPoint = null;
+            Point? endPoint = null;
+            for (int i = 0; i < grid.Columns; i++)
+            {
+                for (int j = 0; j < grid.RowCount(i); j++)
+                {
+                    if (grid.NodeAt(i,j).Value.Equals(StartSymbol))
+                    {
+                        startPoint = new Point(i, j);
+                    }
+                    if (grid.NodeAt(i, j).Value.Equals(EndSymbol))
+                    {
+                        endPoint = new Point(i, j);
+                    }
+                    if (startPoint != null && endPoint != null)
+                    {
+                        break;
+                    }
+                }
+            }
+            return Tuple.Create(startPoint.Value, endPoint.Value);
         }
     }
 }

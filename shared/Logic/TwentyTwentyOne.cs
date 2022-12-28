@@ -295,13 +295,13 @@ namespace AdventOfCodeShared.Logic
 
         public static long Day9Part1(string[] input)
         {
-            var heightPoints= new Grid(input);
+            var heightPoints= Grid<int>.ParseIntGrid(input);
             var minPoints = heightPoints.FindMinPoints();
             return minPoints.Aggregate(0, (acc, next)=>acc += next + 1);
         }
         public static long Day9Part2(string[] input)
         {
-            var heightPoints = new Grid(input);
+            var heightPoints = Grid<int>.ParseIntGrid(input);
             var basins = heightPoints.FindBasins();
             var topThree = basins.Take(3).ToList();
             return topThree.Aggregate(1, (acc, next) => acc *= next.Count);
