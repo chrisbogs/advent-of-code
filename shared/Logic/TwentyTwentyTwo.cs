@@ -394,23 +394,15 @@ namespace AdventOfCodeShared.Logic
 
         public static int Day12Part1(string[] input)
         {
-            input = new string[] {
-                "Sabqponm",
-                "abcryxxl",
-                "accszExk",
-                "acctuvwj",
-                "abdefghi"};
             // where a is the lowest elevation, b is the next - lowest, and so on up to the highest elevation, z.
             var grid = Grid<char>.ParseGridOfLettersIntoNodes(input);
-            //Also included on the heightmap are marks for your current position(S) and the location that should get the best signal(E).
-            var startAndEnd = FindStartAndEndPosition(grid);
+            var (start, end) = FindStartAndEndPosition(grid);
 
-            //Your current position(S) has elevation a, and the location that should get the best signal(E) has elevation z.
-
-            var path = Grid<char>.FindPath(grid, startAndEnd.Item1, startAndEnd.Item2);
+            var distance = Grid<char>.FindShortestPathBFSIterative(grid, start, end);
             //You'd like to reach E, but to save energy, you should do it in as few steps as possible.
-            return path.Item2.Count-1;
+            return distance;
         }
+        
 
         public static int Day12Part2(string[] input)
         {

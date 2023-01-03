@@ -46,9 +46,17 @@ namespace AdventOfCodeShared.Models
         internal static Grid<char> ParseGridOfLettersIntoNodes(
             string[] input)
         {
-            return new Grid<char>(input.Select(line => 
-                    line.Select(x => new GridNode<char>(x)).ToList()
-                ).ToList());
+            var result = new List<List<GridNode<char>>>();
+            for (int i = 0; i < input.Length; i++)
+            {
+                var row = new List<GridNode<char>>();
+                for (int j = 0; j < input[i].Length; j++)
+                {
+                    row.Add(new GridNode<char>(input[i][j], new Point(i, j)));
+                }
+                result.Add(row);
+            }
+            return new Grid<char>(result);
         }
 
         public GridNode<T> NodeAt(int c, int r) => _grid[c][r];
@@ -223,14 +231,13 @@ namespace AdventOfCodeShared.Models
         private void PrintGrid(Point current, Point end)
         {
             Console.WriteLine();
-
             for (var c = 0; c < Columns; c++)
             {
                 for (var r = 0; r < RowCount(c); r++)
                 {
                     if (c == end.X && r == end.Y) Console.Write('E');
                     else if (c == current.X && r == current.Y) Console.Write('X');
-                    else Console.Write(NodeAt(c, r).Visited ? '#' : 'o');
+                    else Console.Write(NodeAt(c, r).Visited ? '#' : Convert.ToChar(NodeAt(c,r).Value));
                 }
                 Console.WriteLine();
             }
@@ -238,79 +245,84 @@ namespace AdventOfCodeShared.Models
 
         }
 
-        internal static (bool, List<GridNode<T>>) FindPath(
-            Grid<T> grid,
-            Point start, Point end)
+        private static bool CanMove(Point start, Grid<T> grid, int newX, int newY)
         {
-            grid.PrintGrid(start, end);
-            var currentPath = new List<GridNode<T>>();
-            if (grid.NodeAt(start.X, start.Y).Visited)
+            if (newX < 0) return false;
+            if (newY < 0) return false;
+            if (newX >= grid.Columns) return false;
+            if (newY >= grid.RowCount(newX)) return false;
+
+            var heightValueOfSource = Convert.ToChar(grid.NodeAt(start.X, start.Y).Value);
+            if (heightValueOfSource == 'E')
             {
-                return (false, currentPath);
+                heightValueOfSource = 'z';
             }
 
-            //During each step, you can move exactly one square up, down, left, or right.
-            //To avoid needing to get out your climbing gear, the elevation of the destination square can be at most
-            //one higher than the elevation of your current square; that is, if your current elevation is m, you could
-            //step to elevation n, but not to elevation o.
-            //(This also means that the elevation of the destination square can be much lower than the elevation of your current square.)
-            List<GridNode<T>> minPath = new() { grid.NodeAt(start.X, start.Y) };
-
-            if (grid.NodeAt(start.X, start.Y).Value.Equals('E'))
+            if (heightValueOfSource == 'S')
             {
-                return (true, minPath);
+                heightValueOfSource = 'a';
+            }
+         
+            var heightValueOfDestination = Convert.ToChar(grid.NodeAt(newX, newY).Value);
+            if (heightValueOfDestination == 'E') 
+            {
+                heightValueOfDestination = 'z';
             }
 
-            //keep looking
-            var newPath = new List<GridNode<T>>();
-            var foundEnd = false;
-            Grid<T> newGrid = grid.DeepCopy();
-            newGrid.NodeAt(start.X, start.Y).Visited = true;
-
-            // look up
-            if (start.Y - 1 >= 0
-                && (newGrid.NodeAt(start.X, start.Y).Value.Equals('S')
-                || Convert.ToChar(newGrid.NodeAt(start.X, start.Y).Value) + 1 >= Convert.ToChar(newGrid.NodeAt(start.X, start.Y - 1).Value)))
+            if (heightValueOfDestination == 'S')
             {
-                (foundEnd, currentPath) = FindPath(newGrid, new Point(start.X, start.Y - 1), end);
-            }
-            // look down
-            if (start.Y + 1 < grid.RowCount(start.X)
-                && (newGrid.NodeAt(start.X, start.Y).Value.Equals('S') || Convert.ToChar(newGrid.NodeAt(start.X, start.Y).Value) + 1 >= Convert.ToChar(newGrid.NodeAt(start.X, start.Y + 1).Value)))
-            {
-                (bool foundEndDown, newPath) = FindPath(newGrid, new Point(start.X, start.Y + 1), end);
-                if (foundEndDown)
-                {
-                    currentPath = currentPath.ReturnSmallestNonEmpty(newPath);
-                    foundEnd = true;
-                }
-            }
-            // look left
-            if (start.X - 1 >= 0 && (newGrid.NodeAt(start.X, start.Y).Value.Equals('S') || Convert.ToChar(newGrid.NodeAt(start.X, start.Y).Value) + 1 >= Convert.ToChar(newGrid.NodeAt(start.X - 1, start.Y).Value)))
-            {
-                (bool foundEndLeft, newPath) = FindPath(newGrid, new Point(start.X - 1, start.Y), end);
-                if (foundEndLeft)
-                {
-                    currentPath = currentPath.ReturnSmallestNonEmpty(newPath);
-                    foundEnd = true;
-                }
-            }
-            // look right
-            if (start.X + 1 < grid.Columns
-                && (newGrid.NodeAt(start.X, start.Y).Value.Equals('S')
-                    || Convert.ToChar(newGrid.NodeAt(start.X, start.Y).Value) + 1 >= Convert.ToChar(newGrid.NodeAt(start.X + 1, start.Y).Value)))
-            {
-                (bool foundEndRight, newPath) = FindPath(newGrid, new Point(start.X + 1, start.Y), end);
-                if (foundEndRight)
-                {
-                    currentPath = currentPath.ReturnSmallestNonEmpty(newPath);
-                    foundEnd = true;
-                }
+                heightValueOfDestination = 'a';
             }
 
-            return (foundEnd, minPath.Concat(currentPath).ToList());
+            return heightValueOfDestination - heightValueOfSource <= 1;
         }
 
+        internal static int FindShortestPathBFSIterative(Grid<T> grid, Point start, Point end)
+        {
+            var queue = new Queue<(GridNode<T>,int)>();
+            queue.Enqueue((grid.NodeAt(start.X, start.Y), 0));
+            
+            while (queue.Any())
+            {
+                var (current, distance) = queue.Dequeue();
+                var curPosition = current.Position;
+                if (grid.NodeAt(curPosition.X, curPosition.Y).Visited)
+                {
+                    continue;
+                }
 
+                if (curPosition == end)
+                {
+                    return distance;
+                }
+
+                grid.NodeAt(curPosition.X, curPosition.Y).Visited = true;
+
+                // look at all neighbours
+
+                // look up
+                if (CanMove(curPosition, grid, curPosition.X, curPosition.Y - 1))
+                {
+                    queue.Enqueue((grid.NodeAt(curPosition.X, curPosition.Y-1), distance + 1));
+                }
+                // look down
+                if (CanMove(curPosition, grid, curPosition.X, curPosition.Y + 1))
+                {
+                    queue.Enqueue((grid.NodeAt(curPosition.X, curPosition.Y + 1), distance + 1));
+                }
+                // look left
+                if (CanMove(curPosition, grid, curPosition.X - 1, curPosition.Y))
+                {
+                    queue.Enqueue((grid.NodeAt(curPosition.X-1, curPosition.Y), distance + 1));
+                }
+                // look right
+                if (CanMove(curPosition, grid, curPosition.X + 1, curPosition.Y))
+                {
+                    queue.Enqueue((grid.NodeAt(curPosition.X+1, curPosition.Y), distance + 1));
+                }
+            }
+
+            return 0;
+        }
     }
 }
