@@ -222,7 +222,7 @@ namespace tests
         [Fact]
         public void Day9FindBasins()
         {
-            var basins = new Grid(new string[] {
+            var basins = Grid<int>.ParseIntGrid(new string[] {
               "2199943210",
               "3987894921",
               "9856789892",

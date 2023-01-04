@@ -1,5 +1,4 @@
 ﻿using AdventOfCodeShared.Extensions;
-using static AdventOfCodeShared.Logic.Helpers;
 using AdventOfCodeShared.Models;
 using AdventOfCodeShared.Models.Geometry;
 using System;
@@ -7,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using static AdventOfCodeShared.Logic.Helpers;
 
 namespace AdventOfCodeShared.Logic
 {
@@ -14,23 +14,23 @@ namespace AdventOfCodeShared.Logic
     {
         public static long Day1Part1(string[] input)
         {
-            List<long> calories = Helpers.SumContiguousLines(input);
+            List<long> calories = SumContiguousLines(input);
             return calories.Max();
         }
 
         public static long Day1Part2(string[] input)
         {
-            List<long> calories = Helpers.SumContiguousLines(input);
+            List<long> calories = SumContiguousLines(input);
             return calories.OrderByDescending(x => x).Take(3).Sum();
         }
-        
+
         public static long Day2Part1(string[] input)
         {
             var lines = input.Select(x => x.Split(' ')).ToList();
             var totalScore = 0;
             foreach (var line in lines)
             {
-                totalScore += Helpers.RunRockPaperScissorsRound(line);
+                totalScore += RunRockPaperScissorsRound(line);
             }
 
             return totalScore;
@@ -191,7 +191,7 @@ namespace AdventOfCodeShared.Logic
             }
             return sum;
         }
-        
+
 
         public static long Day4Part2(string[] input)
         {
@@ -212,7 +212,7 @@ namespace AdventOfCodeShared.Logic
 
         public static string Day5Part1(string[] input)
         {
-            Helpers.ParseStacks(input, out List<Stack<char>> stacks, out List<Tuple<int, int, int>> instructions);
+            ParseStacks(input, out List<Stack<char>> stacks, out List<Tuple<int, int, int>> instructions);
 
             if (!stacks.Any() || !instructions.Any()) return "";
 
@@ -233,7 +233,7 @@ namespace AdventOfCodeShared.Logic
         }
         public static string Day5Part2(string[] input)
         {
-            Helpers.ParseStacks(input, out List<Stack<char>> stacks, out List<Tuple<int, int, int>> instructions);
+            ParseStacks(input, out List<Stack<char>> stacks, out List<Tuple<int, int, int>> instructions);
 
             if (!stacks.Any() || !instructions.Any()) return "";
 
@@ -258,17 +258,17 @@ namespace AdventOfCodeShared.Logic
         public static long Day6Part1(string[] input)
         {
             var dataStream = input[0];
-            return Helpers.FindFirstDistinctSubString(dataStream, 4);
+            return FindFirstDistinctSubString(dataStream, 4);
         }
         public static long Day6Part2(string[] input)
         {
             var dataStream = input[0];
-            return Helpers.FindFirstDistinctSubString(dataStream, 14);
+            return FindFirstDistinctSubString(dataStream, 14);
         }
 
         public static long Day7Part1(string[] input)
         {
-            DirectoryNode<string> root = Helpers.ParseTerminalInput(input);
+            DirectoryNode<string> root = ParseTerminalInput(input);
             var files = root.FindAllChildrenLessThan(100000);
             return files.Sum(x => x.Size);
         }
@@ -276,8 +276,8 @@ namespace AdventOfCodeShared.Logic
         {
             const int availableSpace = 70_000_000;
             const int spaceNeeded = 30_000_000;
-            DirectoryNode<string> root = Helpers.ParseTerminalInput(input);
-            
+            DirectoryNode<string> root = ParseTerminalInput(input);
+
             var unUsedSpace = availableSpace - root.Size;
             if (unUsedSpace > spaceNeeded)
             {
@@ -303,7 +303,7 @@ namespace AdventOfCodeShared.Logic
             {
                 for (int k = 0; k < grid[j].Count; k++)
                 {
-                    if (Helpers.IsVisible(grid, j, k))
+                    if (IsVisible(grid, j, k))
                     {
                         visibleCount++;
                     }
@@ -323,20 +323,20 @@ namespace AdventOfCodeShared.Logic
                 grid.Add(ints);
             }
 
-            int maxScore = Helpers.DetermineScore(grid);
+            int maxScore = DetermineScore(grid);
             return maxScore;
         }
 
         public static long Day9Part1(string[] input)
         {
             var directions = Parsing.ParseDirections(input);
-            List<Point> tailPath = Helpers.MoveRopeAndTrackPath(directions, 2);
+            List<Point> tailPath = MoveRopeAndTrackPath(directions, 2);
             return tailPath.Distinct().Count();
         }
         public static long Day9Part2(string[] input)
         {
             var directions = Parsing.ParseDirections(input);
-            List<Point> tailPath = Helpers.MoveRopeAndTrackPath(directions, 10);
+            List<Point> tailPath = MoveRopeAndTrackPath(directions, 10);
             return tailPath.Distinct().Count();
         }
 
@@ -373,7 +373,7 @@ namespace AdventOfCodeShared.Logic
                 .Take(2)
                 .Aggregate((x, y) => x * y);
         }
-        public static long Day11Part2(string[] input, int rounds=10000)
+        public static long Day11Part2(string[] input, int rounds = 10000)
         {
             //TODO: not complete overflow error
             var monkeys = Monkey.ParseMonkeyInTheMiddle(input);
@@ -394,11 +394,24 @@ namespace AdventOfCodeShared.Logic
 
         public static int Day12Part1(string[] input)
         {
-            return 0;
+            // where a is the lowest elevation, b is the next - lowest, and so on up to the highest elevation, z.
+            var grid = Grid<char>.ParseGridOfLettersIntoNodes(input);
+            var (start, end) = FindStartAndEndPosition(grid);
+
+            var distance = Grid<char>.FindShortestPathBFSIterative(grid, new List<Point>() { start }, end);
+            //You'd like to reach E, but to save energy, you should do it in as few steps as possible.
+            return distance;
         }
+        
         public static int Day12Part2(string[] input)
         {
-            return 0;
+            var grid = Grid<char>.ParseGridOfLettersIntoNodes(input);
+            var (start, end) = FindStartAndEndPosition(grid);
+
+            // Find shortest paths from all nodes with level 'a'
+            var startingPoints = grid.GetGridPositions('a');
+            startingPoints.Add(start);
+            return Grid<char>.FindShortestPathBFSIterative(grid, startingPoints, end);
         }
 
         public static int Day13Part1(string[] input)
