@@ -398,15 +398,20 @@ namespace AdventOfCodeShared.Logic
             var grid = Grid<char>.ParseGridOfLettersIntoNodes(input);
             var (start, end) = FindStartAndEndPosition(grid);
 
-            var distance = Grid<char>.FindShortestPathBFSIterative(grid, start, end);
+            var distance = Grid<char>.FindShortestPathBFSIterative(grid, new List<Point>() { start }, end);
             //You'd like to reach E, but to save energy, you should do it in as few steps as possible.
             return distance;
         }
         
-
         public static int Day12Part2(string[] input)
         {
-            return 0;
+            var grid = Grid<char>.ParseGridOfLettersIntoNodes(input);
+            var (start, end) = FindStartAndEndPosition(grid);
+
+            // Find shortest paths from all nodes with level 'a'
+            var startingPoints = grid.GetGridPositions('a');
+            startingPoints.Add(start);
+            return Grid<char>.FindShortestPathBFSIterative(grid, startingPoints, end);
         }
 
         public static int Day13Part1(string[] input)

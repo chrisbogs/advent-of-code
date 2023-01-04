@@ -717,5 +717,17 @@ namespace tests
         {
             Assert.Equal(expected, TwentyTwentyTwo.Day12Part1(input));
         }
+
+        [Theory]
+        [InlineData(new string[] {
+        "Sabqponm",
+        "abcryxxl",
+        "accszExk",
+        "acctuvwj",
+        "abdefghi"}, 29)]
+        public void Day12Part2(string[] input, long expected)
+        {
+            Assert.Equal(expected, TwentyTwentyTwo.Day12Part2(input));
+        }
     }
 }

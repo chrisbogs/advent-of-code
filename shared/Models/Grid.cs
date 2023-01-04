@@ -1,4 +1,3 @@
-using AdventOfCodeShared.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,14 +11,6 @@ namespace AdventOfCodeShared.Models
         private readonly List<List<GridNode<T>>> _grid;
 
         public Grid(List<List<GridNode<T>>> grid) { _grid = grid; }
-
-        private Grid<T> DeepCopy()
-        {
-            return new Grid<T>(_grid.Select(x =>
-                x.Select(x => new GridNode<T>(x.Value, x.Visited)
-                ).ToList()
-            ).ToList());
-        }
 
         /// <summary>
         /// Accepts lines of integers and parses them into gridNodes.
@@ -39,7 +30,7 @@ namespace AdventOfCodeShared.Models
             return new Grid<int>(grid);
         }
 
-                /// <summary>
+        /// <summary>
         /// Parses lines in the format: ["abcdefff", "asdasdasd"] 
         /// and converts each char to an GridNode.
         /// </summary>
@@ -79,6 +70,26 @@ namespace AdventOfCodeShared.Models
                 sb.AppendLine();
             }
             return sb.ToString();
+        }
+
+        public List<Point> GetGridPositions(T value)
+        {
+            var result = new List<Point>();
+            for (var c = 0; c < Columns; c++)
+            {
+                for (var r = 0; r < RowCount(c); r++)
+                {
+                    var cell = NodeAt(c, r);
+                    if (typeof(T) == typeof(char))
+                    {
+                        if (Convert.ToChar(cell.Value) == Convert.ToChar(value))
+                        {
+                            result.Add(cell.Position);
+                        }
+                    }
+                }
+            }
+            return result;
         }
 
         public bool LookAbove(int r, int c, bool ignoreVisited = false)
@@ -237,7 +248,7 @@ namespace AdventOfCodeShared.Models
                 {
                     if (c == end.X && r == end.Y) Console.Write('E');
                     else if (c == current.X && r == current.Y) Console.Write('X');
-                    else Console.Write(NodeAt(c, r).Visited ? '#' : Convert.ToChar(NodeAt(c,r).Value));
+                    else Console.Write(NodeAt(c, r).Visited ? '#' : Convert.ToChar(NodeAt(c, r).Value));
                 }
                 Console.WriteLine();
             }
@@ -262,9 +273,9 @@ namespace AdventOfCodeShared.Models
             {
                 heightValueOfSource = 'a';
             }
-         
+
             var heightValueOfDestination = Convert.ToChar(grid.NodeAt(newX, newY).Value);
-            if (heightValueOfDestination == 'E') 
+            if (heightValueOfDestination == 'E')
             {
                 heightValueOfDestination = 'z';
             }
@@ -277,11 +288,22 @@ namespace AdventOfCodeShared.Models
             return heightValueOfDestination - heightValueOfSource <= 1;
         }
 
-        internal static int FindShortestPathBFSIterative(Grid<T> grid, Point start, Point end)
+        internal static int FindShortestPathBFSIterative(
+            Grid<T> grid, List<Point> startingPoints, Point end)
         {
-            var queue = new Queue<(GridNode<T>,int)>();
-            queue.Enqueue((grid.NodeAt(start.X, start.Y), 0));
-            
+            var queue = new Queue<(GridNode<T>, int)>();
+            foreach (var p in startingPoints)
+            {
+                queue.Enqueue((grid.NodeAt(p.X, p.Y), 0));
+            }
+
+            return RunBFS(queue, grid, end);
+        }
+
+        private static int RunBFS(
+            Queue<(GridNode<T>, int)> queue,
+            Grid<T> grid, Point end)
+        {
             while (queue.Any())
             {
                 var (current, distance) = queue.Dequeue();
@@ -303,7 +325,7 @@ namespace AdventOfCodeShared.Models
                 // look up
                 if (CanMove(curPosition, grid, curPosition.X, curPosition.Y - 1))
                 {
-                    queue.Enqueue((grid.NodeAt(curPosition.X, curPosition.Y-1), distance + 1));
+                    queue.Enqueue((grid.NodeAt(curPosition.X, curPosition.Y - 1), distance + 1));
                 }
                 // look down
                 if (CanMove(curPosition, grid, curPosition.X, curPosition.Y + 1))
@@ -313,15 +335,14 @@ namespace AdventOfCodeShared.Models
                 // look left
                 if (CanMove(curPosition, grid, curPosition.X - 1, curPosition.Y))
                 {
-                    queue.Enqueue((grid.NodeAt(curPosition.X-1, curPosition.Y), distance + 1));
+                    queue.Enqueue((grid.NodeAt(curPosition.X - 1, curPosition.Y), distance + 1));
                 }
                 // look right
                 if (CanMove(curPosition, grid, curPosition.X + 1, curPosition.Y))
                 {
-                    queue.Enqueue((grid.NodeAt(curPosition.X+1, curPosition.Y), distance + 1));
+                    queue.Enqueue((grid.NodeAt(curPosition.X + 1, curPosition.Y), distance + 1));
                 }
             }
-
             return 0;
         }
     }
