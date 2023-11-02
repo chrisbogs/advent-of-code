@@ -27,7 +27,7 @@ jobs:
     - name: Install dependencies 3
       run: dotnet restore server/Server.csproj --no-cache
     - name: Install dependencies 4
-      run: dotnet restore tests/Tests.csproj --no-cache
+      run: dotnet restore tests/tests.csproj --no-cache
     - name: Build
       run: dotnet build --no-restore
     - name: Test
