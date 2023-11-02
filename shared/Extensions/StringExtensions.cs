@@ -13,10 +13,57 @@ namespace AdventOfCodeShared.Extensions
             return await System.IO.File.ReadAllLinesAsync(filePath);
         }
 
-        public static IEnumerable<int> ParseInts(this string[] s)
+        public static IEnumerable<int> ParseIntsOnePerLine(this string[] s)
         {
+            if (s is null || !s.Any()) return Enumerable.Empty<int>();
             var splitContents = new List<string>(s);
-            return splitContents.Where(w => int.TryParse(w, out _)).Select(x => int.Parse(x));
+            return splitContents.Where(line => !string.IsNullOrWhiteSpace(line))
+                .Where(w => int.TryParse(w, out _)).Select(x => int.Parse(x));
+        }
+
+        public static IEnumerable<IEnumerable<int>> ParseIntsMultiplePerLine(this string[] s)
+        {
+            var result = new List<List<int>>();
+            if (s is null || !s.Any()) return result;
+            foreach (var line in s)
+            {
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
+                result.Add(ParseIntsOnLine(line));
+            }
+            return result;
+        }
+        /// <summary>
+        /// Convert a digit string to a collection of digits
+        /// </summary>
+        /// <param name="separators">If "" is passed, we make each character of the string into a list of strings</param>
+        public static List<int> ParseIntsOnLine(this string line, string separators = " \t")
+        {
+            var result = new List<int>();
+            if (line is null || !line.Any() || string.IsNullOrWhiteSpace(line)) return result;
+
+            string[] tokens;
+            if (separators != string.Empty)
+            {
+                tokens = line.Split(separators.ToCharArray(), StringSplitOptions.None);
+            }
+            else
+            {
+                tokens = line.Select(x=>x.ToString()).ToArray();
+            }
+
+            foreach (string token in tokens)
+            {
+                var x = token.Trim();
+                if (string.IsNullOrWhiteSpace(token) || !int.TryParse(token.ToString(), out _))
+                {
+                    continue;
+                }
+                result.Add(int.Parse(x.ToString()));
+            }
+            return result;
         }
 
         public static IEnumerable<PasswordWithRule> ParsePasswords(this string[] s)

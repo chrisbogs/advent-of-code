@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AdventOfCodeShared.Models
 {
@@ -58,18 +59,33 @@ namespace AdventOfCodeShared.Models
                 + string.Join(", ", children.Select(x => x.ToString()));
         }
 
-        internal List<DirectoryNode<T>> FindAllChildrenLessThan(int size)
+        internal int SumAllChildrenLessThan(int size)
         {
-            var directoryList = new List<DirectoryNode<T>>();
+            var directorySize = 0;
             if (Size <= size)
             {
-                directoryList.Add(this);
+                directorySize += this.Size;
             }
             foreach (var child in children)
             {
-                directoryList.AddRange(child.FindAllChildrenLessThan(size));
+                directorySize += child.SumAllChildrenLessThan(size);
             }
-            return directoryList;
+            return directorySize;
+        }
+
+        internal int SumAllChildrenLessThanParallel(int size)
+        {
+            var directorySize = 0;
+            if (Size <= size)
+            {
+                directorySize += this.Size;
+            }
+
+            directorySize += children.AsParallel()
+                .Select(child => child.SumAllChildrenLessThanParallel(size))
+                .Sum(x => x);
+
+            return directorySize;
         }
         internal List<DirectoryNode<T>> FindAllChildrenGreaterThan(int size)
         {

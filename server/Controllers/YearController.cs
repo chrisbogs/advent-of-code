@@ -1,6 +1,8 @@
 using AdventOfCodeShared.Logic;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 #pragma warning disable CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
 namespace Server
 {
@@ -9,21 +11,25 @@ namespace Server
     [ApiController]
     public class YearController : Controller
     {
-        private readonly IInputRetriever inputRetriever;
+        private readonly IInputRetriever _inputRetriever;
         public YearController(IInputRetriever inputRetriever)
         {
-            this.inputRetriever = inputRetriever;
+            this._inputRetriever = inputRetriever;
         }
 
         [HttpGet("{year:int}/{day:int}/{part:int}")]
-        public string Router(int year, int day, int part)
+        public async Task<string> Router(int year, int day, int part)
         {
             var input = Array.Empty<string>();
             try
             {
-                 input = this.inputRetriever.GetInput(year, day).Result;
+                 input = await _inputRetriever.GetInput(year, day);
             }
-            catch (System.AggregateException)
+            catch (AggregateException)
+            {
+                return string.Empty;
+            }
+            catch (DirectoryNotFoundException)
             {
                 return string.Empty;
             }

@@ -4,13 +4,14 @@ using Server;
 using System.Collections.Generic;
 using Xunit;
 using AdventOfCodeShared.Models.Image;
+using System.Threading.Tasks;
 
-namespace tests
+namespace Tests
 {
     public class Test2019
     {
         [Fact]
-        public void TestDay1()
+        public async Task TestDay1()
         {
             Assert.Equal(2, Helpers.CalcFuelNeeded(12));
             Assert.Equal(2, Helpers.CalcFuelNeeded(14));
@@ -23,7 +24,7 @@ namespace tests
         }
 
         [Fact]
-        public void TestDay2()
+        public async Task TestDay2()
         {
             var computer = new Computer();
             computer.Memory = new long[] { 1, 0, 0, 0, 99 };
@@ -41,7 +42,7 @@ namespace tests
         }
 
         [Fact]
-        public void TestDay3()
+        public async Task TestDay3()
         {
             var wire1a = new string[] { "R75", "D30", "R83", "U83", "L12", "D49", "R71", "U7", "L72" };
             var wire2a = new string[] { "U62", "R66", "U55", "R34", "D71", "R55", "D58", "R83" };
@@ -56,7 +57,7 @@ namespace tests
         }
 
         [Fact]
-        public void TestDay4()
+        public async Task TestDay4()
         {
             Assert.True(Helpers.MeetsCriteria("111111", 0, int.MaxValue));
             Assert.False(Helpers.MeetsCriteria("223450", 0, int.MaxValue)); //223450 does not meet these criteria(decreasing pair of digits 50).
@@ -142,7 +143,7 @@ namespace tests
         }
 
         [Fact]
-        public void TestDay5()
+        public async Task TestDay5()
         {
             var computer = new Computer("04,0,99");
             computer.RunIntCodeProgram();
@@ -236,7 +237,7 @@ namespace tests
         }
 
         [Fact]
-        public void TestDay6()
+        public async Task TestDay6()
         {
             //For example, suppose you have the following map:
             //COM)B
@@ -293,7 +294,7 @@ namespace tests
         }
 
         [Fact]
-        public void TestDay7()
+        public async Task TestDay7()
         {
             int[] input = { 1, 2, 3 };
             var result = new List<int[]>();
@@ -319,7 +320,7 @@ namespace tests
         }
 
         [Fact]
-        public void TestDay8()
+        public async Task TestDay8()
         {
             //For example, given an image 2 pixels wide and 2 pixels tall, the image data 0222112222120000 corresponds to the following image layers:
             //Layer 1: 02
@@ -351,7 +352,7 @@ namespace tests
         }
 
         [Fact]
-        public void TestDay9()
+        public async Task TestDay9()
         {
             //Here are some example programs that use these features:
             // takes no input and produces a copy of itself as output.
@@ -381,7 +382,7 @@ namespace tests
         }
 
         [Fact]
-        public void TestDay10()
+        public async Task TestDay10()
         {
             //Here are some larger examples:
             //Best is 5,8 with 33 other asteroids detected:
@@ -445,22 +446,22 @@ namespace tests
         }
 
         [Fact]
-        public void TestDay11()
+        public async Task TestDay11()
         {
         }
 
         [Fact]
-        public void TestDay12()
+        public async Task TestDay12()
         {
         }
 
         [Fact]
-        public void TestDay13()
+        public async Task TestDay13()
         {
         }
 
         [Fact]
-        public void TestDay14()
+        public async Task TestDay14()
         {
             //13312 ORE for 1 FUEL:
             //157 ORE => 5 NZVS
@@ -508,27 +509,27 @@ namespace tests
         }
 
         [Fact]
-        public void TestDay15()
+        public async Task TestDay15()
         {
         }
 
         [Fact]
-        public void TestDay16()
+        public async Task TestDay16()
         {
         }
 
         [Fact]
-        public void TestDay17()
+        public async Task TestDay17()
         {
         }
 
         [Fact]
-        public void TestDay18()
+        public async Task TestDay18()
         {
         }
 
         [Fact]
-        public void TestDay19()
+        public async Task TestDay19()
         {
             //For example, suppose you scan the 10x10 grid of points closest to the emitter:
             //         X
@@ -547,63 +548,63 @@ namespace tests
         }
 
         [Fact]
-        public void TestDay20()
+        public async Task TestDay20()
         {
         }
 
         [Fact]
-        public void TestDay21()
+        public async Task TestDay21()
         {
         }
 
         [Fact]
-        public void TestDay22()
+        public async Task TestDay22()
         {
         }
 
         [Fact]
-        public void TestDay23()
+        public async Task TestDay23()
         {
         }
 
         [Fact]
-        public void TestDay24()
+        public async Task TestDay24()
         {
         }
 
         [Fact]
-        public void TestDay25()
+        public async Task TestDay25()
         {
         }
 
         [Fact]
-        public void TestFinalAnswers()
+        public async Task TestFinalAnswers()
         {
             var sut = new YearController(new InputRetriever());
 
-            Assert.Equal("3305041", sut.Router(2019, 1, 1));
-            Assert.Equal("4954710", sut.Router(2019, 1, 2));
+            Assert.Equal("3305041", await sut.Router(2019, 1, 1));
+            Assert.Equal("4954710", await sut.Router(2019, 1, 2));
 
-            Assert.Equal("5482655", sut.Router(2019, 2, 1));
-            Assert.Equal("4967", sut.Router(2019, 2, 2));
+            Assert.Equal("5482655", await sut.Router(2019, 2, 1));
+            Assert.Equal("4967", await sut.Router(2019, 2, 2));
 
-            Assert.Equal("865", sut.Router(2019, 3, 1));
-            Assert.Equal("35038", sut.Router(2019, 3, 2));
+            Assert.Equal("865", await sut.Router(2019, 3, 1));
+            Assert.Equal("35038", await sut.Router(2019, 3, 2));
 
-            Assert.Equal("889", sut.Router(2019, 4, 1));
-            Assert.Equal("589", sut.Router(2019, 4, 2));
+            Assert.Equal("889", await sut.Router(2019, 4, 1));
+            Assert.Equal("589", await sut.Router(2019, 4, 2));
 
-            Assert.Equal("0,0,0,0,0,0,0,0,0,4887191", string.Join(',', sut.Router(2019, 5, 1)));
-            Assert.Equal("3419022", sut.Router(2019, 5, 2));
+            Assert.Equal("0,0,0,0,0,0,0,0,0,4887191", string.Join(',', await sut.Router(2019, 5, 1)));
+            Assert.Equal("3419022", await sut.Router(2019, 5, 2));
 
-            // Assert.Equal("0", sut.Router(2019,6,1));
+            // Assert.Equal("0", await sut.Router(2019,6,1));
 
-            Assert.Equal("440880", sut.Router(2019, 7, 1));
-            // Assert.Equal(, sut.Router(2019,7,2));
+            Assert.Equal("440880", await sut.Router(2019, 7, 1));
+            // Assert.Equal(, await sut.Router(2019,7,2));
 
-            Assert.Equal("2193", sut.Router(2019, 8, 1));
-            Assert.Equal("3512778005", sut.Router(2019, 9, 1));
-            Assert.Equal("35920", sut.Router(2019, 9, 2));
+            Assert.Equal("2193", await sut.Router(2019, 8, 1));
+            Assert.Equal("3512778005", await sut.Router(2019, 9, 1));
+            Assert.Equal("35920", await sut.Router(2019, 9, 2));
 
         }
     }

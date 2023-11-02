@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using Xunit;
 
-namespace tests
+namespace Tests
 {
     public class Test2023
     {

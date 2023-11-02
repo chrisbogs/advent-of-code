@@ -1,6 +1,8 @@
+using AdventOfCodeShared.Extensions;
 using AdventOfCodeShared.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
 
@@ -10,16 +12,52 @@ namespace AdventOfCodeShared.Logic
     {
         public static long Day1Part1(string[] input)
         {
-            return 0;
+            var numbers = input[0].ParseIntsOnLine("").ToArray();
+            //find the sum of all digits that match the next digit in the list. The list is circular, so the digit after the last digit is the first digit in the list
+            int i = 0;
+            var sum = 0;
+            while (i < numbers.Length)
+            {
+                var nextIndex = (i + 1) % numbers.Length;
+                if (numbers[i] == numbers[nextIndex])
+                {
+                    sum += numbers[i];
+                }
+                i++;
+            }
+            return sum;
         }
+        /// <summary>
+        /// Now, instead of considering the next digit, it wants you to consider the digit halfway around the circular list. That is, if your list contains 10 items, only include a digit in your sum if the digit 10/2 = 5 steps forward matches it. Fortunately, your list has an even number of elements.
+        /// </summary>
         public static long Day1Part2(string[] input)
         {
-            return 0;
+            var numbers = input[0].ParseIntsOnLine("").ToArray();
+            //find the sum of all digits that match the halfway around digit in the list.
+            //The list is circular, so the digit after the last digit is the first digit in the list
+            int i = 0;
+            var sum = 0;
+            int midIndex = numbers.Length / 2;
+            while (i < numbers.Length)
+            {
+                var nextIndex = (i + midIndex) % numbers.Length;
+                if (numbers[i] == numbers[nextIndex])
+                {
+                    sum += numbers[i];
+                }
+                i++;
+            }
+            return sum;
         }
 
         public static long Day2Part1(string[] input)
         {
-            return 0;
+            //Calculate Checksum
+            //For each row, determine the difference between the largest value and the smallest value; the checksum is the sum of all of these differences.
+            if (input is null) return 0;
+            return input.ParseIntsMultiplePerLine()?
+                .Where(x=>x.Any())
+                .Select(line => Math.Abs(line.Max() - line.Min()))?.Sum() ?? 0;
         }
         public static long Day2Part2(string[] input)
         {

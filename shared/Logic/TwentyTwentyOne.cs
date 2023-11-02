@@ -10,12 +10,12 @@ namespace AdventOfCodeShared.Logic
     {
         public static long Day1Part1(string[] input)
         {
-            var numbers = input.ParseInts();
+            var numbers = input.ParseIntsOnePerLine();
             return Helpers.CountIncreases(numbers.ToList());
         }
         public static long Day1Part2(string[] input)
         {
-            var numbers = input.ParseInts();
+            var numbers = input.ParseIntsOnePerLine();
             return Helpers.CountIncreasesInThreeMeasurementWindow(numbers.ToList());
         }
 

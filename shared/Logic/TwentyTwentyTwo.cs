@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using static AdventOfCodeShared.Logic.Helpers;
 
 namespace AdventOfCodeShared.Logic
@@ -14,79 +15,83 @@ namespace AdventOfCodeShared.Logic
     {
         public static long Day1Part1(string[] input)
         {
-            List<long> calories = SumContiguousLines(input);
+            var calories = SumContiguousLinesGenerator(input);
             return calories.Max();
         }
 
         public static long Day1Part2(string[] input)
         {
-            List<long> calories = SumContiguousLines(input);
+            var calories = SumContiguousLinesGenerator(input);
             return calories.OrderByDescending(x => x).Take(3).Sum();
         }
 
-        public static long Day2Part1(string[] input)
+        public static async Task<long> Day2Part1(string[] input)
         {
             var lines = input.Select(x => x.Split(' ')).ToList();
-            var totalScore = 0;
+            var tasks = new List<Task<int>>();
             foreach (var line in lines)
             {
-                totalScore += RunRockPaperScissorsRound(line);
+                tasks.Add(Task.Run(() => RunRockPaperScissorsRound(line)));
             }
-
-            return totalScore;
+            var results = await Task.WhenAll(tasks);
+            return results.Sum();
         }
 
-        public static long Day2Part2(string[] input)
+        public static async Task<long> Day2Part2(string[] input)
         {
             var lines = input.Select(x => x.Split(' ')).ToList();
-            var totalScore = 0;
-
+            
+            var tasks = new List<Task<int>>();
             foreach (var line in lines)
             {
-                var shapes = Array.Empty<string>();
-                // calculate which shape to use
-                var opponentShape = line[0][0];
-                var outcome = line[1][0];
-                switch (outcome)
+                tasks.Add(Task.Run(() =>
                 {
-                    case 'X': //lose
-                        switch ((OpponentShape)opponentShape)
-                        {
-                            case OpponentShape.Rock:
-                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Scissors}" }; break;
-                            case OpponentShape.Paper:
-                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Rock}" }; break;
-                            case OpponentShape.Scissors:
-                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Paper}" }; break;
-                        }
-                        break;
-                    case 'Y': //tie
-                        switch ((OpponentShape)opponentShape)
-                        {
-                            case OpponentShape.Rock:
-                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Rock}" }; break;
-                            case OpponentShape.Paper:
-                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Paper}" }; break;
-                            case OpponentShape.Scissors:
-                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Scissors}" }; break;
-                        }
-                        break;
-                    case 'Z': //win
-                        switch ((OpponentShape)opponentShape)
-                        {
-                            case OpponentShape.Rock:
-                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Paper}" }; break;
-                            case OpponentShape.Paper:
-                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Scissors}" }; break;
-                            case OpponentShape.Scissors:
-                                shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Rock}" }; break;
-                        }
-                        break;
-                }
-                totalScore += RunRockPaperScissorsRound(shapes);
+                    var shapes = Array.Empty<string>();
+                    // calculate which shape to use
+                    var opponentShape = line[0][0];
+                    var outcome = line[1][0];
+                    switch (outcome)
+                    {
+                        case 'X': //lose
+                            switch ((OpponentShape)opponentShape)
+                            {
+                                case OpponentShape.Rock:
+                                    shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Scissors}" }; break;
+                                case OpponentShape.Paper:
+                                    shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Rock}" }; break;
+                                case OpponentShape.Scissors:
+                                    shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Paper}" }; break;
+                            }
+                            break;
+                        case 'Y': //tie
+                            switch ((OpponentShape)opponentShape)
+                            {
+                                case OpponentShape.Rock:
+                                    shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Rock}" }; break;
+                                case OpponentShape.Paper:
+                                    shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Paper}" }; break;
+                                case OpponentShape.Scissors:
+                                    shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Scissors}" }; break;
+                            }
+                            break;
+                        case 'Z': //win
+                            switch ((OpponentShape)opponentShape)
+                            {
+                                case OpponentShape.Rock:
+                                    shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Paper}" }; break;
+                                case OpponentShape.Paper:
+                                    shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Scissors}" }; break;
+                                case OpponentShape.Scissors:
+                                    shapes = new string[] { $"{opponentShape}", $"{(char)PlayerShape.Rock}" }; break;
+                            }
+                            break;
+                    }
+                    return RunRockPaperScissorsRound(shapes);
+                }));
             }
 
-            return totalScore;
+            var results = await Task.WhenAll(tasks);
+            return results.Sum();
         }
 
         // Maps an integer value to each upper and lowercase letter.
@@ -160,6 +165,36 @@ namespace AdventOfCodeShared.Logic
             }
             return sum;
         }
+        public static async Task<long> Day3Part1Tasks(string[] input)
+        {
+            var tasks = new List<Task<int>>();
+            foreach (var line in input)
+            {
+                tasks.Add(Task.Run(() =>
+                {
+                    // for each bag divide the line into 2 "pockets" of items
+                    var midIndex = (int)Math.Floor(line.Length / 2.0);
+                    var firstPocketItems = line[0..midIndex];
+                    var secondPocketItems = line[midIndex..^0];
+                    var sharedLetter = firstPocketItems.Intersect(secondPocketItems).FirstOrDefault();
+                    return priorityMap[sharedLetter];
+                }));
+            }
+            var results = await Task.WhenAll(tasks);
+            return results.Sum();
+        }
+        public static long Day3Part1ParallelLoop(string[] input)
+        {
+            return input.AsParallel().Sum(line =>
+            {
+                // for each bag divide the line into 2 "pockets" of items
+                var midIndex = (int)Math.Floor(line.Length / 2.0);
+                var firstPocketItems = line[0..midIndex];
+                var secondPocketItems = line[midIndex..^0];
+                var sharedLetter = firstPocketItems.Intersect(secondPocketItems).FirstOrDefault();
+                return priorityMap[sharedLetter];
+            });
+        }
         public static long Day3Part2(string[] input)
         {
             var sum = 0;
@@ -202,7 +237,7 @@ namespace AdventOfCodeShared.Logic
                 var set1 = parts[0].Split('-').Select(long.Parse).Take(2).ToList();
                 var set2 = parts[1].Split('-').Select(long.Parse).Take(2).ToList();
                 // check if one group of integers is fully contained in the second set
-                if (set1.Hasintersection(set2) || set2.Hasintersection(set1))
+                if (set1.HasIntersection(set2) || set2.HasIntersection(set1))
                 {
                     sum++;
                 }
@@ -269,8 +304,12 @@ namespace AdventOfCodeShared.Logic
         public static long Day7Part1(string[] input)
         {
             DirectoryNode<string> root = ParseTerminalInput(input);
-            var files = root.FindAllChildrenLessThan(100000);
-            return files.Sum(x => x.Size);
+            return root.SumAllChildrenLessThan(100000);
+        }
+        public static long Day7Part1Parallel(string[] input)
+        {
+            DirectoryNode<string> root = ParseTerminalInput(input);
+            return root.SumAllChildrenLessThanParallel(100000);
         }
         public static long Day7Part2(string[] input)
         {

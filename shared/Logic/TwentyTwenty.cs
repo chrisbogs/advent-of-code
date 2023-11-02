@@ -10,12 +10,12 @@ namespace AdventOfCodeShared.Logic
     {
         public static int Day1Part1(string[] input)
         {
-            var numbers = input.ParseInts();
+            var numbers = input.ParseIntsOnePerLine();
             return Helpers.Get2NumbersThatSumUpTo(numbers);
         }
         public static int Day1Part2(string[] input)
         {
-            var numbers = input.ParseInts();
+            var numbers = input.ParseIntsOnePerLine();
             return Helpers.Get3NumbersThatSumUpTo(numbers);
         }
 

@@ -6,23 +6,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
+using System.Threading.Tasks;
 
-namespace tests
+namespace Tests
 {
     public class Test2020
     {
         [Fact]
-        public void Day1()
+        public async Task Day1()
         {
             var sut = new YearController(new InputRetriever());
-            Assert.Equal("290784", sut.Router(2020, 1, 1));
+            Assert.Equal("290784", await  sut.Router(2020, 1, 1));
             Assert.Equal(241861950, Helpers.Get3NumbersThatSumUpTo(new List<int>() { 1721, 979, 366, 299, 675, 1456 }));
             Assert.Equal(514579, Helpers.Get2NumbersThatSumUpTo(new List<int>() { 1721, 979, 366, 299, 675, 1456 }));
-            Assert.Equal("177337980", sut.Router(2020, 1, 2));
+            Assert.Equal("177337980", await  sut.Router(2020, 1, 2));
         }
 
         [Fact]
-        public void Day2()
+        public async Task Day2()
         {
             var sut = new YearController(new InputRetriever());
             var parsed = StringExtensions.ParsePasswords(new string[1] { "2-6 c: fcpwjqhcgtffzlbj" }).First();
@@ -33,11 +34,11 @@ namespace tests
 
             Assert.True(new PasswordWithRule('c', 2, 6, "fcpwjqhcgtffzlbj").IsValidv1());
             Assert.True(new PasswordWithRule('c', 2, 6, "fcpwjqhcgtffzlbj").IsValidv2());
-            Assert.Equal("582", sut.Router(2020, 2, 1));
-            Assert.Equal("729", sut.Router(2020, 2, 2));
+            Assert.Equal("582", await  sut.Router(2020, 2, 1));
+            Assert.Equal("729", await sut.Router(2020, 2, 2));
         }
         [Fact]
-        public void Day3()
+        public async Task Day3()
         {
             var testMap = new Map(new List<string>(){
                 "..##.......",
@@ -58,7 +59,7 @@ namespace tests
             Assert.Equal(7, testMap.TraverseAndCountTrees(new Toboggan() { Right = 3, Down = 1 }));
 
             var sut = new YearController(new InputRetriever());
-            Assert.Equal("173", sut.Router(2020, 3, 1));
+            Assert.Equal("173", await sut.Router(2020, 3, 1));
             Assert.Equal(new List<long>() { 2, 7, 3, 4, 2 },
             new List<Toboggan>(){
                 new Toboggan(){Right=1, Down=1},
@@ -68,11 +69,11 @@ namespace tests
                 new Toboggan(){Right=1, Down=2}
             }
             .Select(s => testMap.TraverseAndCountTrees(s)).ToList());
-            Assert.Equal("4385176320", sut.Router(2020, 3, 2));
+            Assert.Equal("4385176320", await sut.Router(2020, 3, 2));
         }
 
         [Fact]
-        public void Day4()
+        public async Task Day4()
         {
             // Wont pass after adding validation
             // // var testData = new string[] {
@@ -93,11 +94,11 @@ namespace tests
             // // Assert.Equal(4, passports.Count());
             // // Assert.Equal(2, passports.Count(x=>x.IsValid));
             var sut = new YearController(new InputRetriever());
-            // Assert.Equal(210, sut.Router(2020,4,1));
-            Assert.Equal("131", sut.Router(2020, 4, 2));
+            // Assert.Equal(210, await sut.Router(2020,4,1));
+            Assert.Equal("131", await sut.Router(2020, 4, 2));
         }
         [Fact]
-        public void TestDay4Validation()
+        public async Task TestDay4Validation()
         {
             Assert.Equal(2002, Passport.ValidateBirthYear("2002"));
             Assert.Null(Passport.ValidateBirthYear("2003"));
@@ -119,7 +120,7 @@ namespace tests
         }
 
         [Fact]
-        public void Day5()
+        public async Task Day5()
         {
             var pass = new BoardingPass("FBFBBFFRLR");
             Assert.Equal(5, pass.Column);
@@ -142,11 +143,11 @@ namespace tests
             Assert.Equal(820, pass.SeatId);
 
             var sut = new YearController(new InputRetriever());
-            Assert.Equal("930", sut.Router(2020, 5, 1));
-            Assert.Equal("515", sut.Router(2020, 5, 2));
+            Assert.Equal("930", await sut.Router(2020, 5, 1));
+            Assert.Equal("515", await sut.Router(2020, 5, 2));
         }
         [Fact]
-        public void Day6()
+        public async Task Day6()
         {
             var forms = CustomsForm.Parse(new string[]{
                 "abcx",
@@ -179,13 +180,13 @@ namespace tests
             Assert.Equal(1, forms2[4].UniqueAnswers);
 
             var sut = new YearController(new InputRetriever());
-            Assert.Equal("6763", sut.Router(2020, 6, 1));
+            Assert.Equal("6763", await sut.Router(2020, 6, 1));
             Assert.Equal(3, forms2[0].CommonAnswers);
             Assert.Equal(0, forms2[1].CommonAnswers);
             Assert.Equal(1, forms2[2].CommonAnswers);
             Assert.Equal(1, forms2[3].CommonAnswers);
             Assert.Equal(1, forms2[4].CommonAnswers);
-            Assert.Equal("3512", sut.Router(2020, 6, 2));
+            Assert.Equal("3512", await sut.Router(2020, 6, 2));
         }
     }
 }
