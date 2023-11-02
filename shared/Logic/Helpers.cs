@@ -477,6 +477,7 @@ namespace AdventOfCodeShared.Logic
             return maxSignal;
         }
 
+        //obsolete
         public static List<long> SumContiguousLines(string[] input)
         {
             var calories = new List<long>();
@@ -496,6 +497,24 @@ namespace AdventOfCodeShared.Logic
             }
             calories.Add(currentSum);
             return calories;
+        }
+        public static IEnumerable<long> SumContiguousLinesGenerator(string[] input)
+        {
+            long currentSum = 0;
+            foreach (var line in input)
+            {
+                var trimmed = line.Trim();
+                if (string.IsNullOrWhiteSpace(trimmed))
+                {
+                    yield return currentSum;
+                    currentSum = 0;
+                }
+                else
+                {
+                    currentSum += long.Parse(trimmed);
+                }
+            }
+            yield return currentSum;
         }
 
         public static int DetermineScore(List<List<int>> grid)

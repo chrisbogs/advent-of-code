@@ -1,10 +1,12 @@
 ﻿using AdventOfCodeShared.Logic;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using Xunit;
 
-namespace tests
+namespace Tests
 {
     public class Test2022
     {
@@ -27,16 +29,16 @@ namespace tests
 
         [Theory]
         [InlineData(new string[] { "A Y", "B X", "C Z" }, 15)]
-        public void Day2(string[] input, int expected)
+        public async Task Day2(string[] input, int expected)
         {
-            Assert.Equal(expected, TwentyTwentyTwo.Day2Part1(input));
+            Assert.Equal(expected, await TwentyTwentyTwo.Day2Part1(input));
         }
 
         [Theory]
         [InlineData(new string[] { "A Y", "B X", "C Z" }, 12)]
-        public void Day2Part2(string[] input, int expected)
+        public async Task Day2Part2(string[] input, int expected)
         {
-            Assert.Equal(expected, TwentyTwentyTwo.Day2Part2(input));
+            Assert.Equal(expected, await TwentyTwentyTwo.Day2Part2(input));
         }
 
         [Theory]
@@ -50,7 +52,22 @@ namespace tests
          }, 157)]
         public void Day3Part1(string[] input, int expected)
         {
-            Assert.Equal(expected, TwentyTwentyTwo.Day3Part1(input));
+            //var sw = new Stopwatch();
+            //sw.Start();
+            var result1 = TwentyTwentyTwo.Day3Part1(input);
+            //sw.Stop();
+            //Console.WriteLine(sw.ElapsedTicks);
+            //sw.Reset();
+            //sw.Start();
+            //var result2 = TwentyTwentyTwo.Day3Part1Tasks(input);
+            //sw.Stop();
+            //Console.WriteLine(sw.ElapsedTicks);
+            //sw.Reset();
+            //sw.Start();
+            //var result3 = TwentyTwentyTwo.Day3Part1ParallelLoop(input);
+            //sw.Stop();
+            //Console.WriteLine(sw.ElapsedTicks);
+            Assert.Equal(expected, result1);
         }
         [Theory]
         [InlineData(new string[] {
@@ -176,6 +193,7 @@ namespace tests
         public void Day7Part1(string[] input, int expected)
         {
             Assert.Equal(expected, TwentyTwentyTwo.Day7Part1(input));
+            Assert.Equal(expected, TwentyTwentyTwo.Day7Part1Parallel(input));
         }
         [Theory]
         [InlineData(new string[] {

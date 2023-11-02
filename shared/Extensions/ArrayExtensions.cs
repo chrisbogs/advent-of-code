@@ -2,6 +2,9 @@ namespace AdventOfCodeShared.Extensions
 {
     public static class ArrayExtensions
     {
+        /// <summary>
+        /// Returns a new array with the element at the given index removed
+        /// </summary>
         public static T[] RemoveAt<T>(this T[] arr, int index)
         {
             T[] newArray = new T[arr.Length - 1];
@@ -20,13 +23,6 @@ namespace AdventOfCodeShared.Extensions
             }
 
             return newArray;
-        }
-
-        public static T Pop<T>(this T[] arr)
-        {
-            T last = arr[arr.Length - 1];
-            arr.RemoveAt(arr.Length - 1);
-            return last;
         }
 
         public static T[] Add<T>(this T[] arr, params T[] items)

@@ -12,7 +12,7 @@ namespace AdventOfCodeShared.Extensions
 
             return set1[0] <= set2[0] && set1[1] >= set2[1];
         }
-        public static bool Hasintersection(this List<long> set1, List<long> set2)
+        public static bool HasIntersection(this List<long> set1, List<long> set2)
         {
             if (!set1.Any() || !set2.Any()) return false;
 
@@ -29,7 +29,7 @@ namespace AdventOfCodeShared.Extensions
             if (list1 is null || !list1.Any()) return list2;
             if (list2 is null || !list2.Any()) return list1;
             
-            if (list1.Count < list2.Count) return list1;
+            if (list1.Count <= list2.Count) return list1;
             return list2;
         }
     }

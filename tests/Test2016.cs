@@ -4,7 +4,7 @@ using Server;
 using System.Collections.Generic;
 using Xunit;
 
-namespace tests
+namespace Tests
 {
     public class Test2016
     {
