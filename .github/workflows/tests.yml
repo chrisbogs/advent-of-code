@@ -21,7 +21,10 @@ jobs:
       with:
         dotnet-version: 7
     - name: Install dependencies
-      run: dotnet restore adventOfCode.sln --no-cache
+      run: dotnet restore shared\adventOfCodeShared.csproj --no-cache
+      run: dotnet restore client\Client.csproj --no-cache
+      run: dotnet restore server\Server.csproj --no-cache
+      run: dotnet restore tests\Tests.csproj --no-cache
     - name: Build
       run: dotnet build --no-restore
     - name: Test
