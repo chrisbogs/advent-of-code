@@ -12,7 +12,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -20,14 +20,8 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7
-    - name: Install dependencies 1
-      run: dotnet restore shared/adventOfCodeShared.csproj --no-cache
-    - name: Install dependencies 2
-      run: dotnet restore client/Client.csproj --no-cache
-    - name: Install dependencies 3
-      run: dotnet restore server/Server.csproj --no-cache
-    - name: Install dependencies 4
-      run: dotnet restore tests/tests.csproj --no-cache
+    - name: Install dependencies
+      run: dotnet restore --no-cache
     - name: Build
       run: dotnet build --no-restore
     - name: Test
