@@ -5,11 +5,11 @@ VisualStudioVersion = 17.5.33209.295
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "client\Client.csproj", "{1D35F74C-DC0E-4760-B511-BEE1E130E55D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventOfCodeShared", "shared\AdventOfCodeShared.csproj", "{B08D814A-E360-4C42-BCAC-FE6CC419616D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventOfCodeShared", "shared\adventOfCodeShared.csproj", "{B08D814A-E360-4C42-BCAC-FE6CC419616D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "server\Server.csproj", "{A7823C0E-603F-4270-AD40-6CBBDAD82862}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "tests\Tests.csproj", "{EBBB5189-0C81-4F10-911E-286C8853E4B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "tests\tests.csproj", "{EBBB5189-0C81-4F10-911E-286C8853E4B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

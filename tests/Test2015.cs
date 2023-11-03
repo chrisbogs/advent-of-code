@@ -8,6 +8,7 @@ namespace Tests
 {
     public class Test2015
     {
+
         [Fact]
         public async Task TestDay1()
         {
