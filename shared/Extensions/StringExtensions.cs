@@ -21,7 +21,7 @@ namespace AdventOfCodeShared.Extensions
                 .Where(w => int.TryParse(w, out _)).Select(x => int.Parse(x));
         }
 
-        public static IEnumerable<IEnumerable<int>> ParseIntsMultiplePerLine(this string[] s)
+        public static IEnumerable<List<int>> ParseIntsMultiplePerLine(this string[] s)
         {
             var result = new List<List<int>>();
             if (s is null || !s.Any()) return result;
@@ -31,10 +31,16 @@ namespace AdventOfCodeShared.Extensions
                 {
                     continue;
                 }
-                result.Add(ParseIntsOnLine(line));
+                
+                var intsOnLine = ParseIntsOnLine(line);
+                if (intsOnLine.Any())
+                {
+                    result.Add(intsOnLine);
+                }
             }
             return result;
         }
+
         /// <summary>
         /// Convert a digit string to a collection of digits
         /// </summary>
@@ -94,6 +100,11 @@ namespace AdventOfCodeShared.Extensions
                 bitString
                 .Select(c => c == '0' ? '1' : '0')
                 .ToArray());
+        }
+
+        public static IEnumerable<string[]> ParseTokens(this string[] tokens, string separator)
+        {
+            return tokens.Select(x => x.Split(separator));
         }
     }
 }
