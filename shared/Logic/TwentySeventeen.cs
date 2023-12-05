@@ -55,13 +55,36 @@ namespace AdventOfCodeShared.Logic
             //Calculate Checksum
             //For each row, determine the difference between the largest value and the smallest value; the checksum is the sum of all of these differences.
             if (input is null) return 0;
+
             return input.ParseIntsMultiplePerLine()?
-                .Where(x=>x.Any())
-                .Select(line => Math.Abs(line.Max() - line.Min()))?.Sum() ?? 0;
+                .Select(line => Math.Abs(line.Max() - line.Min()))
+                ?.Sum() ?? 0;
         }
         public static long Day2Part2(string[] input)
         {
-            return 0;
+            //find the only two numbers in each row where one evenly divides the other -
+            //that is, where the result of the division operation is a whole number
+            if (input is null) return 0;
+
+            int sum = 0;
+            foreach (var line in input.ParseIntsMultiplePerLine())
+            {
+                for(int i = 0; i < line.Count; i++)
+                {
+                    for(int j = 0; j < line.Count; j++)
+                    {
+                        if (i != j)
+                        {
+                            if (line[i] % line[j] == 0)
+                            {
+                                sum += line[i] / line[j];
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            return sum;
         }
 
         public static long Day3Part1(string[] input)
@@ -75,8 +98,20 @@ namespace AdventOfCodeShared.Logic
 
         public static long Day4Part1(string[] input)
         {
-            return 0;
+            //var sum = 0;
+            //var lines = input.ParseTokens(" ");
+            //foreach (var line in lines)
+            //{
+            //    var groupings = line.GroupBy(x => x);
+            //    if (groupings.Any(x => x.Count() > 1))
+            //    {
+            //        sum++;
+            //    }
+            //}
+            //return sum;
+            return input.ParseTokens(" ").Where(line => line.GroupBy(x => x).All(x => x.Count() == 1)).Count();
         }
+
         public static long Day4Part2(string[] input)
         {
             return 0;

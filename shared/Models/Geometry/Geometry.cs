@@ -16,7 +16,7 @@ namespace AdventOfCodeShared.Models.Geometry
 
     public class Geometry
     {
-        internal static int CalculateDistanceFromOrigin(Point endPoint)
+        public static int CalculateDistanceFromOrigin(Point endPoint)
         {
             return Math.Abs(endPoint.X - 0) + Math.Abs(endPoint.Y - 0);
         }

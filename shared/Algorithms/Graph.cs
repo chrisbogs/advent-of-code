@@ -4,10 +4,10 @@ using System.Linq;
 
 namespace AdventOfCodeShared.Algorithms
 {
-    internal class Graph
+    public class Graph
     {
         // Breadth-first search algorithm
-        internal static int FindShortestPathBFSIterative(int[,] grid, Point start, Point end)
+        public static int FindShortestPathBFSIterative(Point start, Point end)
         {
             var queue = new Queue<(Point, int)>();
             queue.Enqueue((start, 0));
