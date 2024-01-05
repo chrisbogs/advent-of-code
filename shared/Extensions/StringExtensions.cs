@@ -1,3 +1,4 @@
+using adventOfCodeShared.Logic;
 using AdventOfCodeShared.Models;
 using System;
 using System.Collections.Generic;
@@ -102,9 +103,77 @@ namespace AdventOfCodeShared.Extensions
                 .ToArray());
         }
 
+        public static string FindFirstDigit(this string line)
+        {
+            for (var i = 0; i < line.Length; i++)
+            {
+                if (char.IsDigit(line[i]))
+                {
+                    return line[i].ToString();
+                }
+            }
+            return string.Empty;
+        }
+        /// <summary>
+        /// Returns first numeric digit (9) or first string of a digit (nine)
+        /// </summary>
+        public static string FindFirstRepresentationOfDigit(this string line)
+        {
+            for (var i = 0; i < line.Length; i++)
+            {
+                if (char.IsDigit(line[i]))
+                {
+                    return line[i].ToString();
+                }
+                
+                var lowercaseParsed = line.Substring(0, i+1).ToLower();
+                var digitString = Constants.DigitRepresentations.FirstOrDefault(x=> lowercaseParsed.Contains(x.Value));
+                if (digitString.Value is not null)
+                {
+                    return digitString.Key.ToString();
+                }
+            }
+            return string.Empty;
+        }
+
+        public static string FindLastDigit(this string line)
+        {
+            for (var i = line.Length-1; i >= 0; i--)
+            {
+                if (char.IsDigit(line[i]))
+                {
+                    return line[i].ToString();
+                }
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Returns first numeric digit (9) or first string of a digit (nine)
+        /// </summary>
+        public static string FindLastRepresentationOfDigit(this string line)
+        {
+            for (var i = line.Length - 1; i >= 0; i--)
+            {
+                if (char.IsDigit(line[i]))
+                {
+                    return line[i].ToString();
+                }
+
+                var lowercaseParsed = line[i..].ToLower();
+                var digitString = Constants.DigitRepresentations.FirstOrDefault(x => lowercaseParsed.Contains(x.Value));
+                if (digitString.Value is not null)
+                {
+                    return digitString.Key.ToString();
+                }
+            }
+            return string.Empty;
+        }
+
         public static IEnumerable<string[]> ParseTokens(this string[] tokens, string separator)
         {
             return tokens.Select(x => x.Split(separator));
         }
+
     }
 }
