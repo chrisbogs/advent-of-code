@@ -1,4 +1,5 @@
-﻿using AdventOfCodeShared.Extensions;
+﻿using System;
+using AdventOfCodeShared.Extensions;
 
 namespace AdventOfCodeShared.Logic
 {
@@ -18,8 +19,7 @@ namespace AdventOfCodeShared.Logic
             // treb7uchet
             // In this example, the calibration values of these four lines are 12, 38, 15, and 77. Adding these together produces 142.
             // Consider your entire calibration document. What is the sum of all of the calibration values?
-              */
-            // Note: could do it in one loop
+            */
             var result = 0;
             foreach (var line in input)
             {
@@ -32,12 +32,28 @@ namespace AdventOfCodeShared.Logic
                     result += concatenated;
                 }
             }
-            return result; //49820 > 50,000
+            return result; //54561
         }
         public static long Day1Part2(string[] input)
         {
-            return 0;
-            // o the atmosphere! The apex of your trajectory just barely reaches the surface of a large island floating in the sky. You gently land in a fluffy pile of leaves. It's quite cold, but you don't see much snow. An Elf runs over to greet you.
+            var result = 0;
+            foreach (var line in input)
+            {
+                var firstDigit = line.FindFirstRepresentationOfDigit();
+                var secondDigit = line.FindLastRepresentationOfDigit();
+                if (!string.IsNullOrEmpty(firstDigit)
+                    && !string.IsNullOrEmpty(secondDigit)
+                    && int.TryParse(firstDigit + secondDigit, out var concatenated))
+                {
+                    result += concatenated;
+                }
+            }
+            return result; //54561
+        }
+
+        public static long Day2Part1(string[] input)
+        {
+//             You're launched high into the atmosphere! The apex of your trajectory just barely reaches the surface of a large island floating in the sky. You gently land in a fluffy pile of leaves. It's quite cold, but you don't see much snow. An Elf runs over to greet you.
 // The Elf explains that you've arrived at Snow Island and apologizes for the lack of snow. He'll be happy to explain the situation, but it's a bit of a walk, so you have some time. They don't get many visitors up here; would you like to play a game in the meantime?
 // As you walk, the Elf shows you a small bag and some cubes which are either red, green, or blue. Each time you play this game, he will hide a secret number of cubes of each color in the bag, and your goal is to figure out information about the number of cubes.
 // To get information, once a bag has been loaded with cubes, the Elf will reach into the bag, grab a handful of random cubes, show them to you, and then put them back in the bag. He'll do this a few times per game.
@@ -55,11 +71,7 @@ namespace AdventOfCodeShared.Logic
 // In the example above, games 1, 2, and 5 would have been possible if the bag had been loaded with that configuration. However, game 3 would have been impossible because at one point the Elf showed you 20 red cubes at once; similarly, game 4 would also have been impossible because the Elf showed you 15 blue cubes at once. If you add up the IDs of the games that would have been possible, you get 8.
 
 // Determine which games would have been possible if the bag had been loaded with only 12 red cubes, 13 green cubes, and 14 blue cubes. What is the sum of the IDs of those games?
-        }
-
-        public static long Day2Part1(string[] input)
-        {
-//             You're launched high int
+      
             return 0;
         }
         public static long Day2Part2(string[] input)
@@ -1104,6 +1116,55 @@ namespace AdventOfCodeShared.Logic
 
         public static int Day19Part1(string[] input)
         {
+//             The Elves of Gear Island are thankful for your help and send you on your way. They even have a hang glider that someone stole from Desert Island; since you're already going that direction, it would help them a lot if you would use it to get down there and return it to them.
+
+// As you reach the bottom of the relentless avalanche of machine parts, you discover that they're already forming a formidable heap. Don't worry, though - a group of Elves is already here organizing the parts, and they have a system.
+
+// To start, each part is rated in each of four categories:
+
+// x: Extremely cool looking
+// m: Musical (it makes a noise when you hit it)
+// a: Aerodynamic
+// s: Shiny
+// Then, each part is sent through a series of workflows that will ultimately accept or reject the part. Each workflow has a name and contains a list of rules; each rule specifies a condition and where to send the part if the condition is true. The first rule that matches the part being considered is applied immediately, and the part moves on to the destination described by the rule. (The last rule in each workflow has no condition and always applies if reached.)
+
+// Consider the workflow ex{x>10:one,m<20:two,a>30:R,A}. This workflow is named ex and contains four rules. If workflow ex were considering a specific part, it would perform the following steps in order:
+
+// Rule "x>10:one": If the part's x is more than 10, send the part to the workflow named one.
+// Rule "m<20:two": Otherwise, if the part's m is less than 20, send the part to the workflow named two.
+// Rule "a>30:R": Otherwise, if the part's a is more than 30, the part is immediately rejected (R).
+// Rule "A": Otherwise, because no other rules matched the part, the part is immediately accepted (A).
+// If a part is sent to another workflow, it immediately switches to the start of that workflow instead and never returns. If a part is accepted (sent to A) or rejected (sent to R), the part immediately stops any further processing.
+
+// The system works, but it's not keeping up with the torrent of weird metal shapes. The Elves ask if you can help sort a few parts and give you the list of workflows and some part ratings (your puzzle input). For example:
+
+// px{a<2006:qkq,m>2090:A,rfg}
+// pv{a>1716:R,A}
+// lnx{m>1548:A,A}
+// rfg{s<537:gd,x>2440:R,A}
+// qs{s>3448:A,lnx}
+// qkq{x<1416:A,crn}
+// crn{x>2662:A,R}
+// in{s<1351:px,qqz}
+// qqz{s>2770:qs,m<1801:hdj,R}
+// gd{a>3333:R,R}
+// hdj{m>838:A,pv}
+
+// {x=787,m=2655,a=1222,s=2876}
+// {x=1679,m=44,a=2067,s=496}
+// {x=2036,m=264,a=79,s=2244}
+// {x=2461,m=1339,a=466,s=291}
+// {x=2127,m=1623,a=2188,s=1013}
+// The workflows are listed first, followed by a blank line, then the ratings of the parts the Elves would like you to sort. All parts begin in the workflow named in. In this example, the five listed parts go through the following workflows:
+
+// {x=787,m=2655,a=1222,s=2876}: in -> qqz -> qs -> lnx -> A
+// {x=1679,m=44,a=2067,s=496}: in -> px -> rfg -> gd -> R
+// {x=2036,m=264,a=79,s=2244}: in -> qqz -> hdj -> pv -> A
+// {x=2461,m=1339,a=466,s=291}: in -> px -> qkq -> crn -> R
+// {x=2127,m=1623,a=2188,s=1013}: in -> px -> rfg -> A
+// Ultimately, three parts are accepted. Adding up the x, m, a, and s rating for each of the accepted parts gives 7540 for the part with x=787, 4623 for the part with x=2036, and 6951 for the part with x=2127. Adding all of the ratings for all of the accepted parts gives the sum total of 19114.
+
+// Sort through all of the parts you've been given; what do you get if you add together all of the rating numbers for all of the parts that ultimately get accepted?
             return 0;
         }
         public static int Day19Part2(string[] input)
@@ -1113,6 +1174,109 @@ namespace AdventOfCodeShared.Logic
 
         public static int Day20Part1(string[] input)
         {
+//             With your help, the Elves manage to find the right parts and fix all of the machines. Now, they just need to send the command to boot up the machines and get the sand flowing again.
+
+// The machines are far apart and wired together with long cables. The cables don't connect to the machines directly, but rather to communication modules attached to the machines that perform various initialization tasks and also act as communication relays.
+
+// Modules communicate using pulses. Each pulse is either a high pulse or a low pulse. When a module sends a pulse, it sends that type of pulse to each module in its list of destination modules.
+
+// There are several different types of modules:
+
+// Flip-flop modules (prefix %) are either on or off; they are initially off. If a flip-flop module receives a high pulse, it is ignored and nothing happens. However, if a flip-flop module receives a low pulse, it flips between on and off. If it was off, it turns on and sends a high pulse. If it was on, it turns off and sends a low pulse.
+
+// Conjunction modules (prefix &) remember the type of the most recent pulse received from each of their connected input modules; they initially default to remembering a low pulse for each input. When a pulse is received, the conjunction module first updates its memory for that input. Then, if it remembers high pulses for all inputs, it sends a low pulse; otherwise, it sends a high pulse.
+
+// There is a single broadcast module (named broadcaster). When it receives a pulse, it sends the same pulse to all of its destination modules.
+
+// Here at Desert Machine Headquarters, there is a module with a single button on it called, aptly, the button module. When you push the button, a single low pulse is sent directly to the broadcaster module.
+
+// After pushing the button, you must wait until all pulses have been delivered and fully handled before pushing it again. Never push the button if modules are still processing pulses.
+
+// Pulses are always processed in the order they are sent. So, if a pulse is sent to modules a, b, and c, and then module a processes its pulse and sends more pulses, the pulses sent to modules b and c would have to be handled first.
+
+// The module configuration (your puzzle input) lists each module. The name of the module is preceded by a symbol identifying its type, if any. The name is then followed by an arrow and a list of its destination modules. For example:
+
+// broadcaster -> a, b, c
+// %a -> b
+// %b -> c
+// %c -> inv
+// &inv -> a
+// In this module configuration, the broadcaster has three destination modules named a, b, and c. Each of these modules is a flip-flop module (as indicated by the % prefix). a outputs to b which outputs to c which outputs to another module named inv. inv is a conjunction module (as indicated by the & prefix) which, because it has only one input, acts like an inverter (it sends the opposite of the pulse type it receives); it outputs to a.
+
+// By pushing the button once, the following pulses are sent:
+
+// button -low-> broadcaster
+// broadcaster -low-> a
+// broadcaster -low-> b
+// broadcaster -low-> c
+// a -high-> b
+// b -high-> c
+// c -high-> inv
+// inv -low-> a
+// a -low-> b
+// b -low-> c
+// c -low-> inv
+// inv -high-> a
+// After this sequence, the flip-flop modules all end up off, so pushing the button again repeats the same sequence.
+
+// Here's a more interesting example:
+
+// broadcaster -> a
+// %a -> inv, con
+// &inv -> b
+// %b -> con
+// &con -> output
+// This module configuration includes the broadcaster, two flip-flops (named a and b), a single-input conjunction module (inv), a multi-input conjunction module (con), and an untyped module named output (for testing purposes). The multi-input conjunction module con watches the two flip-flop modules and, if they're both on, sends a low pulse to the output module.
+
+// Here's what happens if you push the button once:
+
+// button -low-> broadcaster
+// broadcaster -low-> a
+// a -high-> inv
+// a -high-> con
+// inv -low-> b
+// con -high-> output
+// b -high-> con
+// con -low-> output
+// Both flip-flops turn on and a low pulse is sent to output! However, now that both flip-flops are on and con remembers a high pulse from each of its two inputs, pushing the button a second time does something different:
+
+// button -low-> broadcaster
+// broadcaster -low-> a
+// a -low-> inv
+// a -low-> con
+// inv -high-> b
+// con -high-> output
+// Flip-flop a turns off! Now, con remembers a low pulse from module a, and so it sends only a high pulse to output.
+
+// Push the button a third time:
+
+// button -low-> broadcaster
+// broadcaster -low-> a
+// a -high-> inv
+// a -high-> con
+// inv -low-> b
+// con -low-> output
+// b -low-> con
+// con -high-> output
+// This time, flip-flop a turns on, then flip-flop b turns off. However, before b can turn off, the pulse sent to con is handled first, so it briefly remembers all high pulses for its inputs and sends a low pulse to output. After that, flip-flop b turns off, which causes con to update its state and send a high pulse to output.
+
+// Finally, with a on and b off, push the button a fourth time:
+
+// button -low-> broadcaster
+// broadcaster -low-> a
+// a -low-> inv
+// a -low-> con
+// inv -high-> b
+// con -high-> output
+// This completes the cycle: a turns off, causing con to remember only low pulses and restoring all modules to their original states.
+
+// To get the cables warmed up, the Elves have pushed the button 1000 times. How many pulses got sent as a result (including the pulses sent by the button itself)?
+
+// In the first example, the same thing happens every time the button is pushed: 8 low pulses and 4 high pulses are sent. So, after pushing the button 1000 times, 8000 low pulses and 4000 high pulses are sent. Multiplying these together gives 32000000.
+
+// In the second example, after pushing the button 1000 times, 4250 low pulses and 2750 high pulses are sent. Multiplying these together gives 11687500.
+
+// Consult your module configuration; determine the number of low pulses and high pulses that would be sent after pushing the button 1000 times, waiting for all pulses to be fully handled after each push of the button. What do you get if you multiply the total number of low pulses sent by the total number of high pulses sent?
             return 0;
         }
         public static int Day20Part2(string[] input)
@@ -1122,6 +1286,84 @@ namespace AdventOfCodeShared.Logic
 
         public static int Day21Part1(string[] input)
         {
+//             You manage to catch the airship right as it's dropping someone else off on their all-expenses-paid trip to Desert Island! It even helpfully drops you off near the gardener and his massive farm.
+
+// "You got the sand flowing again! Great work! Now we just need to wait until we have enough sand to filter the water for Snow Island and we'll have snow again in no time."
+
+// While you wait, one of the Elves that works with the gardener heard how good you are at solving problems and would like your help. He needs to get his steps in for the day, and so he'd like to know which garden plots he can reach with exactly his remaining 64 steps.
+
+// He gives you an up-to-date map (your puzzle input) of his starting position (S), garden plots (.), and rocks (#). For example:
+
+// ...........
+// .....###.#.
+// .###.##..#.
+// ..#.#...#..
+// ....#.#....
+// .##..S####.
+// .##..#...#.
+// .......##..
+// .##.#.####.
+// .##..##.##.
+// ...........
+// The Elf starts at the starting position (S) which also counts as a garden plot. Then, he can take one step north, south, east, or west, but only onto tiles that are garden plots. This would allow him to reach any of the tiles marked O:
+
+// ...........
+// .....###.#.
+// .###.##..#.
+// ..#.#...#..
+// ....#O#....
+// .##.OS####.
+// .##..#...#.
+// .......##..
+// .##.#.####.
+// .##..##.##.
+// ...........
+// Then, he takes a second step. Since at this point he could be at either tile marked O, his second step would allow him to reach any garden plot that is one step north, south, east, or west of any tile that he could have reached after the first step:
+
+// ...........
+// .....###.#.
+// .###.##..#.
+// ..#.#O..#..
+// ....#.#....
+// .##O.O####.
+// .##.O#...#.
+// .......##..
+// .##.#.####.
+// .##..##.##.
+// ...........
+// After two steps, he could be at any of the tiles marked O above, including the starting position (either by going north-then-south or by going west-then-east).
+
+// A single third step leads to even more possibilities:
+
+// ...........
+// .....###.#.
+// .###.##..#.
+// ..#.#.O.#..
+// ...O#O#....
+// .##.OS####.
+// .##O.#...#.
+// ....O..##..
+// .##.#.####.
+// .##..##.##.
+// ...........
+// He will continue like this until his steps for the day have been exhausted. After a total of 6 steps, he could reach any of the garden plots marked O:
+
+// ...........
+// .....###.#.
+// .###.##.O#.
+// .O#O#O.O#..
+// O.O.#.#.O..
+// .##O.O####.
+// .##.O#O..#.
+// .O.O.O.##..
+// .##.#.####.
+// .##O.##.##.
+// ...........
+// In this example, if the Elf's goal was to get exactly 6 more steps today, he could use them to reach any of 16 garden plots.
+
+// However, the Elf actually needs to get 64 steps today, and the map he's handed you is much larger than the example map.
+
+// Starting from the garden plot marked S on your map, how many garden plots could the Elf reach in exactly 64 steps?
             return 0;
         }
         public static int Day21Part2(string[] input)
@@ -1131,6 +1373,117 @@ namespace AdventOfCodeShared.Logic
 
         public static int Day22Part1(string[] input)
         {
+//             Enough sand has fallen; it can finally filter water for Snow Island.
+
+// Well, almost.
+
+// The sand has been falling as large compacted bricks of sand, piling up to form an impressive stack here near the edge of Island Island. In order to make use of the sand to filter water, some of the bricks will need to be broken apart - nay, disintegrated - back into freely flowing sand.
+
+// The stack is tall enough that you'll have to be careful about choosing which bricks to disintegrate; if you disintegrate the wrong brick, large portions of the stack could topple, which sounds pretty dangerous.
+
+// The Elves responsible for water filtering operations took a snapshot of the bricks while they were still falling (your puzzle input) which should let you work out which bricks are safe to disintegrate. For example:
+
+// 1,0,1~1,2,1
+// 0,0,2~2,0,2
+// 0,2,3~2,2,3
+// 0,0,4~0,2,4
+// 2,0,5~2,2,5
+// 0,1,6~2,1,6
+// 1,1,8~1,1,9
+// Each line of text in the snapshot represents the position of a single brick at the time the snapshot was taken. The position is given as two x,y,z coordinates - one for each end of the brick - separated by a tilde (~). Each brick is made up of a single straight line of cubes, and the Elves were even careful to choose a time for the snapshot that had all of the free-falling bricks at integer positions above the ground, so the whole snapshot is aligned to a three-dimensional cube grid.
+
+// A line like 2,2,2~2,2,2 means that both ends of the brick are at the same coordinate - in other words, that the brick is a single cube.
+
+// Lines like 0,0,10~1,0,10 or 0,0,10~0,1,10 both represent bricks that are two cubes in volume, both oriented horizontally. The first brick extends in the x direction, while the second brick extends in the y direction.
+
+// A line like 0,0,1~0,0,10 represents a ten-cube brick which is oriented vertically. One end of the brick is the cube located at 0,0,1, while the other end of the brick is located directly above it at 0,0,10.
+
+// The ground is at z=0 and is perfectly flat; the lowest z value a brick can have is therefore 1. So, 5,5,1~5,6,1 and 0,2,1~0,2,5 are both resting on the ground, but 3,3,2~3,3,3 was above the ground at the time of the snapshot.
+
+// Because the snapshot was taken while the bricks were still falling, some bricks will still be in the air; you'll need to start by figuring out where they will end up. Bricks are magically stabilized, so they never rotate, even in weird situations like where a long horizontal brick is only supported on one end. Two bricks cannot occupy the same position, so a falling brick will come to rest upon the first other brick it encounters.
+
+// Here is the same example again, this time with each brick given a letter so it can be marked in diagrams:
+
+// 1,0,1~1,2,1   <- A
+// 0,0,2~2,0,2   <- B
+// 0,2,3~2,2,3   <- C
+// 0,0,4~0,2,4   <- D
+// 2,0,5~2,2,5   <- E
+// 0,1,6~2,1,6   <- F
+// 1,1,8~1,1,9   <- G
+// At the time of the snapshot, from the side so the x axis goes left to right, these bricks are arranged like this:
+
+//  x
+// 012
+// .G. 9
+// .G. 8
+// ... 7
+// FFF 6
+// ..E 5 z
+// D.. 4
+// CCC 3
+// BBB 2
+// .A. 1
+// --- 0
+// Rotating the perspective 90 degrees so the y axis now goes left to right, the same bricks are arranged like this:
+
+//  y
+// 012
+// .G. 9
+// .G. 8
+// ... 7
+// .F. 6
+// EEE 5 z
+// DDD 4
+// ..C 3
+// B.. 2
+// AAA 1
+// --- 0
+// Once all of the bricks fall downward as far as they can go, the stack looks like this, where ? means bricks are hidden behind other bricks at that location:
+
+//  x
+// 012
+// .G. 6
+// .G. 5
+// FFF 4
+// D.E 3 z
+// ??? 2
+// .A. 1
+// --- 0
+// Again from the side:
+
+//  y
+// 012
+// .G. 6
+// .G. 5
+// .F. 4
+// ??? 3 z
+// B.C 2
+// AAA 1
+// --- 0
+// Now that all of the bricks have settled, it becomes easier to tell which bricks are supporting which other bricks:
+
+// Brick A is the only brick supporting bricks B and C.
+// Brick B is one of two bricks supporting brick D and brick E.
+// Brick C is the other brick supporting brick D and brick E.
+// Brick D supports brick F.
+// Brick E also supports brick F.
+// Brick F supports brick G.
+// Brick G isn't supporting any bricks.
+// Your first task is to figure out which bricks are safe to disintegrate. A brick can be safely disintegrated if, after removing it, no other bricks would fall further directly downward. Don't actually disintegrate any bricks - just determine what would happen if, for each brick, only that brick were disintegrated. Bricks can be disintegrated even if they're completely surrounded by other bricks; you can squeeze between bricks if you need to.
+
+// In this example, the bricks can be disintegrated as follows:
+
+// Brick A cannot be disintegrated safely; if it were disintegrated, bricks B and C would both fall.
+// Brick B can be disintegrated; the bricks above it (D and E) would still be supported by brick C.
+// Brick C can be disintegrated; the bricks above it (D and E) would still be supported by brick B.
+// Brick D can be disintegrated; the brick above it (F) would still be supported by brick E.
+// Brick E can be disintegrated; the brick above it (F) would still be supported by brick D.
+// Brick F cannot be disintegrated; the brick above it (G) would fall.
+// Brick G can be disintegrated; it does not support any other bricks.
+// So, in this example, 5 bricks can be safely disintegrated.
+
+// Figure how the blocks will settle based on the snapshot. Once they've settled, consider disintegrating a single brick; how many bricks could be safely chosen as the one to get disintegrated?
             return 0;
         }
         public static int Day22Part2(string[] input)
@@ -1140,6 +1493,69 @@ namespace AdventOfCodeShared.Logic
 
         public static int Day23Part1(string[] input)
         {
+//             The Elves resume water filtering operations! Clean water starts flowing over the edge of Island Island.
+
+// They offer to help you go over the edge of Island Island, too! Just hold on tight to one end of this impossibly long rope and they'll lower you down a safe distance from the massive waterfall you just created.
+
+// As you finally reach Snow Island, you see that the water isn't really reaching the ground: it's being absorbed by the air itself. It looks like you'll finally have a little downtime while the moisture builds up to snow-producing levels. Snow Island is pretty scenic, even without any snow; why not take a walk?
+
+// There's a map of nearby hiking trails (your puzzle input) that indicates paths (.), forest (#), and steep slopes (^, >, v, and <).
+
+// For example:
+
+// #.#####################
+// #.......#########...###
+// #######.#########.#.###
+// ###.....#.>.>.###.#.###
+// ###v#####.#v#.###.#.###
+// ###.>...#.#.#.....#...#
+// ###v###.#.#.#########.#
+// ###...#.#.#.......#...#
+// #####.#.#.#######.#.###
+// #.....#.#.#.......#...#
+// #.#####.#.#.#########v#
+// #.#...#...#...###...>.#
+// #.#.#v#######v###.###v#
+// #...#.>.#...>.>.#.###.#
+// #####v#.#.###v#.#.###.#
+// #.....#...#...#.#.#...#
+// #.#########.###.#.#.###
+// #...###...#...#...#.###
+// ###.###.#.###v#####v###
+// #...#...#.#.>.>.#.>.###
+// #.###.###.#.###.#.#v###
+// #.....###...###...#...#
+// #####################.#
+// You're currently on the single path tile in the top row; your goal is to reach the single path tile in the bottom row. Because of all the mist from the waterfall, the slopes are probably quite icy; if you step onto a slope tile, your next step must be downhill (in the direction the arrow is pointing). To make sure you have the most scenic hike possible, never step onto the same tile twice. What is the longest hike you can take?
+
+// In the example above, the longest hike you can take is marked with O, and your starting position is marked S:
+
+// #S#####################
+// #OOOOOOO#########...###
+// #######O#########.#.###
+// ###OOOOO#OOO>.###.#.###
+// ###O#####O#O#.###.#.###
+// ###OOOOO#O#O#.....#...#
+// ###v###O#O#O#########.#
+// ###...#O#O#OOOOOOO#...#
+// #####.#O#O#######O#.###
+// #.....#O#O#OOOOOOO#...#
+// #.#####O#O#O#########v#
+// #.#...#OOO#OOO###OOOOO#
+// #.#.#v#######O###O###O#
+// #...#.>.#...>OOO#O###O#
+// #####v#.#.###v#O#O###O#
+// #.....#...#...#O#O#OOO#
+// #.#########.###O#O#O###
+// #...###...#...#OOO#O###
+// ###.###.#.###v#####O###
+// #...#...#.#.>.>.#.>O###
+// #.###.###.#.###.#.#O###
+// #.....###...###...#OOO#
+// #####################O#
+// This hike contains 94 steps. (The other possible hikes you could have taken were 90, 86, 82, 82, and 74 steps long.)
+
+// Find the longest hike you can take through the hiking trails listed on your map. How many steps long is the longest hike?
             return 0;
         }
         public static int Day23Part2(string[] input)
@@ -1149,6 +1565,71 @@ namespace AdventOfCodeShared.Logic
 
         public static int Day24Part1(string[] input)
         {
+//             It seems like something is going wrong with the snow-making process. Instead of forming snow, the water that's been absorbed into the air seems to be forming hail!
+
+// Maybe there's something you can do to break up the hailstones?
+
+// Due to strong, probably-magical winds, the hailstones are all flying through the air in perfectly linear trajectories. You make a note of each hailstone's position and velocity (your puzzle input). For example:
+
+// 19, 13, 30 @ -2,  1, -2
+// 18, 19, 22 @ -1, -1, -2
+// 20, 25, 34 @ -2, -2, -4
+// 12, 31, 28 @ -1, -2, -1
+// 20, 19, 15 @  1, -5, -3
+// Each line of text corresponds to the position and velocity of a single hailstone. The positions indicate where the hailstones are right now (at time 0). The velocities are constant and indicate exactly how far each hailstone will move in one nanosecond.
+
+// Each line of text uses the format px py pz @ vx vy vz. For instance, the hailstone specified by 20, 19, 15 @ 1, -5, -3 has initial X position 20, Y position 19, Z position 15, X velocity 1, Y velocity -5, and Z velocity -3. After one nanosecond, the hailstone would be at 21, 14, 12.
+
+// Perhaps you won't have to do anything. How likely are the hailstones to collide with each other and smash into tiny ice crystals?
+
+// To estimate this, consider only the X and Y axes; ignore the Z axis. Looking forward in time, how many of the hailstones' paths will intersect within a test area? (The hailstones themselves don't have to collide, just test for intersections between the paths they will trace.)
+
+// In this example, look for intersections that happen with an X and Y position each at least 7 and at most 27; in your actual data, you'll need to check a much larger test area. Comparing all pairs of hailstones' future paths produces the following results:
+
+// Hailstone A: 19, 13, 30 @ -2, 1, -2
+// Hailstone B: 18, 19, 22 @ -1, -1, -2
+// Hailstones' paths will cross inside the test area (at x=14.333, y=15.333).
+
+// Hailstone A: 19, 13, 30 @ -2, 1, -2
+// Hailstone B: 20, 25, 34 @ -2, -2, -4
+// Hailstones' paths will cross inside the test area (at x=11.667, y=16.667).
+
+// Hailstone A: 19, 13, 30 @ -2, 1, -2
+// Hailstone B: 12, 31, 28 @ -1, -2, -1
+// Hailstones' paths will cross outside the test area (at x=6.2, y=19.4).
+
+// Hailstone A: 19, 13, 30 @ -2, 1, -2
+// Hailstone B: 20, 19, 15 @ 1, -5, -3
+// Hailstones' paths crossed in the past for hailstone A.
+
+// Hailstone A: 18, 19, 22 @ -1, -1, -2
+// Hailstone B: 20, 25, 34 @ -2, -2, -4
+// Hailstones' paths are parallel; they never intersect.
+
+// Hailstone A: 18, 19, 22 @ -1, -1, -2
+// Hailstone B: 12, 31, 28 @ -1, -2, -1
+// Hailstones' paths will cross outside the test area (at x=-6, y=-5).
+
+// Hailstone A: 18, 19, 22 @ -1, -1, -2
+// Hailstone B: 20, 19, 15 @ 1, -5, -3
+// Hailstones' paths crossed in the past for both hailstones.
+
+// Hailstone A: 20, 25, 34 @ -2, -2, -4
+// Hailstone B: 12, 31, 28 @ -1, -2, -1
+// Hailstones' paths will cross outside the test area (at x=-2, y=3).
+
+// Hailstone A: 20, 25, 34 @ -2, -2, -4
+// Hailstone B: 20, 19, 15 @ 1, -5, -3
+// Hailstones' paths crossed in the past for hailstone B.
+
+// Hailstone A: 12, 31, 28 @ -1, -2, -1
+// Hailstone B: 20, 19, 15 @ 1, -5, -3
+// Hailstones' paths crossed in the past for both hailstones.
+// So, in this example, 2 hailstones' future paths cross inside the boundaries of the test area.
+
+// However, you'll need to search a much larger test area if you want to see if any hailstones might collide. Look for intersections that happen with an X and Y position each at least 200000000000000 and at most 400000000000000. Disregard the Z axis entirely.
+
+// Considering only the X and Y axes, check all pairs of hailstones' future paths for intersections. How many of these intersections occur within the test area?
             return 0;
         }
         public static int Day24Part2(string[] input)
@@ -1158,6 +1639,50 @@ namespace AdventOfCodeShared.Logic
 
         public static int Day25Part1(string[] input)
         {
+//             Still somehow without snow, you go to the last place you haven't checked: the center of Snow Island, directly below the waterfall.
+
+// Here, someone has clearly been trying to fix the problem. Scattered everywhere are hundreds of weather machines, almanacs, communication modules, hoof prints, machine parts, mirrors, lenses, and so on.
+
+// Somehow, everything has been wired together into a massive snow-producing apparatus, but nothing seems to be running. You check a tiny screen on one of the communication modules: Error 2023. It doesn't say what Error 2023 means, but it does have the phone number for a support line printed on it.
+
+// "Hi, you've reached Weather Machines And So On, Inc. How can I help you?" You explain the situation.
+
+// "Error 2023, you say? Why, that's a power overload error, of course! It means you have too many components plugged in. Try unplugging some components and--" You explain that there are hundreds of components here and you're in a bit of a hurry.
+
+// "Well, let's see how bad it is; do you see a big red reset button somewhere? It should be on its own module. If you push it, it probably won't fix anything, but it'll report how overloaded things are." After a minute or two, you find the reset button; it's so big that it takes two hands just to get enough leverage to push it. Its screen then displays:
+
+// SYSTEM OVERLOAD!
+
+// Connected components would require
+// power equal to at least 100 stars!
+// "Wait, how many components did you say are plugged in? With that much equipment, you could produce snow for an entire--" You disconnect the call.
+
+// You have nowhere near that many stars - you need to find a way to disconnect at least half of the equipment here, but it's already Christmas! You only have time to disconnect three wires.
+
+// Fortunately, someone left a wiring diagram (your puzzle input) that shows how the components are connected. For example:
+
+// jqt: rhn xhk nvd
+// rsh: frs pzl lsr
+// xhk: hfx
+// cmg: qnr nvd lhk bvb
+// rhn: xhk bvb hfx
+// bvb: xhk hfx
+// pzl: lsr hfx nvd
+// qnr: nvd
+// ntq: jqt hfx bvb xhk
+// nvd: lhk
+// lsr: lhk
+// rzs: qnr cmg lsr rsh
+// frs: qnr lhk lsr
+// Each line shows the name of a component, a colon, and then a list of other components to which that component is connected. Connections aren't directional; abc: xyz and xyz: abc both represent the same configuration. Each connection between two components is represented only once, so some components might only ever appear on the left or right side of a colon.
+
+// In this example, if you disconnect the wire between hfx/pzl, the wire between bvb/cmg, and the wire between nvd/jqt, you will divide the components into two separate, disconnected groups:
+
+// 9 components: cmg, frs, lhk, lsr, nvd, pzl, qnr, rsh, and rzs.
+// 6 components: bvb, hfx, jqt, ntq, rhn, and xhk.
+// Multiplying the sizes of these groups together produces 54.
+
+// Find the three wires you need to disconnect in order to divide the components into two separate groups. What do you get if you multiply the sizes of these two groups together?
             return 0;
         }
         public static int Day25Part2(string[] input)
