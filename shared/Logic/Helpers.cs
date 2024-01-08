@@ -1064,5 +1064,29 @@ namespace AdventOfCodeShared.Logic
             }
             return Tuple.Create(startPoint.Value, endPoint.Value);
         }
+
+        /// <summary>
+        /// Checks if the set1 is a subset of set 2.
+        /// </summary>
+        public static bool IsSubSet(Dictionary<string, int> set1, Dictionary<string, int> set2)
+        {
+            if (set1 is null) { return false; }
+            if (set2 is null) { return false; }
+
+            if (set1.Keys.Count == 0) { return true; }
+
+            // require same number of keys
+            if (set1.Keys.Count > set2.Keys.Count) { return false; }
+
+            // count of each matching key has to be <=
+            foreach (var key in set1.Keys)
+            {
+                if (!set2.ContainsKey(key)) { return false; }
+
+                if (set1[key] > set2[key]) { return false; }
+            }
+
+            return true;
+        }
     }
 }
