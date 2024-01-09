@@ -58,7 +58,7 @@ namespace Tests
         , "Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green" }, 8)]
         public void TestDay2(string[] input, int expected)
         {
-            Assert.Equal(expected, TwentyTwentyThree.Day2Part1(input)); //289 too low
+            Assert.Equal(expected, TwentyTwentyThree.Day2Part1(input));
         }
 
         [Theory]
@@ -81,6 +81,40 @@ namespace Tests
         public void Day2Part2(string[] input, int expected)
         {
             Assert.Equal(expected, TwentyTwentyThree.Day2Part2(input));
+        }
+
+        [Theory]
+        [InlineData(new string[] { 
+            "467..114..",
+            "...*......",
+            "..35..633.",
+            "......#...",
+            "617*......",
+            ".....+.58.",
+            "..592.....",
+            "......755.",
+            "...$.*....",
+            ".664.598.." }, 4361)]
+        public void TestDay3(string[] input, int expected)
+        {
+            Assert.Equal(expected, TwentyTwentyThree.Day3Part1(input));
+        }
+
+        [Theory]
+        [InlineData(new string[] {
+            "467..114..",
+            "...*......",
+            "..35..633.",
+            "......#...",
+            "617*......",
+            ".....+.58.",
+            "..592.....",
+            "......755.",
+            "...$.*....",
+            ".664.598.." }, 467835)]
+        public void Day3Part2(string[] input, int expected)
+        {
+            Assert.Equal(expected, TwentyTwentyThree.Day3Part2(input));
         }
     }  
 }
