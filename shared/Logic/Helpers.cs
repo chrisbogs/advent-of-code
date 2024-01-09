@@ -1088,5 +1088,64 @@ namespace AdventOfCodeShared.Logic
 
             return true;
         }
+
+        /// <summary>
+        /// Given a position in a 2D jagged array,
+        /// Look left and right to capture any remaining digits adjacent to this position.
+        /// Example:
+        /// .123..
+        /// ......
+        /// Given (0,2)- this would be the "2", and we should return "123".
+        /// Return the integer representation of the current position if no other digits found.
+        /// </summary>
+        public static int FindRestOfNumberInRow(string[] array, int x, int y, bool[][] visited)
+        {
+            var leftSide = string.Empty;
+            var rightSide = string.Empty;
+            var result = 0;
+            if (!visited[x][y])
+            {
+                visited[x][y] = true;
+
+                // look left
+                var currentY = y - 1;
+                while (currentY >= 0)
+                {
+                    if (visited[x][currentY]) { break; }
+                    visited[x][currentY] = true;
+
+                    if (char.IsDigit(array[x][currentY]))
+                    {
+                        leftSide = array[x][currentY].ToString() + leftSide;
+                        currentY--;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                // look right
+                currentY = y + 1;
+                while (currentY < array[x].Length)
+                {
+                    if (visited[x][currentY]) { break; }
+                    visited[x][currentY] = true;
+
+                    if (char.IsDigit(array[x][currentY]))
+                    {
+                        rightSide += array[x][currentY].ToString();
+                        currentY++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                result = int.Parse(leftSide + array[x][y].ToString() + rightSide);
+            }
+    
+            return result;
+        }
     }
 }
