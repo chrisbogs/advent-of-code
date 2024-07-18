@@ -32,6 +32,135 @@ namespace Server
 
             switch (year)
             {
+                case 2024:
+                    return day switch
+                    {
+                        1 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day1Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day1Part2(input).ToString()
+                        },
+                        2 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day2Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day2Part2(input).ToString()
+                        },
+                        3 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day3Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day3Part2(input).ToString()
+                        },
+                        4 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day4Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day4Part2(input).ToString()
+                        },
+                        5 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day5Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day5Part2(input).ToString()
+                        },
+                        6 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day6Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day6Part2(input).ToString()
+                        },
+                        7 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day7Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day7Part2(input).ToString()
+                        },
+                        8 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day8Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day8Part2(input).ToString()
+                        },
+                        9 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day9Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day9Part2(input).ToString()
+                        },
+                        10 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day10Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day10Part2(input).ToString()
+                        },
+                        11 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day11Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day11Part2(input).ToString()
+                        },
+                        12 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day12Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day12Part2(input).ToString()
+                        },
+                        13 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day13Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day13Part2(input).ToString()
+                        },
+                        14 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day14Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day14Part2(input).ToString()
+                        },
+                        15 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day15Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day15Part2(input).ToString()
+                        },
+                        16 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day16Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day16Part2(input).ToString()
+                        },
+                        17 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day17Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day17Part2(input).ToString()
+                        },
+                        18 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day18Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day18Part2(input).ToString()
+                        },
+                        19 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day19Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day19Part2(input).ToString()
+                        },
+                        20 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day20Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day20Part2(input).ToString()
+                        },
+                        21 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day21Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day21Part2(input).ToString()
+                        },
+                        22 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day22Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day22Part2(input).ToString()
+                        },
+                        23 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day23Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day23Part2(input).ToString()
+                        },
+                        24 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day24Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day24Part2(input).ToString()
+                        },
+                        25 => part switch
+                        {
+                            1 => TwentyTwentyFour.Day25Part1(input).ToString(),
+                            2 => TwentyTwentyFour.Day25Part2(input).ToString()
+                        }
+                    };
                 case 2023:
                     return day switch
                     {
