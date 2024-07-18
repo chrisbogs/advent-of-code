@@ -1,4 +1,4 @@
-using adventOfCodeShared.Logic;
+using AdventOfCodeShared.Logic;
 using AdventOfCodeShared.Models;
 using System;
 using System.Collections.Generic;

@@ -9,21 +9,17 @@ namespace Server
 
     [Route("[controller]")]
     [ApiController]
-    public class YearController : Controller
+    public class YearController(IInputRetriever inputRetriever) : Controller
     {
-        private readonly IInputRetriever _inputRetriever;
-        public YearController(IInputRetriever inputRetriever)
-        {
-            this._inputRetriever = inputRetriever;
-        }
+        private readonly IInputRetriever _inputRetriever = inputRetriever;
 
         [HttpGet("{year:int}/{day:int}/{part:int}")]
         public async Task<string> Router(int year, int day, int part)
         {
-            var input = Array.Empty<string>();
+            string[] input;
             try
             {
-                 input = await _inputRetriever.GetInput(year, day);
+                input = await _inputRetriever.GetInput(year, day);
             }
             catch (AggregateException)
             {
