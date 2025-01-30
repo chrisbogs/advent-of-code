@@ -300,8 +300,8 @@ namespace Server
                         },
                         2 => part switch
                         {
-                            1 => TwentyTwentyTwo.Day2Part1(input).ToString(),
-                            2 => TwentyTwentyTwo.Day2Part2(input).ToString()
+                            1 => (await TwentyTwentyTwo.Day2Part1(input)).ToString(),
+                            2 => (await TwentyTwentyTwo.Day2Part2(input)).ToString()
                         },
                         3 => part switch
                         {
