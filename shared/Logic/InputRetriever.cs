@@ -9,6 +9,7 @@ namespace AdventOfCodeShared.Logic
     public interface IInputRetriever
     {
         Task<string[]> GetInput(int year, int day);
+        Task<string[]> GetInputFromUrl(string cookie, int year, int day);
     }
 
     public class InputRetriever : IInputRetriever
@@ -34,6 +35,17 @@ namespace AdventOfCodeShared.Logic
                 filePath = $"../../../../shared/PuzzleInput/{year}/{day}.txt";
                 return await filePath.ReadFile();
             }
+        }
+
+        public async Task<string[]> GetInputFromUrl(string cookie, int year, int day)
+        {
+            _http.DefaultRequestHeaders.Add("Cookie", $"session={cookie}");
+
+            var url = $"https://adventofcode.com/{year}/day/{day}/input";
+            var response = await _http.GetAsync(url);
+
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadAsStringAsync()).Split('\n');
         }
     }
 }

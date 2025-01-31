@@ -1,5 +1,6 @@
 using AdventOfCodeShared.Logic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -9,9 +10,10 @@ namespace Server
 
     [Route("[controller]")]
     [ApiController]
-    public class YearController(IInputRetriever inputRetriever) : Controller
+    public class YearController(IInputRetriever inputRetriever, IConfiguration configuration) : Controller
     {
         private readonly IInputRetriever _inputRetriever = inputRetriever;
+        private readonly IConfiguration _configuration = configuration;
 
         [HttpGet("{year:int}/{day:int}/{part:int}")]
         public async Task<string> Router(int year, int day, int part)
@@ -20,6 +22,9 @@ namespace Server
             try
             {
                 input = await _inputRetriever.GetInput(year, day);
+                //var sessionCookie = _configuration.GetValue<string>("sessionCookie");
+                //input = await _inputRetriever.GetInputFromUrl(sessionCookie, year, day);
+
             }
             catch (AggregateException)
             {
@@ -300,8 +305,8 @@ namespace Server
                         },
                         2 => part switch
                         {
-                            1 => TwentyTwentyTwo.Day2Part1(input).ToString(),
-                            2 => TwentyTwentyTwo.Day2Part2(input).ToString()
+                            1 => (await TwentyTwentyTwo.Day2Part1(input)).ToString(),
+                            2 => (await TwentyTwentyTwo.Day2Part2(input)).ToString()
                         },
                         3 => part switch
                         {
