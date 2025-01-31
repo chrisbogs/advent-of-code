@@ -21,9 +21,9 @@ namespace Server
             string[] input;
             try
             {
-                //input = await _inputRetriever.GetInput(year, day);
-                var sessionCookie = _configuration.GetValue<string>("sessionCookie");
-                input = await _inputRetriever.GetInputFromUrl(sessionCookie, year, day);
+                input = await _inputRetriever.GetInput(year, day);
+                //var sessionCookie = _configuration.GetValue<string>("sessionCookie");
+                //input = await _inputRetriever.GetInputFromUrl(sessionCookie, year, day);
 
             }
             catch (AggregateException)
