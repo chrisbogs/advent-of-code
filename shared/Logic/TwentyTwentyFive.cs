@@ -11,7 +11,7 @@ using static AdventOfCodeShared.Logic.Helpers;
 
 namespace AdventOfCodeShared.Logic
 {
-    public class TwentyTwentyFour
+    public class TwentyTwentyFive
     {
         public static long Day1Part1(string[] input)
         {
