@@ -28,6 +28,7 @@ package service
 import (
 	"strconv"
 	"strings"
+	"sync"
 )
 
 type Range struct {
@@ -36,28 +37,61 @@ type Range struct {
 }
 
 func Day2Part1(input string) int {
-	ranges := ParseRanges(input)
-	total := 0
-	for _, r := range ranges {
-		for i := r.start; i < r.end; i++ {
-			// println("testing", strconv.Itoa(i))
-			if IsPalinDrome(strconv.Itoa(i)) {
-				total += i
-			}
-		}
-	}
-	return total
+	// ranges := ParseRanges(input)
+	// total := 0
+	// for _, r := range ranges {
+	// 	for i := r.start; i <= r.end; i++ {
+	// 		if isRepeatedTwice(strconv.Itoa(i)) {
+	// 			total += i
+	// 		}
+	// 	}
+	// }
+	// return total
+
+    ranges := ParseRanges(input)
+    results := make(chan int, 100)
+    var wg sync.WaitGroup
+
+    // Launch a goroutine for each range
+    for _, r := range ranges {
+        wg.Add(1)
+        go func(start, end int) {
+            defer wg.Done()
+            for i := start; i <= end; i++ {
+                if isRepeatedTwice(strconv.Itoa(i)) {
+                    results <- i
+                }
+            }
+        }(r.start, r.end)
+    }
+
+    // Close results channel when all goroutines finish
+    go func() {
+        wg.Wait()
+        close(results)
+    }()
+
+    // Sum all results from channel
+    total := 0
+    for val := range results {
+        total += val
+    }
+    return total
 }
 
-func IsPalinDrome(word string) bool {
+func isRepeatedTwice(word string) bool {
+	if len(word) % 2 == 1 {return false}
+
 	start := 0
-	end := len(word) - 1
-	for start < end {
-		if word[start] != word[end] {
+	mid := int(len(word) / 2)
+	start2 := int(len(word) / 2)
+
+	for start < mid {
+		if word[start] != word[start2] {
 			return false
 		}
 		start++
-		end--
+		start2++
 	}
 	return true
 }
