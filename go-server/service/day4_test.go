@@ -37,3 +37,19 @@ func TestLessThanFourAdjacentFilled1(t *testing.T) {
 .@@@@@@@@.
 @.@.@@@.@.`, "\n")), 0, 2, 10))
 }
+
+func TestDay4Part2(t *testing.T) {
+	input := `..@@.@@@@.
+@@@.@.@.@@
+@@@@@.@.@@
+@.@@@@..@.
+@@.@@@@.@@
+.@@@@@@@.@
+.@.@.@.@@@
+@.@@@.@@@@
+.@@@@@@@@.
+@.@.@@@.@.`
+	actual := Day4Part2(strings.Split(input, "\n"))
+
+	assert.Equal(t, 43, actual)
+}

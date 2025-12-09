@@ -5,14 +5,21 @@ package service
 
 func Day4Part1(input []string) int {
 	grid := ParseGrid(input)
+	return ProcessGrid(grid)
+}
+
+// Traverse grid once to mark the cells that are valid with x
+func ProcessGrid(grid [][]string) int {
 	count := 0
 	width := len(grid)
 	// traverse the grid and check all 8 adjacent cells
 	for x := range width {
 		for y := range width {
 			// println(x, y, grid[y][x])
-			if grid[x][y] && LessThanFourAdjacentFilled(grid, x, y, width) {
+			if grid[x][y] == "@" &&
+				LessThanFourAdjacentFilled(grid, x, y, width) {
 				// println("found ", x, y)
+				grid[x][y] = "x"
 				count++
 			}
 		}
@@ -20,7 +27,17 @@ func Day4Part1(input []string) int {
 	return count
 }
 
-func LessThanFourAdjacentFilled(grid [][]bool, x int, y int, width int) bool {
+func Day4Part2(input []string) int {
+	// Keep repeating the removal process
+	grid := ParseGrid(input)
+	count := 1
+	for marked := -1; marked != 0; marked = ProcessGrid(grid) {
+		count += marked
+	}
+	return count
+}
+
+func LessThanFourAdjacentFilled(grid [][]string, x int, y int, width int) bool {
 	// if less than 4 adjacent cells are marked (true) then this is a valid position
 	// 0,0 0,1 0,2
 	// 1,0 1,1 1,2
@@ -37,7 +54,7 @@ func LessThanFourAdjacentFilled(grid [][]bool, x int, y int, width int) bool {
 			}
 
 			// println(x+i, y+j, grid[x+i][y+j])
-			if grid[x+i][y+j] {
+			if grid[x+i][y+j] == "@" {
 				countOfAdjacentMarked++
 				if countOfAdjacentMarked >= 4 {
 					return false
@@ -47,27 +64,23 @@ func LessThanFourAdjacentFilled(grid [][]bool, x int, y int, width int) bool {
 	}
 	return countOfAdjacentMarked < 4
 }
-func printGrid(grid [][]bool) {
+func printGrid(grid [][]string) {
 	for _, row := range grid {
 		for _, cell := range row {
-			if cell {
-				print("@")
-			} else {
-				print(".")
-			}
+			print(cell)
 		}
 		println()
 	}
 }
 
-func ParseGrid(input []string) [][]bool {
-	var grid [][]bool
+func ParseGrid(input []string) [][]string {
+	var grid [][]string
 
 	for i := 0; i < len(input); i++ {
 		line := input[i]
-		row := make([]bool, len(line))
-		for i, char := range line {
-			row[i] = char == '@'
+		row := make([]string, len(line))
+		for i := 0; i < len(line); i++ {
+			row[i] = string(line[i])
 		}
 		grid = append(grid, row)
 	}
