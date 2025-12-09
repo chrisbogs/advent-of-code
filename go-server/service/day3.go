@@ -34,38 +34,37 @@ func Day3Part1(input []string) int {
 
 func Day3Part2(input []string) int {
 	sum := 0
-	combined := ""
+
 	for _, line := range input {
-		combined += line
-	}
-	parsedInts := make([]int, len(combined))
-	for i, char := range combined {
-		parsedInts[i], _ = strconv.Atoi(string(char))
-	}
+		var convertedLine []int
+		for i := 0; i < len(line); i++{
+			num, _ := strconv.Atoi(string(line[i]))
+	        convertedLine = append(convertedLine, num)
+		}
 
-	digits := make([]int, 0)
-	newIndex := 0
-	maxVal := -1
-	for i := range 12 {
-		maxVal, newIndex = FindMax(newIndex, 12-i, parsedInts)
-		println(newIndex, 12-i, maxVal, newIndex)
-		digits = append(digits, maxVal)
+		digits := make([]int, 0)
+		newIndex := 0
+		maxVal := -1
+		for i := 1; i <= 12; i++ {
+			maxVal, newIndex = FindMax(newIndex, 12-i, convertedLine)
+			digits = append(digits, maxVal)
+		}
+		
+		numStr := ""
+		for _, digit := range digits {
+			numStr += strconv.Itoa(digit)
+		}
+		num, _ := strconv.Atoi(numStr)
+		sum += num
 	}
-
-	numStr := ""
-	for _, digit := range digits {
-		numStr += strconv.Itoa(digit)
-	}
-	num, _ := strconv.Atoi(numStr)
-	sum += num
-
 	return sum
 }
 
-func FindMax(start int, n int, arr []int) (int, int) {
+func FindMax(start int, nthDigit int, arr []int) (int, int) {
 	maxValue := -1
 	index := -1
-	for i := start; i < len(arr)-n; i++ {
+	end := len(arr)-nthDigit
+	for i := start; i < end; i++ {
 		val := arr[i]
 		if val > maxValue {
 			maxValue = val

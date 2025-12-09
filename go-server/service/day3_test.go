@@ -23,7 +23,7 @@ func TestDay3Part1C(t *testing.T) { assert.Equal(t, 78, Day3Part1([]string{"2342
 func TestDay3Part1D(t *testing.T) { assert.Equal(t, 92, Day3Part1([]string{"818181911112111"})) }
 
 func TestDay3Part2(t *testing.T) {
-	expected := 357
+	expected := 3121910778619
 	input := `987654321111111
 811111111111119
 234234234234278
@@ -35,7 +35,7 @@ func TestDay3Part2(t *testing.T) {
 func TestDay3Part2A(t *testing.T) {
 	maxVal, index := FindMax(0, 0, []int{8, 1, 8, 1, 8, 1, 9, 1, 1, 1, 1, 2, 1, 1, 1})
 	assert.Equal(t, 9, maxVal)
-	assert.Equal(t, 6, index)
+	assert.Equal(t, 7, index)
 }
 func TestDay3Part2A1(t *testing.T) {
 	assert.Equal(t, 987654321111, Day3Part2([]string{"987654321111111"}))
