@@ -109,3 +109,63 @@ func ParseRanges(input string) []struct{ start, end int } {
 
 	return ranges
 }
+
+
+func Day2Part2(input string) int {
+    ranges := ParseRanges(input)
+    results := make(chan int, 100)
+    var wg sync.WaitGroup
+
+    // Launch a goroutine for each range
+    for _, r := range ranges {
+        wg.Add(1)
+        go func(start, end int) {
+            defer wg.Done()
+            for i := start; i <= end; i++ {
+                if OnlyRepeatedDigits(strconv.Itoa(i)) {
+                    results <- i
+                }
+            }
+        }(r.start, r.end)
+    }
+
+    // Close results channel when all goroutines finish
+    go func() {
+        wg.Wait()
+        close(results)
+    }()
+
+    // Sum all results from channel
+    total := 0
+    for val := range results {
+        total += val
+    }
+    return total
+}
+
+// a string is "invalid" if it is made only of some sequence of digits repeated at least twice.
+// So, 12341234 (1234 two times), 123123123 (123 three times), 1212121212 (12 five times), 
+// and 1111111 (1 seven times) are all invalid.
+func OnlyRepeatedDigits(word string) bool {
+	maxPossibleSubstringLength := int(len(word) / 2)
+	for i := 1; i <= maxPossibleSubstringLength; i++{
+		// for each possible substring length
+		if IsOnlyRepeatedSequence(word, word[:i], i){
+			return true
+		}
+	}
+	return false
+}
+
+// a possible substring length is a divisor of the string length 
+// (so if stringlength is not divisible by X, then do not check for repeated patterns of length X)
+// scan through the string and see if it is only that sequence of length X.	
+func IsOnlyRepeatedSequence(s string, pattern string, length int) bool {
+	if len(s) % length != 0 { return false}
+	for idx:=0; idx < len(s); idx++{
+		if s[idx] != pattern[idx % length]{
+			return false
+		}
+	}
+	return true
+}
