@@ -4,14 +4,65 @@ package service
 //The forklifts can only access a roll of paper if there are fewer than four rolls of paper in the eight adjacent positions.
 
 func Day4Part1(input []string) int {
-	grid := parseGrid(input)
-
-	return 0
+	grid := ParseGrid(input)
+	count := 0
+	width := len(grid)
+	// traverse the grid and check all 8 adjacent cells
+	for x := range width {
+		for y := range width {
+			// println(x, y, grid[y][x])
+			if grid[x][y] && LessThanFourAdjacentFilled(grid, x, y, width) {
+				// println("found ", x, y)
+				count++
+			}
+		}
+	}
+	return count
 }
 
-func parseGrid(input[] string) [][]bool {
+func LessThanFourAdjacentFilled(grid [][]bool, x int, y int, width int) bool {
+	// if less than 4 adjacent cells are marked (true) then this is a valid position
+	// 0,0 0,1 0,2
+	// 1,0 1,1 1,2
+	// 2,0 2,1 2,2
+	countOfAdjacentMarked := 0
+	xs := []int{-1, 0, 1}
+	ys := []int{-1, 0, 1}
+	// println("beginning check")
+	for _, j := range xs {
+		for _, i := range ys {
+			// exclude invalid indices
+			if x+i < 0 || x+i > width-1 || y+j < 0 || y+j > width-1 || (i == 0 && j == 0) {
+				continue
+			}
+
+			// println(x+i, y+j, grid[x+i][y+j])
+			if grid[x+i][y+j] {
+				countOfAdjacentMarked++
+				if countOfAdjacentMarked >= 4 {
+					return false
+				}
+			}
+		}
+	}
+	return countOfAdjacentMarked < 4
+}
+func printGrid(grid [][]bool) {
+	for _, row := range grid {
+		for _, cell := range row {
+			if cell {
+				print("@")
+			} else {
+				print(".")
+			}
+		}
+		println()
+	}
+}
+
+func ParseGrid(input []string) [][]bool {
 	var grid [][]bool
-	
+
 	for i := 0; i < len(input); i++ {
 		line := input[i]
 		row := make([]bool, len(line))
@@ -20,7 +71,6 @@ func parseGrid(input[] string) [][]bool {
 		}
 		grid = append(grid, row)
 	}
-	
+
 	return grid
 }
-
