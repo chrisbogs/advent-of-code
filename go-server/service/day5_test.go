@@ -23,3 +23,8 @@ func TestDay5Part1(t *testing.T) {
 
 	assert.Equal(t, 3, actual)
 }
+
+// 1-3
+// 1-4
+// 1-5
+// (all overlap 1-3)

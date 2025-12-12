@@ -1,12 +1,19 @@
 package service
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func Day5Part1(input []string) int {
 	ranges, availableIds := ParseInput(input)
-	count := 0
 	// Add optimization: preprocess ranges? remove overlaps
 	// return # availableIds not in ranges
+	count := numberOverlap(availableIds, ranges)
+	return count
+}
+
+func numberOverlap(availableIds []int, ranges []myRange) int {
+	count := 0
 	for _, x := range availableIds {
 		for _, r := range ranges {
 			if x >= r.Start && x <= r.End {
@@ -17,6 +24,30 @@ func Day5Part1(input []string) int {
 	}
 	return count
 }
+
+func Day5Part2(input []string) int {
+	ranges, _ := ParseInput(input)
+
+	type localSet map[int]struct{}
+	final := make(localSet)
+	for _, r := range ranges {
+		println("range 1, length", r.End-r.Start)
+		for v := r.Start; v <= r.End; v++ {
+			final[v] = struct{}{}
+			// println(v)
+		}
+	}
+
+	return len(final)
+}
+
+// func makeRange(r myRange) []int {
+// 	result := make([]int, r.End-r.Start+1)
+// 	for i := range result {
+// 		result[i] = r.Start + i
+// 	}
+// 	return result
+// }
 
 type myRange struct {
 	Start int
