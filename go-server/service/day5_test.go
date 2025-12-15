@@ -24,7 +24,17 @@ func TestDay5Part1(t *testing.T) {
 	assert.Equal(t, 3, actual)
 }
 
-// 1-3
-// 1-4
-// 1-5
-// (all overlap 1-3)
+func TestDay5Part2(t *testing.T) {
+	input := `12522931128722-17835086076404`
+	actual := Day5Part2(strings.Split(input, "\n"))
+	assert.Equal(t, 17835086076404-12522931128722, actual)
+}
+
+func TestDay5Part2A(t *testing.T) {
+	input := `1-3
+	1-3
+	1-4
+	5-6`
+	actual := Day5Part2(strings.Split(input, "\n"))
+	assert.Equal(t, 6, actual)
+}
