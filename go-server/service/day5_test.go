@@ -27,7 +27,7 @@ func TestDay5Part1(t *testing.T) {
 func TestDay5Part2(t *testing.T) {
 	input := `12522931128722-17835086076404`
 	actual := Day5Part2(strings.Split(input, "\n"))
-	assert.Equal(t, 17835086076404-12522931128722, actual)
+	assert.Equal(t, 17835086076404-12522931128722 + 1, actual)
 }
 
 func TestDay5Part2A(t *testing.T) {
