@@ -4,8 +4,18 @@ package service
 //The forklifts can only access a roll of paper if there are fewer than four rolls of paper in the eight adjacent positions.
 
 func Day4Part1(input []string) int {
-	grid := ParseGrid(input)
-	return ProcessGrid(grid)
+grid := ParseGrid(input)
+	count := 0
+	width := len(grid)
+	// traverse the grid and check all 8 adjacent cells
+	for x := range width {
+		for y := range width {
+			if grid[x][y] == "@" && LessThanFourAdjacentFilled(grid, x, y, width) {
+				count++
+			}
+		}
+	}
+	return count
 }
 
 // Traverse grid once to mark the cells that are valid with x
@@ -27,11 +37,30 @@ func ProcessGrid(grid [][]string) int {
 	return count
 }
 
+// Traverse grid once to mark the cells that are valid with x
+func ProcessGrid2(grid [][]string) int {
+	count := 0
+	width := len(grid)
+	// traverse the grid and check all 8 adjacent cells
+	for x := range width {
+		for y := range width {
+			// println(x, y, grid[y][x])
+			if grid[x][y] == "@" &&
+				LessThanFourAdjacentFilled(grid, x, y, width) {
+				// println("found ", x, y)
+				grid[x][y] = "x"
+				count++
+			}
+		}
+	}
+	return count
+}
+
 func Day4Part2(input []string) int {
 	// Keep repeating the removal process
 	grid := ParseGrid(input)
 	count := 1
-	for marked := -1; marked != 0; marked = ProcessGrid(grid) {
+	for marked := -1; marked != 0; marked = ProcessGrid2(grid) {
 		count += marked
 	}
 	return count
@@ -63,14 +92,6 @@ func LessThanFourAdjacentFilled(grid [][]string, x int, y int, width int) bool {
 		}
 	}
 	return countOfAdjacentMarked < 4
-}
-func printGrid(grid [][]string) {
-	for _, row := range grid {
-		for _, cell := range row {
-			print(cell)
-		}
-		println()
-	}
 }
 
 func ParseGrid(input []string) [][]string {
