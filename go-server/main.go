@@ -17,4 +17,7 @@ func main() {
 
 	fmt.Println("4: ", service.Day4Part1(service.ReadLines("input4")))
 	fmt.Println("4: ", service.Day4Part2(service.ReadLines("input4")))
+
+	fmt.Println("6: ", service.Day6Part1(service.ReadLines("input6")))
+	// fmt.Println("6: ", service.Day6Part2(service.ReadLines("input6")))
 }
