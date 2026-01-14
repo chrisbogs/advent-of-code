@@ -10,6 +10,7 @@ This project contains:
 - **Tests** (`/tests`) - Unit tests
 
 ## Running the Application
+### 2025 was done in Go
 
 ### Option 1: Blazor Client
 
