@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using HotChocolate.AspNetCore;
 
 namespace Server
 {
@@ -23,6 +24,7 @@ namespace Server
         {
 
             services.AddControllers();
+            services.AddGraphQLServer().AddQueryType<Query>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Server", Version = "v1" });
@@ -59,6 +61,7 @@ namespace Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapGraphQL();
             });
         }
     }

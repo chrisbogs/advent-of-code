@@ -15,7 +15,7 @@ namespace AdventOfCodeShared.Logic
     {
         public static long Day1Part1(string[] input)
         {
-            return 0;
+            return 1234;
         }
 
         public static long Day1Part2(string[] input)

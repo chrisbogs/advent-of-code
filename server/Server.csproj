@@ -11,6 +11,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
     <PackageReference Include="System.Net.Http.Json" Version="9.0.1" />
     <PackageReference Include="System.Text.Json" Version="9.0.1" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="15.1.12" />
   </ItemGroup>
 
   <!-- Project References -->
