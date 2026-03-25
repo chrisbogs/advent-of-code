@@ -4,75 +4,85 @@ import (
 	"strconv"
 )
 
-func Day1Part1(input []string) int{
-	// Parse
-	// input: XY where X is a character: 'L', 'R', Y is an int
+// Day1Part1 solves part 1 of day 1.
+// Input format: XY where X is 'L' or 'R', Y is an integer.
+func Day1Part1(input []string) int {
+	const initialValue = 50
 
-	var currentValue, password int = 50, 0;
-	// Follow instructions
+	currentValue := initialValue
+	passwordCount := 0
+
 	for _, line := range input {
-		firstCharacter := line[0];
-		number, _ := strconv.Atoi(line[1:])
-		// fmt.Printf("%c%d, ", firstCharacter, number)
+		if len(line) < 2 {
+			continue
+		}
 
-		switch (firstCharacter){
+		direction := line[0]
+		number, err := strconv.Atoi(line[1:])
+		if err != nil {
+			continue
+		}
+
+		switch direction {
 		case 'L':
-			currentValue = ((currentValue - number) % 100 + 100) % 100 
+			currentValue = ((currentValue - number) % 100 + 100) % 100
 		case 'R':
 			currentValue = ((currentValue + number) % 100 + 100) % 100
 		}
-		// fmt.Println((currentValue))
-		// keep track of when the intermediate number is 0
+
 		if currentValue == 0 {
-			password++;
+			passwordCount++
 		}
 	}
-	return password
+
+	return passwordCount
 }
 
-func Day1Part2(input []string) int{
-	// Parse
-	// input: XY where X is a character: 'L', 'R', Y is an int
+// Day1Part2 solves part 2 of day 1.
+// Input format: XY where X is 'L' or 'R', Y is an integer.
+func Day1Part2(input []string) int {
+	const initialValue = 50
 
-	var currentValue, password int = 50, 0;
-	// Follow instructions
+	currentValue := initialValue
+	passwordCount := 0
+
 	for _, line := range input {
-		firstCharacter := line[0];
-		number, _ := strconv.Atoi(line[1:])
-		// fmt.Println(string(firstCharacter), number)
+		if len(line) < 2 {
+			continue
+		}
+
+		direction := line[0]
+		number, err := strconv.Atoi(line[1:])
+		if err != nil {
+			continue
+		}
 
 		oldValue := currentValue
-		switch (firstCharacter){
+
+		switch direction {
 		case 'L':
-			numberOfLoops := int(number / 100)
-			password += numberOfLoops
-			// println("numberOfLoops", numberOfLoops)
-			currentValue = ((currentValue - number) % 100 + 100) % 100 
+			numberOfLoops := number / 100
+			passwordCount += numberOfLoops
+			currentValue = ((currentValue - number) % 100 + 100) % 100
+
 			if oldValue != 0 && currentValue != 0 && currentValue > oldValue {
-				// we've passed 0 at least once
-				// println("+1")
-				password += 1
+				passwordCount++
 			}
 
 		case 'R':
-			numberOfLoops := int(number / 100)
-			password += numberOfLoops
-			// println("numberOfLoops", numberOfLoops)
+			numberOfLoops := number / 100
+			passwordCount += numberOfLoops
 			currentValue = ((currentValue + number) % 100 + 100) % 100
+
 			if oldValue != 0 && currentValue != 0 && currentValue < oldValue {
-				// we've passed 0 at least once
-				// println("+1")
-				password += 1
+				passwordCount++
 			}
 		}
-		// keep track of when the intermediate number is 0
+
 		if currentValue == 0 {
-			// println("password++")
-			password++;
+			passwordCount++
 		}
-		// fmt.Println("Current value", currentValue)
-		// fmt.Println("password", password)
-		// println()
 	}
-	return password
+
+	return passwordCount
 }
