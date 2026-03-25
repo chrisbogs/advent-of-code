@@ -23,7 +23,7 @@ namespace AdventOfCodeShared.Logic
 
         public async Task<string[]> GetInput(int year, int day)
         {
-            var filePath = Path.GetFullPath($"..\\shared\\PuzzleInput\\{year}\\{day}.txt");
+            var filePath = Path.GetFullPath(Path.Combine("..", "shared", "PuzzleInput", year.ToString(), $"{day}.txt"));
 
             try
             {
@@ -32,7 +32,7 @@ namespace AdventOfCodeShared.Logic
             catch (Exception)
             {
                 // We are running tests.
-                filePath = $"../../../../shared/PuzzleInput/{year}/{day}.txt";
+                filePath = Path.GetFullPath(Path.Combine("../../../../shared/PuzzleInput", year.ToString(), $"{day}.txt"));
                 return await filePath.ReadFile();
             }
         }

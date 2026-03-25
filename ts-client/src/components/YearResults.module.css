@@ -1,0 +1,19 @@
+.container {
+  padding: 1rem;
+}
+
+.title {
+  color: #646cff;
+  margin-bottom: 1rem;
+}
+
+.resultsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.noResults {
+  color: #888;
+  font-style: italic;
+}
