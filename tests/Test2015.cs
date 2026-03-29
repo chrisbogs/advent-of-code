@@ -1,6 +1,7 @@
 using AdventOfCodeShared.Models;
 using AdventOfCodeShared.Logic;
 using Server;
+using Server.Controllers;
 using Xunit;
 using System.Threading.Tasks;
 
