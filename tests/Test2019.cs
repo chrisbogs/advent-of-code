@@ -1,6 +1,7 @@
 using AdventOfCodeShared.Models;
 using AdventOfCodeShared.Logic;
 using Server;
+using Server.Controllers;
 using System.Collections.Generic;
 using Xunit;
 using AdventOfCodeShared.Models.Image;
@@ -594,7 +595,7 @@ namespace Tests
             Assert.Equal("889", await sut.Router(2019, 4, 1));
             Assert.Equal("589", await sut.Router(2019, 4, 2));
 
-            Assert.Equal("0,0,0,0,0,0,0,0,0,4887191", string.Join(',', await sut.Router(2019, 5, 1)));
+            Assert.Equal("0,0,0,0,0,0,0,0,0,4887191", await sut.Router(2019, 5, 1));
             Assert.Equal("3419022", await sut.Router(2019, 5, 2));
 
             // Assert.Equal("0", await sut.Router(2019,6,1));

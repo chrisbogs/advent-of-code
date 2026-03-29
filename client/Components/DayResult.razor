@@ -1,20 +1,106 @@
 @inject ApiService Api
-<div>
-    Day @Day<br />
-    &emsp;Part 1: @result1<br />
-    &emsp;Part 2: @result2<br />
+
+<div class="day-result-card">
+    <h3>Day @Day</h3>
+    <div class="parts-container">
+        <div class="part">
+            <strong>Part 1:</strong>
+            @if (part1Loading)
+            {
+                <span class="loading">Loading...</span>
+            }
+            else if (part1Error)
+            {
+                <span class="error">Error loading result</span>
+            }
+            else
+            {
+                <code class="result">@part1Result</code>
+            }
+        </div>
+        <div class="part">
+            <strong>Part 2:</strong>
+            @if (part2Loading)
+            {
+                <span class="loading">Loading...</span>
+            }
+            else if (part2Error)
+            {
+                <span class="error">Error loading result</span>
+            }
+            else
+            {
+                <code class="result">@part2Result</code>
+            }
+        </div>
+    </div>
 </div>
 
 @code {
-    [Parameter] public int Day { get; set; } = 0;
-    [Parameter] public Func<Task<string>> GetPart1Result { get; set; } = () => Task.Run(()=>string.Empty);
-    [Parameter] public Func<Task<string>> GetPart2Result { get; set; } = () => Task.Run(()=>string.Empty);
-    public string result1 { get; set; } = "Loading";
-    public string result2 { get; set; } = "Loading";
+    [Parameter] public int Day { get; set; }
+    [Parameter] public Func<Task<string>> GetPart1Result { get; set; } = () => Task.FromResult(string.Empty);
+    [Parameter] public Func<Task<string>> GetPart2Result { get; set; } = () => Task.FromResult(string.Empty);
 
-    protected override async Task OnInitializedAsync()
+    private string part1Result = string.Empty;
+    private string part2Result = string.Empty;
+    private bool part1Loading = true;
+    private bool part2Loading = true;
+    private bool part1Error = false;
+    private bool part2Error = false;
+
+    protected override async Task OnParametersSetAsync()
     {
-        result1 = await GetPart1Result();
-        result2 = await GetPart2Result();
+        await LoadResults();
+    }
+
+    private async Task LoadResults()
+    {
+        // Load Part 1
+        part1Loading = true;
+        part1Error = false;
+        StateHasChanged();
+
+        try
+        {
+            part1Result = await GetPart1Result();
+            if (string.IsNullOrEmpty(part1Result))
+            {
+                part1Result = "Not completed";
+            }
+        }
+        catch (Exception)
+        {
+            part1Error = true;
+            part1Result = string.Empty;
+        }
+        finally
+        {
+            part1Loading = false;
+            StateHasChanged();
+        }
+
+        // Load Part 2
+        part2Loading = true;
+        part2Error = false;
+        StateHasChanged();
+
+        try
+        {
+            part2Result = await GetPart2Result();
+            if (string.IsNullOrEmpty(part2Result))
+            {
+                part2Result = "Not completed";
+            }
+        }
+        catch (Exception)
+        {
+            part2Error = true;
+            part2Result = string.Empty;
+        }
+        finally
+        {
+            part2Loading = false;
+            StateHasChanged();
+        }
     }
 }

@@ -1,89 +1,105 @@
 package service
 
-//The rolls of paper (@) are arranged on a large grid; the Elves even have a helpful diagram (your puzzle input) indicating where everything is located.
-//The forklifts can only access a roll of paper if there are fewer than four rolls of paper in the eight adjacent positions.
+import "strings"
 
+// Day4Part1 counts how many rolls of paper can be accessed (fewer than 4 adjacent rolls).
 func Day4Part1(input []string) int {
-	grid := ParseGrid(input)
-	return ProcessGrid(grid)
+	grid := parseGrid(input)
+	return processGrid(grid)
 }
 
-// Traverse grid once to mark the cells that are valid with x
-func ProcessGrid(grid [][]string) int {
+// Day4Part2 repeatedly removes accessible rolls until none remain.
+func Day4Part2(input []string) int {
+	grid := parseGrid(input)
+	count := 1 // Start with 1 to account for first iteration
+
+	for marked := -1; marked != 0; marked = processGrid(grid) {
+		count += marked
+	}
+
+	return count
+}
+
+// processGrid marks and counts rolls that can be accessed (fewer than 4 adjacent filled positions).
+func processGrid(grid [][]string) int {
 	count := 0
-	width := len(grid)
-	// traverse the grid and check all 8 adjacent cells
-	for x := range width {
-		for y := range width {
-			// println(x, y, grid[y][x])
-			if grid[x][y] == "@" &&
-				LessThanFourAdjacentFilled(grid, x, y, width) {
-				// println("found ", x, y)
-				grid[x][y] = "x"
+	size := len(grid)
+
+	for x := range size {
+		for y := range size {
+			if grid[x][y] == "@" && lessThanFourAdjacentFilled(grid, x, y, size) {
+				grid[x][y] = "x" // Mark as processed
 				count++
 			}
 		}
 	}
+
 	return count
 }
 
-func Day4Part2(input []string) int {
-	// Keep repeating the removal process
-	grid := ParseGrid(input)
-	count := 1
-	for marked := -1; marked != 0; marked = ProcessGrid(grid) {
-		count += marked
-	}
-	return count
-}
+// lessThanFourAdjacentFilled checks if a cell has fewer than 4 adjacent filled cells.
+func lessThanFourAdjacentFilled(grid [][]string, x, y, size int) bool {
+	const minAdjacentThreshold = 4
+	var xs = []int{-1, 0, 1}
+	var ys = []int{-1, 0, 1}
 
-func LessThanFourAdjacentFilled(grid [][]string, x int, y int, width int) bool {
-	// if less than 4 adjacent cells are marked (true) then this is a valid position
-	// 0,0 0,1 0,2
-	// 1,0 1,1 1,2
-	// 2,0 2,1 2,2
-	countOfAdjacentMarked := 0
-	xs := []int{-1, 0, 1}
-	ys := []int{-1, 0, 1}
-	// println("beginning check")
+	count := 0
+
 	for _, j := range xs {
 		for _, i := range ys {
-			// exclude invalid indices
-			if x+i < 0 || x+i > width-1 || y+j < 0 || y+j > width-1 || (i == 0 && j == 0) {
+			// Skip the center cell itself
+			if i == 0 && j == 0 {
 				continue
 			}
 
-			// println(x+i, y+j, grid[x+i][y+j])
-			if grid[x+i][y+j] == "@" {
-				countOfAdjacentMarked++
-				if countOfAdjacentMarked >= 4 {
+			// Skip out-of-bounds cells
+			newX, newY := x+i, y+j
+			if newX < 0 || newX >= size || newY < 0 || newY >= size {
+				continue
+			}
+
+			// Count adjacent filled cells
+			if grid[newX][newY] == "@" {
+				count++
+				if count >= minAdjacentThreshold {
 					return false
 				}
 			}
 		}
 	}
-	return countOfAdjacentMarked < 4
-}
-func printGrid(grid [][]string) {
-	for _, row := range grid {
-		for _, cell := range row {
-			print(cell)
-		}
-		println()
-	}
+
+	return count < minAdjacentThreshold
 }
 
-func ParseGrid(input []string) [][]string {
+// parseGrid converts input lines into a 2D grid.
+func parseGrid(input []string) [][]string {
 	var grid [][]string
 
-	for i := 0; i < len(input); i++ {
-		line := input[i]
-		row := make([]string, len(line))
-		for i := 0; i < len(line); i++ {
-			row[i] = string(line[i])
+	for _, line := range input {
+		line = strings.TrimSpace(line)
+		if len(line) == 0 {
+			continue
+		}
+
+		row := make([]string, 0, len(line))
+		for _, ch := range line {
+			row = append(row, string(ch))
 		}
 		grid = append(grid, row)
 	}
 
 	return grid
+}
+
+// Deprecated: Use private functions instead.
+func LessThanFourAdjacentFilled(grid [][]string, x int, y int, width int) bool {
+	return lessThanFourAdjacentFilled(grid, x, y, width)
+}
+
+func ParseGrid(input []string) [][]string {
+	return parseGrid(input)
+}
+
+func ProcessGrid(grid [][]string) int {
+	return processGrid(grid)
 }

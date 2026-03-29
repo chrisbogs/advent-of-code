@@ -1,0 +1,49 @@
+.day-result-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    background-color: #f9f9f9;
+}
+
+.day-result-card h3 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+.parts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.part {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.part strong {
+    min-width: 60px;
+    color: #555;
+}
+
+.result {
+    background-color: #e8f4f8;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    color: #2c5aa0;
+    word-break: break-all;
+}
+
+.loading {
+    color: #ffa500;
+    font-style: italic;
+}
+
+.error {
+    color: #dc3545;
+    font-style: italic;
+}

@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // Vite exposes environment variables on `import.meta.env` in the browser.
 // Avoid using `process.env` which isn't available at runtime in the browser.
-const API_BASE_URL = ((import.meta as any).env?.VITE_API_URL as string) || 'http://localhost:8885/'
+const API_BASE_URL = (import.meta.env?.VITE_API_URL as string) || 'http://localhost:8885/'
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -28,10 +28,10 @@ export const fetchDayPart = async (year: number, day: number, part: 1 | 2): Prom
     // Ensure the response is always a string
     const result = typeof response.data === 'string' ? response.data : String(response.data)
     return result
-  } catch (err: unknown) {
+  } catch (err) {
     if (axios.isAxiosError(err)) {
-      throw new Error(`Failed to fetch day ${day} part ${part} for ${year}: ${err.message}`)
+        throw new Error(`Failed to fetch day ${day} part ${part} for ${year}: ${err.message}`, { cause: err })
     }
-    throw new Error(String(err))
+      throw new Error(`Failed to fetch day ${day} part ${part} for ${year}`, { cause: err })
   }
 }
